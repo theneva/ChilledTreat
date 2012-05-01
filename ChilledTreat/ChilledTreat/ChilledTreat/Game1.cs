@@ -23,6 +23,8 @@ namespace ChilledTreat
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            //hei
         }
 
         /// <summary>
