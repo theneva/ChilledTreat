@@ -1,4 +1,3 @@
-*.cache
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
@@ -29,5 +28,5 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 
 #UML greier
-vpproject
+vpproject/
 *.vpp
