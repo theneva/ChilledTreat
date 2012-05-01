@@ -24,7 +24,7 @@ namespace ChilledTreat
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            //hei
+            //hei på deg
         }
 
         /// <summary>
