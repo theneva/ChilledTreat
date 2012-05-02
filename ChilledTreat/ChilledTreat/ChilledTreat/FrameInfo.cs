@@ -11,7 +11,7 @@ namespace ChilledTreat
     {
         readonly public static FrameInfo Instance = new FrameInfo();
 
-        private FrameInfo() { }
+        private FrameInfo();
 
         GameTime _GameTime = new GameTime();
         public GameTime GameTime
