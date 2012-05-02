@@ -22,9 +22,8 @@ namespace ChilledTreat
 
         public override void Update()
         {
-            FrameInfo inf = FrameInfo.Instance;
             // Logic here
-
+           
         }
 
         public override void Draw()

@@ -110,6 +110,8 @@ namespace ChilledTreat
 
             FrameInfo.GameTime = gameTime;
 
+            InputHandler.Update();
+
             if (NextState != null)
             {
                 ActiveGameState = NextState;

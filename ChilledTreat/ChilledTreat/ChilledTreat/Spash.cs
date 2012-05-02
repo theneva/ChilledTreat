@@ -27,7 +27,7 @@ namespace ChilledTreat
         public override void Update()
         {
             InputHandler input = InputHandler.Instance;
-            input.Update();
+
 
             if (input.IsKeyPressed(input.ActionKey))
             {
