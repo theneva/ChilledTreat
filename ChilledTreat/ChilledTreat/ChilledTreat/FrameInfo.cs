@@ -9,15 +9,7 @@ namespace ChilledTreat
 {
     class FrameInfo
     {
-        static FrameInfo _Instance = new FrameInfo();
-
-        public static FrameInfo Instance
-        {
-            get
-            {
-                return _Instance;
-            }
-        }
+        readonly public static FrameInfo Instance = new FrameInfo();
 
         private FrameInfo() { }
 
