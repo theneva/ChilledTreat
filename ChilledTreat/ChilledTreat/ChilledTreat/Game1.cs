@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace ChilledTreat
 {
@@ -19,32 +13,32 @@ namespace ChilledTreat
         public static Game1 Instance = null;
 
         // public for å kunne brukes andre steder
-        public GraphicsDeviceManager graphics;
-        public SpriteBatch spriteBatch;
+        public GraphicsDeviceManager Graphics;
+        public SpriteBatch SpriteBatch;
 
-        FrameInfo FrameInfo = FrameInfo.Instance;
-        InputHandler InputHandler = InputHandler.Instance;
+        readonly FrameInfo _frameInfo = FrameInfo.Instance;
+        readonly InputHandler _inputHandler = InputHandler.Instance;
 
-        List<GameState> GameStates = new List<GameState>();
-        GameState ActiveGameState = null;
+        readonly List<GameState> _gameStates = new List<GameState>();
+        GameState _activeGameState = null;
 
-        GameState NextState = null;
+        GameState _nextState = null;
 
         public static void ChangeState(int index)
         {
-            if (index < Game1.Instance.GameStates.Count)
+            if (index < Game1.Instance._gameStates.Count)
             {
-                Game1.Instance.NextState = Game1.Instance.GameStates[index];
+                Game1.Instance._nextState = Game1.Instance._gameStates[index];
             }
         }
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            Graphics.PreferredBackBufferWidth = 1280;
+            Graphics.PreferredBackBufferHeight = 720;
 
             IsMouseVisible = true;
 
@@ -71,16 +65,16 @@ namespace ChilledTreat
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Legge til gamestates som klasser i listen
             // ex: GameStates.add(new InGame(Sprite...., con);
 
-            GameStates.Add(new Splash(spriteBatch, Content, "splashScreen/sc2", 1));
-            GameStates.Add(new Splash(spriteBatch, Content, "splashScreen/splashScreen", 0));
+            _gameStates.Add(new Splash(SpriteBatch, Content, "splashScreen/sc2", 1));
+            _gameStates.Add(new Splash(SpriteBatch, Content, "splashScreen/splashScreen", 0));
             // GameStates.Add(new InGame(spriteBatch, Content));
 
-            ActiveGameState = GameStates[0];
+            _activeGameState = _gameStates[0];
             // TODO: use this.Content to load your game content here
         }
 
@@ -108,17 +102,17 @@ namespace ChilledTreat
 
             // TODO: Add your update logic here
 
-            FrameInfo.GameTime = gameTime;
+            _frameInfo.GameTime = gameTime;
 
-            InputHandler.Update();
+            _inputHandler.Update();
 
-            if (NextState != null)
+            if (_nextState != null)
             {
-                ActiveGameState = NextState;
-                NextState = null;
+                _activeGameState = _nextState;
+                _nextState = null;
             }
 
-            ActiveGameState.Update();
+            _activeGameState.Update();
 
 
             base.Update(gameTime);
@@ -132,11 +126,11 @@ namespace ChilledTreat
         {
             // TODO: Add your drawing code here
 
-            spriteBatch.Begin();
+            SpriteBatch.Begin();
 
-            ActiveGameState.Draw();
+            _activeGameState.Draw();
 
-            spriteBatch.End();
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }

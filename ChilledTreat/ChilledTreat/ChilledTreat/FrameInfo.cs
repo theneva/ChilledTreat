@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
 
 namespace ChilledTreat
 {
@@ -13,33 +8,21 @@ namespace ChilledTreat
 
         private FrameInfo();
 
-        GameTime _GameTime = new GameTime();
+        GameTime _gameTime = new GameTime();
         public GameTime GameTime
         {
             get
             {
-                return _GameTime;
+                return _gameTime;
             }
 
             set
             {
-                _GameTime = value;
+                _gameTime = value;
                 DeltaTime = (float)GameTime.ElapsedGameTime.TotalSeconds;
             }
         }
 
-        float _DeltaTime = 0f;
-        public float DeltaTime
-        {
-            get
-            {
-                return _DeltaTime;
-            }
-
-            protected set
-            {
-                _DeltaTime = value;
-            }
-        }
+        public float DeltaTime { get; protected set; }
     }
 }

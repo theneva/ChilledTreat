@@ -1,28 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace ChilledTreat
 {
     class InputHandler
     {
-        static InputHandler _Instance;
+        static InputHandler _instance;
         public static InputHandler Instance
         {
-            get
-            {
-                if (_Instance == null)
-                    _Instance = new InputHandler();
-                return _Instance;
-            }
+            get { return _instance ?? (_instance = new InputHandler()); }
         }
 
         private InputHandler()
@@ -41,7 +28,7 @@ namespace ChilledTreat
         public Keys AbortKey = Keys.Escape;
 #endif
 
-#if !XOBX
+#if !XBOX
         public MouseState MouseState { get; private set; }
         public MouseState PreviouseMouseState { get; private set; }
 #endif
