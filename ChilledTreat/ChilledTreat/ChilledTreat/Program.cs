@@ -8,7 +8,8 @@ namespace ChilledTreat
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            Game1 game;
+            using (game = new Game1())
             {
                 game.Run();
             }
@@ -16,4 +17,3 @@ namespace ChilledTreat
     }
 #endif
 }
-

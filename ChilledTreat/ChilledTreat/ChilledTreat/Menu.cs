@@ -5,14 +5,14 @@ namespace ChilledTreat
 {
     class Menu : GameState
     {
-        int NextState = 0;
+        int _nextState;
 
         public Menu(SpriteBatch spriteBatch, ContentManager content, int nextState)
             : base(spriteBatch, content)
         {
             // Menu content
 
-            NextState = nextState;
+            _nextState = nextState;
         }
 
         public override void Update()
