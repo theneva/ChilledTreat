@@ -19,10 +19,10 @@ namespace ChilledTreat
             set
             {
                 _gameTime = value;
-                DeltaTime = (float)GameTime.ElapsedGameTime.TotalSeconds;
+                DeltaTime = GameTime.ElapsedGameTime.TotalSeconds;
             }
         }
 
-        public float DeltaTime { get; protected set; }
+        public double DeltaTime { get; protected set; }
     }
 }

@@ -8,9 +8,9 @@ namespace ChilledTreat
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game1 : Game
     {
-        public static Game1 Instance = null;
+        public static Game1 Instance;
 
         // public for å kunne brukes andre steder
         public GraphicsDeviceManager Graphics;
@@ -20,15 +20,15 @@ namespace ChilledTreat
         readonly InputHandler _inputHandler = InputHandler.Instance;
 
         readonly List<GameState> _gameStates = new List<GameState>();
-        GameState _activeGameState = null;
+        GameState _activeGameState;
 
-        GameState _nextState = null;
+        GameState _nextState;
 
         public static void ChangeState(int index)
         {
-            if (index < Game1.Instance._gameStates.Count)
+            if (index < Instance._gameStates.Count)
             {
-                Game1.Instance._nextState = Game1.Instance._gameStates[index];
+                Instance._nextState = Instance._gameStates[index];
             }
         }
 
@@ -98,7 +98,7 @@ namespace ChilledTreat
 
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+                Exit();
 
             // TODO: Add your update logic here
 
