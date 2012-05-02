@@ -1,5 +1,3 @@
-using System;
-
 namespace ChilledTreat
 {
 #if WINDOWS || XBOX
