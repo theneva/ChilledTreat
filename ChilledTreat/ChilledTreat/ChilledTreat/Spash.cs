@@ -7,15 +7,15 @@ namespace ChilledTreat
 {
     class Splash : GameState
     {
-        Texture2D SplashTexture;
+        //Texture2D SplashTexture;
 
         int NextState = 0;
 
 
-        public Splash(SpriteBatch spriteBatch, ContentManager content, String texture, int nextState)
+        public Splash(SpriteBatch spriteBatch, ContentManager content, int nextState)
             : base(spriteBatch, content)
         {
-            SplashTexture = Content.Load<Texture2D>(texture);
+            
             NextState = nextState;
 
         }
@@ -34,7 +34,7 @@ namespace ChilledTreat
 
         public override void Draw()
         {
-            SpriteBatch.Draw(SplashTexture, Vector2.Zero, Color.White);
+            //SpriteBatch.Draw(SplashTexture, Vector2.Zero, Color.White);
         }
 
     }

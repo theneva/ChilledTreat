@@ -70,9 +70,8 @@ namespace ChilledTreat
             // Legge til gamestates som klasser i listen
             // ex: GameStates.add(new InGame(Sprite...., con);
 
-            _gameStates.Add(new Splash(SpriteBatch, Content, "splashScreen/sc2", 1));
-            _gameStates.Add(new Splash(SpriteBatch, Content, "splashScreen/splashScreen", 0));
-            // GameStates.Add(new InGame(spriteBatch, Content));
+            _gameStates.Add(new Splash(SpriteBatch, Content, 1));
+            _gameStates.Add(new Menu(SpriteBatch, Content));
 
             _activeGameState = _gameStates[0];
             // TODO: use this.Content to load your game content here
@@ -125,6 +124,8 @@ namespace ChilledTreat
         protected override void Draw(GameTime gameTime)
         {
             // TODO: Add your drawing code here
+
+            GraphicsDevice.Clear(Color.HotPink);
 
             SpriteBatch.Begin();
 
