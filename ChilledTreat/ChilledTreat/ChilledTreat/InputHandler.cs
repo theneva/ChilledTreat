@@ -59,6 +59,11 @@ namespace ChilledTreat
 			PreviousGamePadState = GamePadState;
 			GamePadState = GamePad.GetState(PlayerIndex);
 #endif
+
+#if !XBOX
+			PreviouseMouseState = MouseState;
+			MouseState = Mouse.GetState();
+#endif
 		}
 
 		#region Keyboard

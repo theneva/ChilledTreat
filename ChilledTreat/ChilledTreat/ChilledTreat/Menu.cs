@@ -63,6 +63,10 @@ namespace ChilledTreat
 				{
 					Game1.Instance.Exit();
 				}
+				else if (menuItems[menuPos].Contains("New Game"))
+				{
+					Game1.ChangeState(2);
+				}
 			}
 		}
 		public override void Draw()

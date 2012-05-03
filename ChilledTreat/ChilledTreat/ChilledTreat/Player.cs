@@ -1,56 +1,45 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace ChilledTreat
 {
 	/// <summary>
 	/// This is a game component that implements IUpdateable.
 	/// </summary>
-	public class Player : DrawableGameComponent
+	class Player
 	{
 		int _health, _ammo;
 		MouseState _currentMouseState;
 		Texture2D _reticuleTexture;
+		SpriteBatch sp;
+		InputHandler input = InputHandler.Instance;
+		Vector2 halfTexture;
+		
 
 		private Vector2 ReticulePosition { get; set; }
 
-		public Player(Game game)
-			: base(game)
+		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_health = 100;
 			_ammo = 10;
+			_reticuleTexture = content.Load<Texture2D>("reticule");
+			sp = spriteBatch;
+			halfTexture = new Vector2(_reticuleTexture.Width / 2, _reticuleTexture.Height / 2);
 		}
 
-		/// <summary>
-		/// Allows the game component to perform any initialization it needs to before starting
-		/// to run.  This is where it can query for any required services and load content.
-		/// </summary>
-		public override void Initialize()
-		{
-			_reticuleTexture = Game.Content.Load<Texture2D>("reticule");
 
-			base.Initialize();
+		public void Update()
+		{
+			ReticulePosition = new Vector2(input.MouseState.X, input.MouseState.Y) - halfTexture;
 		}
 
-		/// <summary>
-		/// Allows the game component to update itself.
-		/// </summary>
-		/// <param name="gameTime">Provides a snapshot of timing values.</param>
-		public override void Update(GameTime gameTime)
+		public void Draw()
 		{
-			_currentMouseState = Mouse.GetState();
-
-			ReticulePosition = new Vector2(_currentMouseState.X, _currentMouseState.Y);
-
-			base.Update(gameTime);
-		}
-
-		public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-		{
-			spriteBatch.Draw(_reticuleTexture, ReticulePosition, Color.White);
-
-			base.Draw(gameTime);
+			sp.Draw(_reticuleTexture, ReticulePosition, Color.White);
+			
+			
 		}
 	}
 }
