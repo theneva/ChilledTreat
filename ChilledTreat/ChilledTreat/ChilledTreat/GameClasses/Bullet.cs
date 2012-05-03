@@ -25,7 +25,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
-			BulletPosition += 5;
+			//BulletPosition += 5;
 		}
 
 		public void Draw()
