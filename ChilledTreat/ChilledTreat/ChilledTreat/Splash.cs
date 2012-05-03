@@ -9,7 +9,7 @@ namespace ChilledTreat
     {
         //Texture2D SplashTexture;
 
-        int NextState = 0;
+        int NextState;
 
 
         public Splash(SpriteBatch spriteBatch, ContentManager content, int nextState)

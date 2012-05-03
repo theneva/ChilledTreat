@@ -42,8 +42,6 @@ namespace ChilledTreat
 			Graphics.PreferredBackBufferWidth = 1280;
 			Graphics.PreferredBackBufferHeight = 720;
 
-			IsMouseVisible = true;
-
 			Instance = this;
 		}
 
@@ -77,6 +75,7 @@ namespace ChilledTreat
 
 			_gameStates.Add(new Splash(SpriteBatch, Content, 1));
 			_gameStates.Add(new Menu(SpriteBatch, Content));
+			_gameStates.Add(new InGame(SpriteBatch, Content));
 
 			_activeGameState = _gameStates[0];
 
@@ -137,7 +136,7 @@ namespace ChilledTreat
 		{
 			// TODO: Add your drawing code here
 
-			GraphicsDevice.Clear(Color.HotPink);
+			GraphicsDevice.Clear(Color.WhiteSmoke);
 
 			SpriteBatch.Begin();
 
