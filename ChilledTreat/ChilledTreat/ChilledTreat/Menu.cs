@@ -57,33 +57,6 @@ namespace ChilledTreat
                 SpriteBatch.DrawString(menuFont, menuItems[i], new Vector2(150, yPos), fontColor, 0, new Vector2(0, 0), selectedItem[i], SpriteEffects.None, 0);
                 yPos += 100;
             }
-
-
-        }
-
-        class Menu : GameState
-        {
-            int _nextState;
-
-            public Menu(SpriteBatch spriteBatch, ContentManager content, int nextState)
-                : base(spriteBatch, content)
-            {
-                // Menu content
-
-                _nextState = nextState;
-            }
-
-            public override void Update()
-            {
-                // Logic here
-
-            }
-
-            public override void Draw()
-            {
-                // Draw here
-
-            }
         }
     }
 }
