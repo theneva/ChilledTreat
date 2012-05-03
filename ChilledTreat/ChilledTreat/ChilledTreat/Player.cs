@@ -21,7 +21,7 @@ namespace ChilledTreat
 		{
 			_health = 100;
 			_ammo = 10;
-			_reticuleTexture = content.Load<Texture2D>("reticule");
+			_reticuleTexture = content.Load<Texture2D>("img/reticule");
 			_sp = spriteBatch;
 			_halfTexture = new Vector2(_reticuleTexture.Width / 2, _reticuleTexture.Height / 2);
 		}
