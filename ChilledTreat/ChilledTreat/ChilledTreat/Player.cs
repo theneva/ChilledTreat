@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
@@ -32,11 +31,10 @@ namespace ChilledTreat
 		{
 			ReticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
 
-
 			if (ReticulePosition.X < 0) ReticulePosition = new Vector2(0, ReticulePosition.Y);
 			else if (ReticulePosition.X > 1280) ReticulePosition = new Vector2(1280, ReticulePosition.Y);
 
-			if(ReticulePosition.Y < 0) ReticulePosition = new Vector2(ReticulePosition.X, 0);
+			if (ReticulePosition.Y < 0) ReticulePosition = new Vector2(ReticulePosition.X, 0);
 			else if (ReticulePosition.Y > 720) ReticulePosition = new Vector2(ReticulePosition.X, 720);
 
 		}
