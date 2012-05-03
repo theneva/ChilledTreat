@@ -15,6 +15,15 @@ namespace ChilledTreat
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly Vector2 _halfTexture;
 
+		enum States
+		{
+			Alive,
+			Shooting,
+			Dead
+		}
+
+		States PlayerState;
+
 		private Vector2 ReticulePosition { get; set; }
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
@@ -24,6 +33,7 @@ namespace ChilledTreat
 			_reticuleTexture = content.Load<Texture2D>("reticule");
 			_sp = spriteBatch;
 			_halfTexture = new Vector2(_reticuleTexture.Width / 2, _reticuleTexture.Height / 2);
+			PlayerState = States.Alive;
 		}
 
 
@@ -36,12 +46,31 @@ namespace ChilledTreat
 
 			if (ReticulePosition.Y < 0) ReticulePosition = new Vector2(ReticulePosition.X, 0);
 			else if (ReticulePosition.Y > 720) ReticulePosition = new Vector2(ReticulePosition.X, 720);
-
 		}
 
 		public void Draw()
 		{
 			_sp.Draw(_reticuleTexture, ReticulePosition - _halfTexture, Color.White);
+		}
+
+		public void Shoot()
+		{
+			PlayerState = States.Shooting;
+			_ammo--;
+
+			if (_ammo == 0) Reload();
+		}
+
+		public void Reload()
+		{
+			_ammo = 10;
+		}
+
+		public void Damaged(int damage)
+		{
+			_health -= damage;
+
+			if (_health <= 0) PlayerState = States.Dead;
 		}
 	}
 }
