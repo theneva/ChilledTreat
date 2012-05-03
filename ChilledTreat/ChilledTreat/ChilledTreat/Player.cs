@@ -19,6 +19,7 @@ namespace ChilledTreat
 		{
 			Alive,
 			Shooting,
+			Reloading,
 			Dead
 		}
 
@@ -63,6 +64,7 @@ namespace ChilledTreat
 
 		public void Reload()
 		{
+			PlayerState = States.Reloading;
 			_ammo = 10;
 		}
 
