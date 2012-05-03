@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
 namespace ChilledTreat
@@ -11,12 +11,10 @@ namespace ChilledTreat
 	class Player
 	{
 		int _health, _ammo;
-		MouseState _currentMouseState;
-		Texture2D _reticuleTexture;
-		SpriteBatch sp;
-		InputHandler input = InputHandler.Instance;
-		Vector2 halfTexture;
-		
+		readonly Texture2D _reticuleTexture;
+		readonly SpriteBatch _sp;
+		readonly InputHandler _input = InputHandler.Instance;
+		readonly Vector2 _halfTexture;
 
 		private Vector2 ReticulePosition { get; set; }
 
@@ -25,21 +23,27 @@ namespace ChilledTreat
 			_health = 100;
 			_ammo = 10;
 			_reticuleTexture = content.Load<Texture2D>("reticule");
-			sp = spriteBatch;
-			halfTexture = new Vector2(_reticuleTexture.Width / 2, _reticuleTexture.Height / 2);
+			_sp = spriteBatch;
+			_halfTexture = new Vector2(_reticuleTexture.Width / 2, _reticuleTexture.Height / 2);
 		}
 
 
 		public void Update()
 		{
-			ReticulePosition = new Vector2(input.MouseState.X, input.MouseState.Y) - halfTexture;
+			ReticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
+
+
+			if (ReticulePosition.X < 0) ReticulePosition = new Vector2(0, ReticulePosition.Y);
+			else if (ReticulePosition.X > 1280) ReticulePosition = new Vector2(1280, ReticulePosition.Y);
+
+			if(ReticulePosition.Y < 0) ReticulePosition = new Vector2(ReticulePosition.X, 0);
+			else if (ReticulePosition.Y > 720) ReticulePosition = new Vector2(ReticulePosition.X, 720);
+
 		}
 
 		public void Draw()
 		{
-			sp.Draw(_reticuleTexture, ReticulePosition, Color.White);
-			
-			
+			_sp.Draw(_reticuleTexture, ReticulePosition - _halfTexture, Color.White);
 		}
 	}
 }
