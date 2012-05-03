@@ -11,6 +11,7 @@ namespace ChilledTreat
 		Color fontColor;
 		string[] menuItems;
 		float[] selectedItem;
+		int[] yPos;
 		int menuPos;
 		InputHandler input = InputHandler.Instance;
 
@@ -20,15 +21,25 @@ namespace ChilledTreat
 			// Menu content
 			menuFont = Content.Load<SpriteFont>("fonts/menuFont");
 			fontColor = Color.Aqua;
-			string[] strings = {"New Game", "Levels", "Instructions", "Credits", "EXIT"};
+			string[] strings = {"New Game", "Instructions", "Credits", "EXIT"};
 			menuItems = strings;
 			menuPos = 0;
 			selectedItem = new float[menuItems.Length];
+			
 			for (int i = 0; i < selectedItem.Length; i++)
 			{
-				selectedItem[i] = 1f;
+				selectedItem[i] = 100f;
 			}
-			selectedItem[menuPos] = 1.3f;
+			selectedItem[menuPos] = 150f;
+
+			
+			int yStartPos = 100;
+			yPos = new int[menuItems.Length];
+			for (int i = 0; i < yPos.Length; i++)
+			{
+				yPos[i] = y;
+				yStartPos += 100;
+			}
 		}
 
 		public override void Update()
@@ -43,8 +54,8 @@ namespace ChilledTreat
 				menuPos--;
 				if (menuPos < 0) menuPos = selectedItem.Length - 1;
 			}
-			for (int i = 0; i < selectedItem.Length; i++) selectedItem[i] = 1f;
-			selectedItem[menuPos] = 1.3f;
+			for (int i = 0; i < selectedItem.Length; i++) selectedItem[i] = 100f;
+			selectedItem[menuPos] = 150f;
 
 			if (input.IsKeyPressed(input.ActionKey))
 			{
@@ -56,13 +67,13 @@ namespace ChilledTreat
 		}
 		public override void Draw()
 		{
-			int yPos = 100;
+			
 			// Draw here
 
 			for (int i = 0; i < menuItems.Length; i++)
 			{
-				SpriteBatch.DrawString(menuFont, menuItems[i], new Vector2(150, yPos), fontColor, 0, new Vector2(0, 0), selectedItem[i], SpriteEffects.None, 0);
-				yPos += 100;
+				SpriteBatch.DrawString(menuFont, menuItems[i], new Vector2(selectedItem[i], yPos[i]), fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+				
 			}
 		}
 	}
