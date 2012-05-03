@@ -110,6 +110,7 @@
     <Compile Include="FrameInfo.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameStates.cs" />
+    <Compile Include="InGame.cs" />
     <Compile Include="InputHandler.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
