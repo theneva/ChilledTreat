@@ -25,7 +25,7 @@ namespace ChilledTreat
 
 		States _playerState;
 
-		private FrameInfo _frameInfo = FrameInfo.Instance;
+		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
 		private Vector2 ReticulePosition { get; set; }
 
