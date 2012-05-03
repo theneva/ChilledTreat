@@ -1,15 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 
 namespace ChilledTreat
 {
-	/// <summary>
-	/// This is a game component that implements IUpdateable.
-	/// </summary>
 	class Player
 	{
 		int _health, _ammo;
+		long _startTime, _currentTime;
 		readonly Texture2D _reticuleTexture;
 		readonly SpriteBatch _sp;
 		readonly InputHandler _input = InputHandler.Instance;
@@ -20,10 +19,13 @@ namespace ChilledTreat
 			Alive,
 			Shooting,
 			Reloading,
+			InCover,
 			Dead
 		}
 
-		States PlayerState;
+		States _playerState;
+
+		private FrameInfo _frameInfo = FrameInfo.Instance;
 
 		private Vector2 ReticulePosition { get; set; }
 
@@ -34,9 +36,8 @@ namespace ChilledTreat
 			_reticuleTexture = content.Load<Texture2D>("reticule");
 			_sp = spriteBatch;
 			_halfTexture = new Vector2(_reticuleTexture.Width / 2, _reticuleTexture.Height / 2);
-			PlayerState = States.Alive;
+			_playerState = States.Alive;
 		}
-
 
 		public void Update()
 		{
@@ -47,6 +48,25 @@ namespace ChilledTreat
 
 			if (ReticulePosition.Y < 0) ReticulePosition = new Vector2(ReticulePosition.X, 0);
 			else if (ReticulePosition.Y > 720) ReticulePosition = new Vector2(ReticulePosition.X, 720);
+
+			if (_playerState == States.Alive && _input.MouseState.LeftButton == ButtonState.Pressed && _input.PreviouseMouseState.LeftButton != ButtonState.Pressed)
+			{
+				_startTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
+				_playerState = States.Shooting;
+			}
+
+			if (_playerState == States.Shooting)
+			{
+				_currentTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
+
+				Shoot();
+
+				if (_currentTime - _startTime > 200)
+				{
+					_playerState = States.Alive;
+				}
+			}
+
 		}
 
 		public void Draw()
@@ -56,7 +76,7 @@ namespace ChilledTreat
 
 		public void Shoot()
 		{
-			PlayerState = States.Shooting;
+			_playerState = States.Shooting;
 			_ammo--;
 
 			if (_ammo == 0) Reload();
@@ -64,7 +84,8 @@ namespace ChilledTreat
 
 		public void Reload()
 		{
-			PlayerState = States.Reloading;
+			_playerState = States.Reloading;
+
 			_ammo = 10;
 		}
 
@@ -72,7 +93,7 @@ namespace ChilledTreat
 		{
 			_health -= damage;
 
-			if (_health <= 0) PlayerState = States.Dead;
+			if (_health <= 0) _playerState = States.Dead;
 		}
 	}
 }
