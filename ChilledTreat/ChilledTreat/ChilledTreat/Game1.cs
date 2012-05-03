@@ -125,7 +125,7 @@ namespace ChilledTreat
 		{
 			// TODO: Add your drawing code here
 
-			GraphicsDevice.Clear(Color.HotPink);
+			GraphicsDevice.Clear(Color.WhiteSmoke);
 
 			SpriteBatch.Begin();
 

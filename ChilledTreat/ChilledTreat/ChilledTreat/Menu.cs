@@ -20,7 +20,7 @@ namespace ChilledTreat
 		{
 			// Menu content
 			menuFont = Content.Load<SpriteFont>("fonts/menuFont");
-			fontColor = Color.Aqua;
+			fontColor = Color.Salmon;
 			string[] strings = {"New Game", "Instructions", "Credits", "EXIT"};
 			menuItems = strings;
 			menuPos = 0;
@@ -37,7 +37,7 @@ namespace ChilledTreat
 			yPos = new int[menuItems.Length];
 			for (int i = 0; i < yPos.Length; i++)
 			{
-				yPos[i] = y;
+				yPos[i] = yStartPos;
 				yStartPos += 100;
 			}
 		}
