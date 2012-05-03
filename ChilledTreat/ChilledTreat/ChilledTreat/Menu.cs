@@ -4,10 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ChilledTreat
 {
-<<<<<<< HEAD
+
     class Menu : GameState
     {
-        
+
         SpriteFont menuFont;
         Color fontColor;
         string[] menuItems;
@@ -21,7 +21,7 @@ namespace ChilledTreat
             // Menu content
             menuFont = Content.Load<SpriteFont>("fonts/menuFont");
             fontColor = Color.Aqua;
-            string[] strings = {"New Game", "Levels", "Instructions", "Credits", "EXIT"};
+            string[] strings = { "New Game", "Levels", "Instructions", "Credits", "EXIT" };
             menuItems = strings;
             menuPos = 0;
             selectedItem = new float[menuItems.Length];
@@ -60,31 +60,30 @@ namespace ChilledTreat
 
 
         }
-=======
-	class Menu : GameState
-	{
-		int _nextState;
 
-		public Menu(SpriteBatch spriteBatch, ContentManager content, int nextState)
-			: base(spriteBatch, content)
-		{
-			// Menu content
+        class Menu : GameState
+        {
+            int _nextState;
 
-			_nextState = nextState;
-		}
+            public Menu(SpriteBatch spriteBatch, ContentManager content, int nextState)
+                : base(spriteBatch, content)
+            {
+                // Menu content
 
-		public override void Update()
-		{
-			// Logic here
-		   
-		}
+                _nextState = nextState;
+            }
 
-		public override void Draw()
-		{
-			// Draw here
+            public override void Update()
+            {
+                // Logic here
 
-		}
->>>>>>> 8ddb1cc1e6fb6946fe08ae06accea88f5e2e0bab
+            }
 
-	}
+            public override void Draw()
+            {
+                // Draw here
+
+            }
+        }
+    }
 }
