@@ -10,7 +10,7 @@ namespace ChilledTreat
 	/// </summary>
 	public class Game1 : Game
 	{
-		public static Game1 Instance;
+		public static Game1 Instance = null;
 
 		// public for å kunne brukes andre steder
 		public GraphicsDeviceManager Graphics;
@@ -20,15 +20,15 @@ namespace ChilledTreat
 		readonly InputHandler _inputHandler = InputHandler.Instance;
 
 		readonly List<GameState> _gameStates = new List<GameState>();
-		GameState _activeGameState;
+		GameState _activeGameState = null;
 
-		GameState _nextState;
+		GameState _nextState = null;
 
 		public static void ChangeState(int index)
 		{
-			if (index < Instance._gameStates.Count)
+			if (index < Game1.Instance._gameStates.Count)
 			{
-				Instance._nextState = Instance._gameStates[index];
+				Game1.Instance._nextState = Game1.Instance._gameStates[index];
 			}
 		}
 
@@ -70,9 +70,8 @@ namespace ChilledTreat
 			// Legge til gamestates som klasser i listen
 			// ex: GameStates.add(new InGame(Sprite...., con);
 
-			_gameStates.Add(new Splash(SpriteBatch, Content, "splashScreen/sc2", 1));
-			_gameStates.Add(new Splash(SpriteBatch, Content, "splashScreen/splashScreen", 0));
-			// GameStates.Add(new InGame(spriteBatch, Content));
+			_gameStates.Add(new Splash(SpriteBatch, Content, 1));
+			_gameStates.Add(new Menu(SpriteBatch, Content));
 
 			_activeGameState = _gameStates[0];
 			// TODO: use this.Content to load your game content here
@@ -98,7 +97,7 @@ namespace ChilledTreat
 
 			// Allows the game to exit
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-				Exit();
+				this.Exit();
 
 			// TODO: Add your update logic here
 
@@ -125,6 +124,8 @@ namespace ChilledTreat
 		protected override void Draw(GameTime gameTime)
 		{
 			// TODO: Add your drawing code here
+
+			GraphicsDevice.Clear(Color.HotPink);
 
 			SpriteBatch.Begin();
 
