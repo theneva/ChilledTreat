@@ -24,6 +24,8 @@ namespace ChilledTreat
 
 		GameState _nextState = null;
 
+        Sprite background1;
+
 		public static void ChangeState(int index)
 		{
 			if (index < Game1.Instance._gameStates.Count)
@@ -54,6 +56,9 @@ namespace ChilledTreat
 		protected override void Initialize()
 		{
 			// TODO: Add your initialization logic here
+            background1 = new Sprite();
+            background1.Scale = 1.0f;
+
 
 			base.Initialize();
 		}
@@ -74,6 +79,9 @@ namespace ChilledTreat
 			_gameStates.Add(new Menu(SpriteBatch, Content));
 
 			_activeGameState = _gameStates[0];
+
+            background1.LoadContent(this.Content, "backgroundLevel1");
+            background1.Position = new Vector2(0, 0);
 			// TODO: use this.Content to load your game content here
 		}
 
@@ -100,6 +108,10 @@ namespace ChilledTreat
 				this.Exit();
 
 			// TODO: Add your update logic here
+            Vector2 aDirection = new Vector2(1, 0);
+            Vector2 aSpeed = new Vector2(180, 0);
+
+            background1.Position += (aDirection.X - 1) * aSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 			_frameInfo.GameTime = gameTime;
 
@@ -130,6 +142,8 @@ namespace ChilledTreat
 			SpriteBatch.Begin();
 
 			_activeGameState.Draw();
+
+            background1.Draw(SpriteBatch);
 
 			SpriteBatch.End();
 
