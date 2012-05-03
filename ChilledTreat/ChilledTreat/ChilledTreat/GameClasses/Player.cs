@@ -3,13 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
-namespace ChilledTreat
+namespace ChilledTreat.GameClasses
 {
 	class Player
 	{
 		int _health, _ammo;
 		long _startTime, _currentTime;
-		readonly Texture2D _reticuleTexture;
+		readonly Texture2D _reticuleTexture, _bulletTexture;
 		readonly SpriteBatch _sp;
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly Vector2 _halfTexture;
@@ -28,12 +28,14 @@ namespace ChilledTreat
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
 		private Vector2 ReticulePosition { get; set; }
+		private Vector2 BulletPosition { get; set; }
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_health = 100;
 			_ammo = 10;
-			_reticuleTexture = content.Load<Texture2D>("img/reticule");
+			_reticuleTexture = content.Load<Texture2D>("img/usableReticule");
+			_bulletTexture = content.Load<Texture2D>("img/usableBullet");
 			_sp = spriteBatch;
 			_halfTexture = new Vector2(_reticuleTexture.Width / 2, _reticuleTexture.Height / 2);
 			_playerState = States.Alive;
@@ -77,6 +79,7 @@ namespace ChilledTreat
 		public void Shoot()
 		{
 			_playerState = States.Shooting;
+
 			_ammo--;
 
 			if (_ammo == 0) Reload();

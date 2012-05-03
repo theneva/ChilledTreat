@@ -64,8 +64,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\reticule.png">
-      <Name>reticule</Name>
+    <Compile Include="img\usableBullett.png">
+      <Name>usableBullett</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="img\usableReticule.png">
+      <Name>usableReticule</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
