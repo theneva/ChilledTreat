@@ -111,7 +111,7 @@ namespace ChilledTreat
             Vector2 aDirection = new Vector2(1, 0);
             Vector2 aSpeed = new Vector2(180, 0);
 
-            background1.Position += (aDirection.X - 1) * aSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            background1.Position += (aDirection.X) * aSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 			_frameInfo.GameTime = gameTime;
 
