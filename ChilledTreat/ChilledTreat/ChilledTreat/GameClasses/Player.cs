@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace ChilledTreat.GameClasses
 {
@@ -13,6 +14,9 @@ namespace ChilledTreat.GameClasses
 		readonly SpriteBatch _sp;
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly Vector2 _halfTexture;
+		private ContentManager content;
+
+		private List<Bullet> bullets = new List<Bullet>();
 
 		enum States
 		{
@@ -28,12 +32,12 @@ namespace ChilledTreat.GameClasses
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
 		private Vector2 ReticulePosition { get; set; }
-		private Vector2 BulletPosition { get; set; }
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_health = 100;
 			_ammo = 10;
+			this.content = content;
 			_reticuleTexture = content.Load<Texture2D>("img/usableReticule");
 			_bulletTexture = content.Load<Texture2D>("img/usableBullet");
 			_sp = spriteBatch;
@@ -80,7 +84,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_playerState = States.Shooting;
 
-			_ammo--;
+			bullets.Add(new Bullet(_sp, content));
 
 			if (_ammo == 0) Reload();
 		}

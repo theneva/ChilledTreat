@@ -64,8 +64,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\usableBullett.png">
-      <Name>usableBullett</Name>
+    <Compile Include="img\usableBullet.png">
+      <Name>usableBullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
