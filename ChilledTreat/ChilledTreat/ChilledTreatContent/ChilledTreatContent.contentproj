@@ -64,7 +64,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="reticule.png">
+    <Compile Include="img\reticule.png">
       <Name>reticule</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
