@@ -37,6 +37,8 @@ namespace ChilledTreat
 			//SpriteBatch.Draw(SplashTexture, Vector2.Zero, Color.White);
 
 			Game1.Instance.GraphicsDevice.Clear(Color.BlueViolet);
+
+
 		}
 
 	}
