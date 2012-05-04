@@ -40,7 +40,7 @@ namespace ChilledTreat.GameClasses
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
-			_health = 100;
+			_health = 75;
 			_ammo = 10;
 			_playReloadSound = false;
 			_reticuleTexture = content.Load<Texture2D>("Images/usableReticule");
