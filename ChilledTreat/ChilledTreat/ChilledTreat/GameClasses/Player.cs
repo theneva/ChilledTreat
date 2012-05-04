@@ -28,6 +28,7 @@ namespace ChilledTreat.GameClasses
 			Shooting,
 			Reloading,
 			InCover,
+			Waiting,
 			Dead
 		}
 
@@ -67,10 +68,11 @@ namespace ChilledTreat.GameClasses
 		{
 			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 			_reticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
+			if (_currentTime - _startShootTime > 200 && _playerState != States.Reloading) _playerState = States.Alive;
 
 			_gunPosition = new Rectangle(640, 745, _gunTexture.Width, _gunTexture.Height);
 			_vectorGunToMouse = new Vector2((_gunPosition.X - _input.MouseState.X), (_gunPosition.Y - _input.MouseState.Y));
-			_gunRotation = (float)Math.Atan2(_vectorGunToMouse.X * -1, _vectorGunToMouse.Y);
+			_gunRotation = (float) Math.Atan2(- _vectorGunToMouse.X, _vectorGunToMouse.Y);
 
 			if (_reticulePosition.X < 0) _reticulePosition = new Vector2(0, _reticulePosition.Y);
 			else if (_reticulePosition.X > Game1.Instance.GameScreenWidth) _reticulePosition = new Vector2(Game1.Instance.GameScreenWidth, _reticulePosition.Y);
@@ -80,7 +82,8 @@ namespace ChilledTreat.GameClasses
 
 			if (_playerState == States.Alive && _input.IsLeftMouseButtonPressed())
 			{
-				_startShootTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
+				_startShootTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
+
 				_playerState = States.Shooting;
 			}
 
@@ -91,7 +94,7 @@ namespace ChilledTreat.GameClasses
 				//if (_currentTime - _startShootTime > 1000) _playerState = States.Alive;
 			}
 
-			if(_playerState == States.Reloading) Reload();
+			if (_playerState == States.Reloading) Reload();
 		}
 
 		public void Draw()
@@ -108,6 +111,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Shoot()
 		{
+
 			_gunShotSound.Play();
 			_bullets[--_ammo] = _usedBulletTexture;
 
@@ -116,9 +120,10 @@ namespace ChilledTreat.GameClasses
 				_playerState = States.Reloading;
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 				_playReloadSound = true;
-			}
+			} else _playerState = States.Waiting;
 
-			if(_playerState != States.Reloading) _playerState = States.Alive;
+			if (_playerState != States.Reloading && _playerState != States.Waiting) _playerState = States.Alive;
+
 		}
 
 		public void Reload()
