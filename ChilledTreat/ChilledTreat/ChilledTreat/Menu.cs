@@ -64,6 +64,10 @@ namespace ChilledTreat
 				}
 				else if (_menuItems[_menuPos].Contains("New Game"))
 				{
+					Game1.ChangeState(3);
+				}
+				else if (_menuItems[_menuPos].Contains("Credits"))
+				{
 					Game1.ChangeState(2);
 				}
 			}

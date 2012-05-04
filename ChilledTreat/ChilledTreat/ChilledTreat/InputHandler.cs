@@ -26,6 +26,8 @@ namespace ChilledTreat
 
 		public Keys ActionKey = Keys.Enter;
 		public Keys AbortKey = Keys.Escape;
+
+		
 #endif
 
 #if !XBOX

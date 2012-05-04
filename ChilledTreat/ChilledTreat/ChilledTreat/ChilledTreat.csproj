@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Credits.cs" />
     <Compile Include="FrameInfo.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameStates.cs" />
@@ -114,9 +115,11 @@
     <Compile Include="InputHandler.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="GameClasses\Player.cs" />
+    <Compile Include="PauseMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Splash.cs" />
+    <Compile Include="SPritebatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

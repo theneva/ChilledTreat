@@ -16,8 +16,8 @@ namespace ChilledTreat
 		public GraphicsDeviceManager Graphics;
 		public SpriteBatch SpriteBatch;
 
-		public int GameScreenWidth = 800;
-		public int GameScreenHeight = 600;
+		public int GameScreenWidth = 1280;
+		public int GameScreenHeight = 720;
 
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;
@@ -73,6 +73,7 @@ namespace ChilledTreat
 
 			_gameStates.Add(new Splash(SpriteBatch, Content, 1));
 			_gameStates.Add(new Menu(SpriteBatch, Content));
+			_gameStates.Add(new Credits(SpriteBatch, Content, 1));
 			_gameStates.Add(new InGame(SpriteBatch, Content));
 
 			_activeGameState = _gameStates[0];
