@@ -70,19 +70,19 @@ namespace ChilledTreat
 
 		#region Keyboard
 #if WINDOWS
-		public Boolean IsKeyUp(Keys key)
+		public bool IsKeyUp(Keys key)
 		{
 			return KeyboardState.IsKeyUp(key);
 		}
-		public Boolean IsKeyDown(Keys key)
+		public bool IsKeyDown(Keys key)
 		{
 			return KeyboardState.IsKeyDown(key);
 		}
-		public Boolean IsKeyPressed(Keys key)
+		public bool IsKeyPressed(Keys key)
 		{
 			return IsKeyDown(key) && PreviousKeyboardState.IsKeyUp(key);
 		}
-		public Boolean IsKeyReleased(Keys key)
+		public bool IsKeyReleased(Keys key)
 		{
 			return IsKeyUp(key) && PreviousKeyboardState.IsKeyDown(key);
 		}
@@ -91,19 +91,19 @@ namespace ChilledTreat
 
 		#region GamePad
 #if !WINDOWSPHONE
-		public Boolean IsButtonUp(Buttons button)
+		public bool IsButtonUp(Buttons button)
 		{
 			return GamePadState.IsButtonUp(button);
 		}
-		public Boolean IsButtonDown(Buttons button)
+		public bool IsButtonDown(Buttons button)
 		{
 			return GamePadState.IsButtonDown(button);
 		}
-		public Boolean IsButtonPressed(Buttons button)
+		public bool IsButtonPressed(Buttons button)
 		{
 			return GamePadState.IsButtonDown(button) && PreviousGamePadState.IsButtonUp(button);
 		}
-		public Boolean IsButtonReleased(Buttons button)
+		public bool IsButtonReleased(Buttons button)
 		{
 			return GamePadState.IsButtonUp(button) && PreviousGamePadState.IsButtonDown(button);
 		}
@@ -124,7 +124,7 @@ namespace ChilledTreat
 
 		#region Common Methods
 
-		public Boolean IsUpDown()
+		public bool IsUpDown()
 		{
 #if WINDOWS
 			return IsKeyDown(UpKey) || IsButtonDown(UpButton);
@@ -134,7 +134,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsDownDown()
+		public bool IsDownDown()
 		{
 #if WINDOWS
 			return IsKeyDown(DownKey) || IsButtonDown(DownButton);
@@ -144,7 +144,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsLeftDown()
+		public bool IsLeftDown()
 		{
 #if WINDOWS
 			return IsKeyDown(LeftKey) || IsButtonDown(LeftButton);
@@ -154,7 +154,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsRightDown()
+		public bool IsRightDown()
 		{
 #if WINDOWS
 			return IsKeyDown(RightKey) || IsButtonDown(RightButton);
@@ -164,7 +164,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsAbortDown()
+		public bool IsAbortDown()
 		{
 #if WINDOWS
 			return IsKeyDown(AbortKey) || IsButtonDown(AbortButton);
@@ -174,7 +174,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsActionDown()
+		public bool IsActionDown()
 		{
 #if WINDOWS
 			return IsKeyDown(ActionKey) || IsButtonDown(ActionButton);
@@ -184,7 +184,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsUpUp()
+		public bool IsUpUp()
 		{
 #if WINDOWS
 			return IsKeyUp(UpKey) || IsButtonUp(UpButton);
@@ -194,7 +194,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsLeftUp()
+		public bool IsLeftUp()
 		{
 #if WINDOWS
 			return IsKeyUp(LeftKey) || IsButtonUp(LeftButton);
@@ -204,7 +204,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsRightUp()
+		public bool IsRightUp()
 		{
 #if WINDOWS
 			return IsKeyUp(RightKey) || IsButtonUp(RightButton);
@@ -214,7 +214,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsDownUp()
+		public bool IsDownUp()
 		{
 #if WINDOWS
 			return IsKeyUp(DownKey) || IsButtonUp(DownButton);
@@ -224,7 +224,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsAbortUp()
+		public bool IsAbortUp()
 		{
 #if WINDOWS
 			return IsKeyUp(AbortKey) || IsButtonUp(AbortButton);
@@ -234,7 +234,7 @@ namespace ChilledTreat
 			return false;
 #endif
 		}
-		public Boolean IsActionUp()
+		public bool IsActionUp()
 		{
 #if WINDOWS
 			return IsKeyUp(ActionKey) || IsButtonUp(ActionButton);
@@ -248,7 +248,7 @@ namespace ChilledTreat
 
 		#region COMMON METHODS FOR XBOX & WINDOWS
 		
-		public Boolean IsActionPressed()
+		public bool IsActionPressed()
 		{
 #if WINDOWS
 			return IsKeyPressed(ActionKey);
@@ -257,7 +257,7 @@ namespace ChilledTreat
 #endif
 		}
 
-		public Boolean IsAbortPressed()
+		public bool IsAbortPressed()
 		{
 #if WINDOWS
 			return IsKeyPressed(AbortKey);
@@ -265,7 +265,7 @@ namespace ChilledTreat
 			return IsButtonPressed(AbortButton);
 #endif
 		}
-		public Boolean IsUpPressed()
+		public bool IsUpPressed()
 		{
 #if WINDOWS
 			return IsKeyPressed(UpKey);
@@ -273,7 +273,7 @@ namespace ChilledTreat
 			return IsButtonPressed(UpButton);
 #endif
 		}
-		public Boolean IsDownPressed()
+		public bool IsDownPressed()
 		{
 #if WINDOWS
 			return IsKeyPressed(DownKey);
@@ -281,7 +281,7 @@ namespace ChilledTreat
 			return IsButtonPressed(DownButton);
 #endif
 		}
-		public Boolean IsLeftPressed()
+		public bool IsLeftPressed()
 		{
 #if WINDOWS
 			return IsKeyPressed(LeftKey);
@@ -289,7 +289,7 @@ namespace ChilledTreat
 			return IsButtonPressed(LeftButton);
 #endif
 		}
-		public Boolean IsRightPressed()
+		public bool IsRightPressed()
 		{
 #if WINDOWS
 			return IsKeyPressed(RightKey);
