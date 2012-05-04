@@ -57,6 +57,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
+			_currentTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
 			ReticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
 
 			if (ReticulePosition.X < 0) ReticulePosition = new Vector2(0, ReticulePosition.Y);
@@ -73,16 +74,12 @@ namespace ChilledTreat.GameClasses
 
 			if (_playerState == States.Shooting)
 			{
-				_currentTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
-
 				Shoot();
 
-				if (_currentTime - _startShootTime > 200)
-				{
-					_playerState = States.Alive;
-				}
+				//if (_currentTime - _startShootTime > 1000) _playerState = States.Alive;
 			}
 
+			if(_playerState == States.Reloading) Reload();
 		}
 
 		public void Draw()
@@ -97,30 +94,30 @@ namespace ChilledTreat.GameClasses
 
 		public void Shoot()
 		{
-			_playerState = States.Shooting;
-
 			_bullets[--_ammo] = _usedBulletTexture;
 
-			if (_ammo == 0) Reload();
+			if (_ammo == 0 && _playerState != States.Reloading)
+			{
+				_playerState = States.Reloading;
+				_startReloadTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
+			}
 
-			_startReloadTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
-
-			_playerState = States.Alive;
+			if(_playerState != States.Reloading) _playerState = States.Alive;
 		}
 
 		public void Reload()
 		{
-			_playerState = States.Reloading;
+			//if (_currentTime - _startReloadTime > 1000)
+			//{
+				_ammo = 10;
 
-			if (!(_startReloadTime - _currentTime > 1000)) return;
+				for (int i = 0; i < _bullets.Length; i++)
+				{
+					_bullets[i] = _bulletTexture;
+				}
 
-			_ammo = 10;
-			for (int i = 0; i < _bullets.Length; i++)
-			{
-				_bullets[i] = _bulletTexture;
-			}
-
-			_playerState = States.Alive;
+				_playerState = States.Alive;
+			//}
 		}
 
 		public void Damaged(int damage)
