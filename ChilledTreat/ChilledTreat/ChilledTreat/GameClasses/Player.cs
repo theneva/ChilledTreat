@@ -10,15 +10,15 @@ namespace ChilledTreat.GameClasses
 	{
 		int _health, _ammo;
 		long _currentTime, _startShootTime, _startReloadTime;
-		readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture;
-		readonly SpriteBatch _spriteBatch;
-		readonly InputHandler _input = InputHandler.Instance;
-		readonly Vector2 _halfReticuleTexture;
-		private Vector2 _vectorGunToMouse, _reticulePosition;
+		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture;
+		private readonly SpriteBatch _spriteBatch;
+		private readonly InputHandler _input = InputHandler.Instance;
+		private readonly Vector2 _halfReticuleTexture;
 		private readonly Texture2D[] _bullets;
 		private readonly Vector2[] _bulletPositions;
-		private readonly SoundEffect _gunShotSound;
-		float _gunRotation;
+		private readonly SoundEffect _gunShotSound, _gunReloadSound;
+		private Vector2 _vectorGunToMouse, _reticulePosition;
+		private float _gunRotation;
 		private Rectangle _gunPosition;
 
 		enum States
@@ -41,8 +41,9 @@ namespace ChilledTreat.GameClasses
 			_reticuleTexture = content.Load<Texture2D>("Images/usableReticule");
 			_bulletTexture = content.Load<Texture2D>("Images/usableBullet");
 			_usedBulletTexture = content.Load<Texture2D>("Images/usableUsedBullet");
-			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
 			_gunTexture = content.Load<Texture2D>("Images/gunTest");
+			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
+			_gunReloadSound = content.Load<SoundEffect>("Sounds/ReloadSound");
 			_spriteBatch = spriteBatch;
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 			_bullets = new Texture2D[10];
@@ -119,9 +120,12 @@ namespace ChilledTreat.GameClasses
 
 		public void Reload()
 		{
-			//if (_currentTime - _startReloadTime > 1000)
-			//{
+			//TODO Add a wait while reloading
+			if (true)
+			{
 				_ammo = 10;
+
+				_gunReloadSound.Play();
 
 				for (int i = 0; i < _bullets.Length; i++)
 				{
@@ -129,7 +133,7 @@ namespace ChilledTreat.GameClasses
 				}
 
 				_playerState = States.Alive;
-			//}
+			}
 		}
 
 		public void Damaged(int damage)
