@@ -245,5 +245,54 @@ namespace ChilledTreat
 #endif
 		}
 		#endregion
+/*		public Boolean IsActionPressed()
+		{
+#if WINDOWS
+			return IsKeyPressed(AbortKey);
+#elif XBOX
+			return IsButtonPressed(AbortButton);
+#endif
+		}
+
+		public Boolean IsAbortPressed()
+		{
+#if WINDOWS
+			return IsKeyPressed(AbortKey);
+#elif XBOX
+			return IsButtonPressed(AbortButton);
+#endif
+		}
+		public Boolean IsUpPressed()
+		{
+#if WINDOWS
+			return IsKeyPressed(UpKey);
+#elif XBOX
+			return IsButtonPressed(UpButton);
+#endif
+		}
+		public Boolean IsDownPressed()
+		{
+#if WINDOWS
+			return IsKeyPressed(DownKey);
+#elif XBOX
+			return IsButtonPressed(DownButton);
+#endif
+		}
+		public Boolean IsLeftPressed()
+		{
+#if WINDOWS
+			return IsKeyPressed(LeftKey);
+#elif XBOX
+			return IsButtonPressed(LeftButton);
+#endif
+		}
+		public Boolean IsRightPressed()
+		{
+#if WINDOWS
+			return IsKeyPressed(RightKey);
+#elif XBOX
+			return IsButtonPressed(RightButton);
+#endif
+		}*/
 	}
 }
