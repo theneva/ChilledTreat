@@ -8,6 +8,7 @@ namespace ChilledTreat
 	{
 		// Fields
 		Player player;
+		Enemy enemy;
 
 		// Constructor
 		public InGame(SpriteBatch spriteBatch, ContentManager content)
@@ -15,6 +16,8 @@ namespace ChilledTreat
 		{
 			// CONTENT LOAD
 			player = new Player(spriteBatch, content);
+			enemy = new Enemy(spriteBatch, content);
+			
 		}
 
 		// Methods
@@ -23,12 +26,14 @@ namespace ChilledTreat
 		{
 			// LOGIC
 			player.Update();
+			enemy.Update();
 		}
 
 		public override void Draw()
 		{
 			// DRAW THAT SHIT
 			player.Draw();
+			enemy.Draw();
 		}
 	}
 }
