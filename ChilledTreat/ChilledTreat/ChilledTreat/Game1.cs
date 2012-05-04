@@ -73,6 +73,7 @@ namespace ChilledTreat
 
 			_gameStates.Add(new Splash(SpriteBatch, Content, 1));
 			_gameStates.Add(new Menu(SpriteBatch, Content));
+			_gameStates.Add(new Credits(SpriteBatch, Content, 1));
 			_gameStates.Add(new InGame(SpriteBatch, Content));
 
 			_activeGameState = _gameStates[0];
