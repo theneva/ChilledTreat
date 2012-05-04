@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using ChilledTreat.GameClasses;
 
 namespace ChilledTreat
 {
@@ -11,7 +10,7 @@ namespace ChilledTreat
 	/// </summary>
 	public class Game1 : Game
 	{
-		public static Game1 Instance = null;
+		public static Game1 Instance;
 
 		// public for å kunne brukes andre steder
 		public GraphicsDeviceManager Graphics;

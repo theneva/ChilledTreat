@@ -31,7 +31,6 @@ namespace ChilledTreat
 			}
 			_selectedItem[_menuPos] = 150f;
 
-			
 			int yStartPos = 100;
 			_yPos = new int[_menuItems.Length];
 			for (int i = 0; i < _yPos.Length; i++)
@@ -79,8 +78,7 @@ namespace ChilledTreat
 			// Draw here
 			for (int i = 0; i < _menuItems.Length; i++)
 			{
-				SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-				
+				SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);	
 			}
 		}
 	}
