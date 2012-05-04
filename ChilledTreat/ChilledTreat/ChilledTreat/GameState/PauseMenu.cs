@@ -21,7 +21,7 @@ namespace ChilledTreat
 		{
 			_menuFont = content.Load<SpriteFont>("fonts/menuFont");
 			_fontColor = Color.Salmon;
-			string[] strings = { "Resume Game", "lol", "lol", "Main Menu" };
+			string[] strings = { "Resume Game", "Main Menu" };
 			_menuItems = strings;
 			_selectedItem = new float[_menuItems.Length];
 			_menuPos = 0;
