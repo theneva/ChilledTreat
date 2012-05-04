@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,6 +16,7 @@ namespace ChilledTreat.GameClasses
 		readonly Vector2 _halfReticuleTexture;
 		private readonly Texture2D[] _bullets;
 		private readonly Vector2[] _bulletPositions;
+		private SoundEffect _gunShotSound;
 
 		enum States
 		{
@@ -38,6 +40,7 @@ namespace ChilledTreat.GameClasses
 			_reticuleTexture = content.Load<Texture2D>("Images/usableReticule");
 			_bulletTexture = content.Load<Texture2D>("Images/usableBullet");
 			_usedBulletTexture = content.Load<Texture2D>("Images/usableUsedBullet");
+			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
 			_sp = spriteBatch;
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 			_bullets = new Texture2D[10];
@@ -94,6 +97,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Shoot()
 		{
+			_gunShotSound.Play();
 			_bullets[--_ammo] = _usedBulletTexture;
 
 			if (_ammo == 0 && _playerState != States.Reloading)
