@@ -119,7 +119,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Splash.cs" />
-    <Compile Include="SPritebatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
