@@ -19,6 +19,8 @@ namespace ChilledTreat.GameClasses
 		private readonly Texture2D[] _bullets;
 		private readonly Vector2[] _bulletPositions;
 		private readonly SoundEffect _gunShotSound, _gunReloadSound;
+		private readonly SpriteFont _healthFont;
+		private readonly Color _healthFontColor;
 		private Vector2 _vectorGunToMouse, _reticulePosition;
 		private float _gunRotation;
 		private Rectangle _gunPosition;
@@ -48,6 +50,8 @@ namespace ChilledTreat.GameClasses
 			_gunTexture = content.Load<Texture2D>("Images/gunTest");
 			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
 			_gunReloadSound = content.Load<SoundEffect>("Sounds/ReloadSound");
+			_healthFont = content.Load<SpriteFont>("fonts/healthFont");
+			_healthFontColor = Color.Black;
 			_spriteBatch = spriteBatch;
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 			_bullets = new Texture2D[10];
@@ -115,11 +119,12 @@ namespace ChilledTreat.GameClasses
 			{
 				_spriteBatch.Draw(_bullets[i], _bulletPositions[i], Color.White);
 			}
+
+			_spriteBatch.DrawString(_healthFont, _health.ToString(), new Vector2(Game1.Instance.GameScreenWidth-75, Game1.Instance.GameScreenHeight - 70),_healthFontColor );
 		}
 
 		public void Shoot()
 		{
-
 			_gunShotSound.Play();
 			_bullets[--_ammo] = _usedBulletTexture;
 
