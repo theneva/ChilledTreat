@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using Microsoft.Xna.Framework.Input;
 
 namespace ChilledTreat.GameClasses
 {
@@ -51,6 +52,7 @@ namespace ChilledTreat.GameClasses
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 			_bullets = new Texture2D[10];
 			_bulletPositions = new Vector2[10];
+			_gunPosition = new Rectangle(Game1.Instance.GameScreenWidth / 2, Game1.Instance.GameScreenHeight + 40, _gunTexture.Width, _gunTexture.Height);
 			_playerState = States.Alive;
 
 			for (int i = 0; i < _bulletPositions.Length; i++)
@@ -70,7 +72,6 @@ namespace ChilledTreat.GameClasses
 			_reticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
 			if (_currentTime - _startShootTime > 200 && _playerState != States.Reloading) _playerState = States.Alive;
 
-			_gunPosition = new Rectangle(640, 745, _gunTexture.Width, _gunTexture.Height);
 			_vectorGunToMouse = new Vector2((_gunPosition.X - _input.MouseState.X), (_gunPosition.Y - _input.MouseState.Y));
 			_gunRotation = (float) Math.Atan2(- _vectorGunToMouse.X, _vectorGunToMouse.Y);
 
@@ -85,6 +86,13 @@ namespace ChilledTreat.GameClasses
 				_startShootTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
 				_playerState = States.Shooting;
+			}
+
+			if(_input.IsKeyPressed(Keys.R) && _playerState != States.Reloading)
+			{
+				_playerState = States.Reloading;
+				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
+				_playReloadSound = true;
 			}
 
 			if (_playerState == States.Shooting)
@@ -118,6 +126,7 @@ namespace ChilledTreat.GameClasses
 			if (_ammo == 0 && _playerState != States.Reloading)
 			{
 				_playerState = States.Reloading;
+
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 				_playReloadSound = true;
 			} else _playerState = States.Waiting;

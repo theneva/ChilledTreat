@@ -7,18 +7,17 @@ namespace ChilledTreat
 	class InGame : GameState
 	{
 		// Fields
-		Player player;
-		Enemy enemy;
-		InputHandler input = InputHandler.Instance;
+		readonly Player _player;
+		readonly Enemy _enemy;
+		readonly InputHandler _input = InputHandler.Instance;
 
 		// Constructor
 		public InGame(SpriteBatch spriteBatch, ContentManager content)
 			: base (spriteBatch, content)
 		{
 			// CONTENT LOAD
-			player = new Player(spriteBatch, content);
-			enemy = new Enemy(spriteBatch, content);
-			
+			_player = new Player(spriteBatch, content);
+			_enemy = new Enemy(spriteBatch, content);
 		}
 
 		// Methods
@@ -26,9 +25,10 @@ namespace ChilledTreat
 		public override void Update()
 		{
 			// LOGIC
-			player.Update();
-			enemy.Update();
-			if (input.IsAbortPressed())
+			_player.Update();
+			_enemy.Update();
+
+			if (_input.IsAbortPressed())
 			{
 				Game1.ChangeState(3);
 			}
@@ -37,8 +37,8 @@ namespace ChilledTreat
 		public override void Draw()
 		{
 			// DRAW THAT SHIT
-			player.Draw();
-			enemy.Draw();
+			_enemy.Draw();
+			_player.Draw();
 		}
 	}
 }

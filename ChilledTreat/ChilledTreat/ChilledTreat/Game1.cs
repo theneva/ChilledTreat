@@ -16,8 +16,8 @@ namespace ChilledTreat
 		public GraphicsDeviceManager Graphics;
 		public SpriteBatch SpriteBatch;
 
-		public int GameScreenWidth = 1280;
-		public int GameScreenHeight = 720;
+		public int GameScreenWidth = 1366;
+		public int GameScreenHeight = 768;
 
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;
@@ -43,6 +43,8 @@ namespace ChilledTreat
 
 			Graphics.PreferredBackBufferWidth = GameScreenWidth;
 			Graphics.PreferredBackBufferHeight = GameScreenHeight;
+
+			Graphics.IsFullScreen = true;
 
 			Instance = this;
 		}
