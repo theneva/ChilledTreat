@@ -43,12 +43,12 @@ namespace ChilledTreat
 
 		public override void Update()
 		{
-			if (_input.IsKeyPressed(_input.DownKey))
+			if (_input.IsDownPressed())
 			{
 				_menuPos++;
 				if (_menuPos > _selectedItem.Length - 1) _menuPos = 0;
 			}
-			if (_input.IsKeyPressed(_input.UpKey))
+			if (_input.IsUpPressed())
 			{
 				_menuPos--;
 				if (_menuPos < 0) _menuPos = _selectedItem.Length - 1;
@@ -56,7 +56,7 @@ namespace ChilledTreat
 			for (int i = 0; i < _selectedItem.Length; i++) _selectedItem[i] = 100f;
 			_selectedItem[_menuPos] = 150f;
 
-			if (_input.IsKeyPressed(_input.ActionKey))
+			if (_input.IsActionPressed())
 			{
 				if (_menuItems[_menuPos].Contains("EXIT"))
 				{
@@ -68,7 +68,7 @@ namespace ChilledTreat
 				}
 				else if (_menuItems[_menuPos].Contains("Credits"))
 				{
-					Game1.ChangeState(4);
+					Game1.ChangeState(2);
 				}
 			}
 		}

@@ -245,10 +245,13 @@ namespace ChilledTreat
 #endif
 		}
 		#endregion
-/*		public Boolean IsActionPressed()
+
+		#region COMMON METHODS FOR XBOX & WINDOWS
+		
+		public Boolean IsActionPressed()
 		{
 #if WINDOWS
-			return IsKeyPressed(AbortKey);
+			return IsKeyPressed(ActionKey);
 #elif XBOX
 			return IsButtonPressed(AbortButton);
 #endif
@@ -293,6 +296,7 @@ namespace ChilledTreat
 #elif XBOX
 			return IsButtonPressed(RightButton);
 #endif
-		}*/
+		}
+		#endregion
 	}
 }

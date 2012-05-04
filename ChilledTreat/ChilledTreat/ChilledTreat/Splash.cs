@@ -23,7 +23,7 @@ namespace ChilledTreat
 			InputHandler input = InputHandler.Instance;
 
 
-			if (input.IsKeyPressed(input.ActionKey))
+			if (input.IsActionPressed())
 			{
 				Game1.ChangeState(NextState);
 			}

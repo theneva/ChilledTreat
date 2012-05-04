@@ -9,6 +9,7 @@ namespace ChilledTreat
 		// Fields
 		Player player;
 		Enemy enemy;
+		InputHandler input = InputHandler.Instance;
 
 		// Constructor
 		public InGame(SpriteBatch spriteBatch, ContentManager content)
@@ -27,6 +28,10 @@ namespace ChilledTreat
 			// LOGIC
 			player.Update();
 			enemy.Update();
+			if (input.IsAbortPressed())
+			{
+				Game1.ChangeState(4);
+			}
 		}
 
 		public override void Draw()

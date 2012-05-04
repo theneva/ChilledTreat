@@ -21,7 +21,7 @@ namespace ChilledTreat
 		public override void Update()
 		{
 			// Logic
-			if (input.IsKeyPressed(input.AbortKey)) 
+			if (input.IsAbortPressed()) 
 			{
 				Game1.ChangeState(nextState);
 			}
