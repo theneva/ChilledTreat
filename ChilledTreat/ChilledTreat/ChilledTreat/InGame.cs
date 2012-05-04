@@ -30,7 +30,7 @@ namespace ChilledTreat
 			enemy.Update();
 			if (input.IsAbortPressed())
 			{
-				Game1.ChangeState(4);
+				Game1.ChangeState(3);
 			}
 		}
 

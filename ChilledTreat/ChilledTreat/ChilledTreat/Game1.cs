@@ -23,7 +23,7 @@ namespace ChilledTreat
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;
 
-		readonly List<GameState> _gameStates = new List<GameState>();
+		List<GameState> _gameStates = new List<GameState>();
 		GameState _activeGameState;
 
 		GameState _nextState;
@@ -72,11 +72,10 @@ namespace ChilledTreat
 
 			// Legge til gamestates som klasser i listen
 			// ex: GameStates.add(new InGame(Sprite...., con);
-
+			
 			_gameStates.Add(new Splash(SpriteBatch, Content, 1));
 			_gameStates.Add(new Menu(SpriteBatch, Content));
 			_gameStates.Add(new Credits(SpriteBatch, Content, 1));
-			_gameStates.Add(new InGame(SpriteBatch, Content));
 			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
 
 			_activeGameState = _gameStates[0];
@@ -138,6 +137,18 @@ namespace ChilledTreat
 			SpriteBatch.End();
 
 			base.Draw(gameTime);
+		}
+
+		public static void NewGame() 
+		{
+			if (Instance._gameStates.Count < 5)
+			{
+				Instance._gameStates.Add(new InGame(Instance.SpriteBatch, Instance.Content));
+			}
+			else
+			{
+				Instance._gameStates[4] = new InGame(Instance.SpriteBatch, Instance.Content);
+			}
 		}
 	}
 }
