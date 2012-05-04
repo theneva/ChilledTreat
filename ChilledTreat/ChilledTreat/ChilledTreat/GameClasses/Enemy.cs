@@ -24,16 +24,15 @@ namespace ChilledTreat.GameClasses
 
         public Enemy(SpriteBatch spriteBatch, ContentManager content)
         {
+            texture = content.Load<Texture2D>("Images/enemy"); 
             this.spriteBatch = spriteBatch;
-
-            texture = content.Load<Texture2D>("Images/enemy");
+            
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-                        // Animation frames
-            ++currentFrame.X;
-            if (currentFrame.X >= sheetSize.X)
+            // Animation frames
+            if (++currentFrame.X >= sheetSize.X)
             {
                 currentFrame.X = 0;
                 ++currentFrame.Y;
@@ -58,9 +57,7 @@ namespace ChilledTreat.GameClasses
 
         public void Draw()
         {
-            spriteBatch.Draw(texture,
-                position, 
-                Color.White);
+            spriteBatch.Draw(texture, position, Color.White);
         }
     }
 }
