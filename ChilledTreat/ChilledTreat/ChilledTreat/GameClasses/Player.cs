@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace ChilledTreat.GameClasses
 {
@@ -18,6 +19,9 @@ namespace ChilledTreat.GameClasses
 		private readonly Vector2[] _bulletPositions;
 		private SoundEffect _gunShotSound;
 
+        Texture2D _gunTexture;
+        float GunRotation;
+
 		enum States
 		{
 			Alive,
@@ -32,6 +36,8 @@ namespace ChilledTreat.GameClasses
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
 		private Vector2 ReticulePosition { get; set; }
+        public Vector2 hei { get; set; }
+        private Rectangle GunPosition { get; set; }
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
@@ -41,7 +47,8 @@ namespace ChilledTreat.GameClasses
 			_bulletTexture = content.Load<Texture2D>("Images/usableBullet");
 			_usedBulletTexture = content.Load<Texture2D>("Images/usableUsedBullet");
 			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
-			_sp = spriteBatch;
+            _gunTexture = content.Load<Texture2D>("Images/gunTest");
+            _sp = spriteBatch;
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 			_bullets = new Texture2D[10];
 			_bulletPositions = new Vector2[10];
@@ -62,6 +69,10 @@ namespace ChilledTreat.GameClasses
 		{
 			_currentTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
 			ReticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
+
+            GunPosition = new Rectangle(640, 745, _gunTexture.Width, _gunTexture.Height);
+            hei = new Vector2((GunPosition.X - _input.MouseState.X), (GunPosition.Y - _input.MouseState.Y));
+            GunRotation = (float)Math.Atan2(hei.X * -1, hei.Y);
 
 			if (ReticulePosition.X < 0) ReticulePosition = new Vector2(0, ReticulePosition.Y);
 			else if (ReticulePosition.X > Game1.Instance.GameScreenWidth) ReticulePosition = new Vector2(Game1.Instance.GameScreenWidth, ReticulePosition.Y);
@@ -88,6 +99,8 @@ namespace ChilledTreat.GameClasses
 		public void Draw()
 		{
 			_sp.Draw(_reticuleTexture, ReticulePosition - _halfReticuleTexture, Color.White);
+            _sp.Draw(_gunTexture, GunPosition, null, Color.White, GunRotation, new Vector2(_gunTexture.Width / 2, _gunTexture.Height), SpriteEffects.None, 1f);
+
 
 			for (int i = 0; i < _bullets.Length; i++)
 			{
