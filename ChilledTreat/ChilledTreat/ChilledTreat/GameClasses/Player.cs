@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 
 namespace ChilledTreat.GameClasses
@@ -11,16 +10,16 @@ namespace ChilledTreat.GameClasses
 	{
 		int _health, _ammo;
 		long _currentTime, _startShootTime, _startReloadTime;
-		readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture;
-		readonly SpriteBatch _sp;
+		readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture;
+		readonly SpriteBatch _spriteBatch;
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly Vector2 _halfReticuleTexture;
+		private Vector2 _vectorGunToMouse, _reticulePosition;
 		private readonly Texture2D[] _bullets;
 		private readonly Vector2[] _bulletPositions;
-		private SoundEffect _gunShotSound;
-
-        Texture2D _gunTexture;
-        float GunRotation;
+		private readonly SoundEffect _gunShotSound;
+		float _gunRotation;
+		private Rectangle _gunPosition;
 
 		enum States
 		{
@@ -35,10 +34,6 @@ namespace ChilledTreat.GameClasses
 
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
-		private Vector2 ReticulePosition { get; set; }
-        public Vector2 hei { get; set; }
-        private Rectangle GunPosition { get; set; }
-
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_health = 100;
@@ -47,8 +42,8 @@ namespace ChilledTreat.GameClasses
 			_bulletTexture = content.Load<Texture2D>("Images/usableBullet");
 			_usedBulletTexture = content.Load<Texture2D>("Images/usableUsedBullet");
 			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
-            _gunTexture = content.Load<Texture2D>("Images/gunTest");
-            _sp = spriteBatch;
+			_gunTexture = content.Load<Texture2D>("Images/gunTest");
+			_spriteBatch = spriteBatch;
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 			_bullets = new Texture2D[10];
 			_bulletPositions = new Vector2[10];
@@ -68,17 +63,17 @@ namespace ChilledTreat.GameClasses
 		public void Update()
 		{
 			_currentTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
-			ReticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
+			_reticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
 
-            GunPosition = new Rectangle(640, 745, _gunTexture.Width, _gunTexture.Height);
-            hei = new Vector2((GunPosition.X - _input.MouseState.X), (GunPosition.Y - _input.MouseState.Y));
-            GunRotation = (float)Math.Atan2(hei.X * -1, hei.Y);
+			_gunPosition = new Rectangle(640, 745, _gunTexture.Width, _gunTexture.Height);
+			_vectorGunToMouse = new Vector2((_gunPosition.X - _input.MouseState.X), (_gunPosition.Y - _input.MouseState.Y));
+			_gunRotation = (float)Math.Atan2(_vectorGunToMouse.X * -1, _vectorGunToMouse.Y);
 
-			if (ReticulePosition.X < 0) ReticulePosition = new Vector2(0, ReticulePosition.Y);
-			else if (ReticulePosition.X > Game1.Instance.GameScreenWidth) ReticulePosition = new Vector2(Game1.Instance.GameScreenWidth, ReticulePosition.Y);
+			if (_reticulePosition.X < 0) _reticulePosition = new Vector2(0, _reticulePosition.Y);
+			else if (_reticulePosition.X > Game1.Instance.GameScreenWidth) _reticulePosition = new Vector2(Game1.Instance.GameScreenWidth, _reticulePosition.Y);
 
-			if (ReticulePosition.Y < 0) ReticulePosition = new Vector2(ReticulePosition.X, 0);
-			else if (ReticulePosition.Y > Game1.Instance.GameScreenHeight) ReticulePosition = new Vector2(ReticulePosition.X, Game1.Instance.GameScreenHeight);
+			if (_reticulePosition.Y < 0) _reticulePosition = new Vector2(_reticulePosition.X, 0);
+			else if (_reticulePosition.Y > Game1.Instance.GameScreenHeight) _reticulePosition = new Vector2(_reticulePosition.X, Game1.Instance.GameScreenHeight);
 
 			if (_playerState == States.Alive && _input.IsLeftMouseButtonPressed())
 			{
@@ -98,13 +93,13 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			_sp.Draw(_reticuleTexture, ReticulePosition - _halfReticuleTexture, Color.White);
-            _sp.Draw(_gunTexture, GunPosition, null, Color.White, GunRotation, new Vector2(_gunTexture.Width / 2, _gunTexture.Height), SpriteEffects.None, 1f);
+			_spriteBatch.Draw(_reticuleTexture, _reticulePosition - _halfReticuleTexture, Color.White);
+			_spriteBatch.Draw(_gunTexture, _gunPosition, null, Color.White, _gunRotation, new Vector2(_gunTexture.Width / 2f, _gunTexture.Height), SpriteEffects.None, 1f);
 
 
 			for (int i = 0; i < _bullets.Length; i++)
 			{
-				_sp.Draw(_bullets[i], _bulletPositions[i], Color.White);
+				_spriteBatch.Draw(_bullets[i], _bulletPositions[i], Color.White);
 			}
 		}
 
