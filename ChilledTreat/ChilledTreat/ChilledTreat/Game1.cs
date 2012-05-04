@@ -16,19 +16,22 @@ namespace ChilledTreat
 		public GraphicsDeviceManager Graphics;
 		public SpriteBatch SpriteBatch;
 
+		public int GameScreenWidth = 800;
+		public int GameScreenHeight = 600;
+
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;
 
 		readonly List<GameState> _gameStates = new List<GameState>();
-		GameState _activeGameState = null;
+		GameState _activeGameState;
 
-		GameState _nextState = null;
+		GameState _nextState;
 
 		public static void ChangeState(int index)
 		{
-			if (index < Game1.Instance._gameStates.Count)
+			if (index < Instance._gameStates.Count)
 			{
-				Game1.Instance._nextState = Game1.Instance._gameStates[index];
+				Instance._nextState = Instance._gameStates[index];
 			}
 		}
 
@@ -37,8 +40,8 @@ namespace ChilledTreat
 			Graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 
-			Graphics.PreferredBackBufferWidth = 1280;
-			Graphics.PreferredBackBufferHeight = 720;
+			Graphics.PreferredBackBufferWidth = GameScreenWidth;
+			Graphics.PreferredBackBufferHeight = GameScreenHeight;
 
 			Instance = this;
 		}
@@ -92,8 +95,6 @@ namespace ChilledTreat
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update(GameTime gameTime)
 		{
-
-
 			// Allows the game to exit
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
 				this.Exit();

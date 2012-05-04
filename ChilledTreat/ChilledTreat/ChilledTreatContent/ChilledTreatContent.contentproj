@@ -64,13 +64,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="img\usableBullet.png">
+    <Compile Include="Images\usableBullet.png">
       <Name>usableBullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="img\usableReticule.png">
+    <Compile Include="Images\usableReticule.png">
       <Name>usableReticule</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Images\usableUsedBullet.png">
+      <Name>usableUsedBullet</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

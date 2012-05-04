@@ -107,7 +107,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameClasses\Bullet.cs" />
     <Compile Include="FrameInfo.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameStates.cs" />

@@ -6,64 +6,63 @@ namespace ChilledTreat
 {
 	class Menu : GameState
 	{
-		
-		SpriteFont menuFont;
-		Color fontColor;
-		string[] menuItems;
-		float[] selectedItem;
-		int[] yPos;
-		int menuPos;
-		InputHandler input = InputHandler.Instance;
+		readonly SpriteFont _menuFont;
+		readonly Color _fontColor;
+		readonly string[] _menuItems;
+		readonly float[] _selectedItem;
+		readonly int[] _yPos;
+		int _menuPos;
+		readonly InputHandler _input = InputHandler.Instance;
 
 		public Menu(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
 		{
 			// Menu content
-			menuFont = Content.Load<SpriteFont>("fonts/menuFont");
-			fontColor = Color.Salmon;
+			_menuFont = Content.Load<SpriteFont>("fonts/menuFont");
+			_fontColor = Color.Salmon;
 			string[] strings = {"New Game", "Instructions", "Credits", "EXIT"};
-			menuItems = strings;
-			menuPos = 0;
-			selectedItem = new float[menuItems.Length];
+			_menuItems = strings;
+			_menuPos = 0;
+			_selectedItem = new float[_menuItems.Length];
 			
-			for (int i = 0; i < selectedItem.Length; i++)
+			for (int i = 0; i < _selectedItem.Length; i++)
 			{
-				selectedItem[i] = 100f;
+				_selectedItem[i] = 100f;
 			}
-			selectedItem[menuPos] = 150f;
+			_selectedItem[_menuPos] = 150f;
 
 			
 			int yStartPos = 100;
-			yPos = new int[menuItems.Length];
-			for (int i = 0; i < yPos.Length; i++)
+			_yPos = new int[_menuItems.Length];
+			for (int i = 0; i < _yPos.Length; i++)
 			{
-				yPos[i] = yStartPos;
+				_yPos[i] = yStartPos;
 				yStartPos += 100;
 			}
 		}
 
 		public override void Update()
 		{
-			if (input.IsKeyPressed(input.DownKey))
+			if (_input.IsKeyPressed(_input.DownKey))
 			{
-				menuPos++;
-				if (menuPos > selectedItem.Length - 1) menuPos = 0;
+				_menuPos++;
+				if (_menuPos > _selectedItem.Length - 1) _menuPos = 0;
 			}
-			if (input.IsKeyPressed(input.UpKey))
+			if (_input.IsKeyPressed(_input.UpKey))
 			{
-				menuPos--;
-				if (menuPos < 0) menuPos = selectedItem.Length - 1;
+				_menuPos--;
+				if (_menuPos < 0) _menuPos = _selectedItem.Length - 1;
 			}
-			for (int i = 0; i < selectedItem.Length; i++) selectedItem[i] = 100f;
-			selectedItem[menuPos] = 150f;
+			for (int i = 0; i < _selectedItem.Length; i++) _selectedItem[i] = 100f;
+			_selectedItem[_menuPos] = 150f;
 
-			if (input.IsKeyPressed(input.ActionKey))
+			if (_input.IsKeyPressed(_input.ActionKey))
 			{
-				if (menuItems[menuPos].Contains("EXIT"))
+				if (_menuItems[_menuPos].Contains("EXIT"))
 				{
 					Game1.Instance.Exit();
 				}
-				else if (menuItems[menuPos].Contains("New Game"))
+				else if (_menuItems[_menuPos].Contains("New Game"))
 				{
 					Game1.ChangeState(2);
 				}
@@ -73,10 +72,9 @@ namespace ChilledTreat
 		{
 			
 			// Draw here
-
-			for (int i = 0; i < menuItems.Length; i++)
+			for (int i = 0; i < _menuItems.Length; i++)
 			{
-				SpriteBatch.DrawString(menuFont, menuItems[i], new Vector2(selectedItem[i], yPos[i]), fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+				SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
 				
 			}
 		}
