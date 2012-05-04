@@ -13,27 +13,27 @@ namespace ChilledTreat.GameClasses
 		SpriteBatch spriteBatch;
 
 		Texture2D texture;
-		/*Vector2 speed = new Vector2(0, 20);
+		Vector2 speed = new Vector2(0, 20);
 
-		*/
-		Vector2 position;/*
+		
+		Vector2 position;
 		int hp = 20;
 
 		Point frameSize = new Point(203, 228);
 		Point currentFrame = new Point(0, 0);
-		Point sheetSize = new Point(2, 1);*/
+		Point sheetSize = new Point(2, 1);
 
 		public Enemy(SpriteBatch spriteBatch, ContentManager content)
 		{
 			this.spriteBatch = spriteBatch;
-			//position = Vector2.Zero;
+			position = Vector2.Zero;
 			texture = content.Load<Texture2D>("Images/enemy");
 		}
 
 		public void Update()
 		{
 			// Animation frames
-			/*	++currentFrame.X;
+			++currentFrame.X;
 				if (currentFrame.X >= sheetSize.X)
 				{
 					currentFrame.X = 0;
@@ -54,14 +54,12 @@ namespace ChilledTreat.GameClasses
 				{
 					speed.Y *= -1;
 					position.Y = 0;
-				}*/
+				}
 		}
 
 		public void Draw()
 		{
-			spriteBatch.Draw(texture,
-				position,
-				Color.White);
+			spriteBatch.Draw(texture, position, Color.White);
 		}
 	}
 }
