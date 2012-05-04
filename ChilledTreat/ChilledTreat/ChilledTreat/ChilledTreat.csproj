@@ -107,9 +107,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Credits.cs" />
     <Compile Include="FrameInfo.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameClasses\Enemy.cs" />
+    <Compile Include="PauseMenu.cs" />
     <Compile Include="GameStates.cs" />
     <Compile Include="InGame.cs" />
     <Compile Include="InputHandler.cs" />

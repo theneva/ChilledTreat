@@ -28,7 +28,6 @@ namespace ChilledTreat
 
 		GameState _nextState;
 
-        Enemy testEnemy;
 
 		public static void ChangeState(int index)
 		{
@@ -59,8 +58,6 @@ namespace ChilledTreat
 		{
 			// TODO: Add your initialization logic here
 
-            testEnemy = new Enemy(SpriteBatch, Content);
-
 			base.Initialize();
 		}
 
@@ -78,7 +75,7 @@ namespace ChilledTreat
 
 			_gameStates.Add(new Splash(SpriteBatch, Content, 1));
 			_gameStates.Add(new Menu(SpriteBatch, Content));
-            //_gameStates.Add(new Credits(SpriteBatch, Content, 1));
+			_gameStates.Add(new Credits(SpriteBatch, Content, 1));
 			_gameStates.Add(new InGame(SpriteBatch, Content));
 			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
 
@@ -137,8 +134,6 @@ namespace ChilledTreat
 			SpriteBatch.Begin();
 
 			_activeGameState.Draw();
-            
-            testEnemy.Draw();
 
 			SpriteBatch.End();
 
