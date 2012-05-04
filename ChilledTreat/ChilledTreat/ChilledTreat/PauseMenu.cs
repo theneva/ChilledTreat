@@ -25,6 +25,7 @@ namespace ChilledTreat
 			_menuItems = strings;
 			_selectedItem = new float[_menuItems.Length];
 			_menuPos = 0;
+			
 
 			for (int i = 0; i < _selectedItem.Length; i++)
 			{
