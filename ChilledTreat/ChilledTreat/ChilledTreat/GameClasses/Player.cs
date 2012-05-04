@@ -9,7 +9,8 @@ namespace ChilledTreat.GameClasses
 	class Player
 	{
 		int _health, _ammo;
-		long _currentTime, _startShootTime, _startReloadTime;
+		double _currentTime, _startShootTime, _startReloadTime;
+		private bool _playReloadSound;
 		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture;
 		private readonly SpriteBatch _spriteBatch;
 		private readonly InputHandler _input = InputHandler.Instance;
@@ -38,6 +39,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_health = 100;
 			_ammo = 10;
+			_playReloadSound = false;
 			_reticuleTexture = content.Load<Texture2D>("Images/usableReticule");
 			_bulletTexture = content.Load<Texture2D>("Images/usableBullet");
 			_usedBulletTexture = content.Load<Texture2D>("Images/usableUsedBullet");
@@ -63,7 +65,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
-			_currentTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
+			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 			_reticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
 
 			_gunPosition = new Rectangle(640, 745, _gunTexture.Width, _gunTexture.Height);
@@ -112,7 +114,8 @@ namespace ChilledTreat.GameClasses
 			if (_ammo == 0 && _playerState != States.Reloading)
 			{
 				_playerState = States.Reloading;
-				_startReloadTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
+				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
+				_playReloadSound = true;
 			}
 
 			if(_playerState != States.Reloading) _playerState = States.Alive;
@@ -120,12 +123,16 @@ namespace ChilledTreat.GameClasses
 
 		public void Reload()
 		{
-			//TODO Add a wait while reloading
-			if (true)
+			if (_playReloadSound)
+			{
+				_gunReloadSound.Play();
+
+				_playReloadSound = false;
+			}
+
+			if (_currentTime - _startReloadTime > 2500)
 			{
 				_ammo = 10;
-
-				_gunReloadSound.Play();
 
 				for (int i = 0; i < _bullets.Length; i++)
 				{
