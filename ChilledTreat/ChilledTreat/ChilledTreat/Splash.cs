@@ -13,8 +13,6 @@ namespace ChilledTreat
 		int NextState;
 
 
-
-
 		public Splash(SpriteBatch spriteBatch, ContentManager content, int nextState)
 			: base(spriteBatch, content)
 		{
@@ -36,7 +34,7 @@ namespace ChilledTreat
 		{
 			//SpriteBatch.Draw(SplashTexture, Vector2.Zero, Color.White);
 
-			Game1.Instance.GraphicsDevice.Clear(Color.BlueViolet);
+			Game1.Instance.GraphicsDevice.Clear(Color.Aqua);
 
 
 		}
