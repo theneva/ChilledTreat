@@ -111,10 +111,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="fonts\healthFont.spritefont">
-      <Name>healthFont</Name>
-      <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
+    <Compile Include="Images\normalUsableHeart.png">
+      <Name>normalUsableHeart</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
