@@ -110,6 +110,18 @@ namespace ChilledTreat
 #endif
 		#endregion
 
+#region Mouse
+
+#if !XBOX
+
+		public bool IsLeftMouseButtonPressed ()
+		{
+			return ((MouseState.LeftButton == ButtonState.Pressed) && (PreviouseMouseState.LeftButton == ButtonState.Released));
+		}
+#endif
+
+#endregion
+
 		#region Common Methods
 
 		public Boolean IsUpDown()

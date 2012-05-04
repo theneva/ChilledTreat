@@ -66,7 +66,7 @@ namespace ChilledTreat.GameClasses
 			if (ReticulePosition.Y < 0) ReticulePosition = new Vector2(ReticulePosition.X, 0);
 			else if (ReticulePosition.Y > Game1.Instance.GameScreenHeight) ReticulePosition = new Vector2(ReticulePosition.X, Game1.Instance.GameScreenHeight);
 
-			if (_playerState == States.Alive && _input.MouseState.LeftButton == ButtonState.Pressed && _input.PreviouseMouseState.LeftButton == ButtonState.Released)
+			if (_playerState == States.Alive && _input.IsLeftMouseButtonPressed())
 			{
 				_startShootTime = _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
 				_playerState = States.Shooting;
