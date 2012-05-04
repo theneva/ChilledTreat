@@ -75,6 +75,7 @@ namespace ChilledTreat
 			_gameStates.Add(new Menu(SpriteBatch, Content));
 			_gameStates.Add(new Credits(SpriteBatch, Content, 1));
 			_gameStates.Add(new InGame(SpriteBatch, Content));
+			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
 
 			_activeGameState = _gameStates[0];
 			// TODO: use this.Content to load your game content here

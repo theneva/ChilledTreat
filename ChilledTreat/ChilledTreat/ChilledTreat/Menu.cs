@@ -68,7 +68,7 @@ namespace ChilledTreat
 				}
 				else if (_menuItems[_menuPos].Contains("Credits"))
 				{
-					Game1.ChangeState(2);
+					Game1.ChangeState(4);
 				}
 			}
 		}
