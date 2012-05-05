@@ -42,7 +42,7 @@ namespace ChilledTreat.GameClasses
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
-			_health = 75;
+			_health = 100;
 			_ammo = 10;
 			_timesDrawnFire = 0;
 			_playReloadSound = false;
@@ -132,14 +132,14 @@ namespace ChilledTreat.GameClasses
 				if (_drawFire)
 				{
 					_spriteBatch.Draw(_gunTexture, _gunPosition, _firedGunSource, Color.White, _gunRotation,
-								   new Vector2(_gunTexture.Width / 2f, _gunTexture.Height), SpriteEffects.None, 1f);
+								   new Vector2(_gunTexture.Width / 4f, _gunTexture.Height), SpriteEffects.None, 1f);
 
 					_timesDrawnFire++;
 				}
 				else
 				{
 					_spriteBatch.Draw(_gunTexture, _gunPosition, _gunSource, Color.White, _gunRotation,
-								  new Vector2(_gunTexture.Width / 2f, _gunTexture.Height), SpriteEffects.None, 1f);
+								  new Vector2(_gunTexture.Width / 4f, _gunTexture.Height), SpriteEffects.None, 1f);
 				}
 			}
 			else
