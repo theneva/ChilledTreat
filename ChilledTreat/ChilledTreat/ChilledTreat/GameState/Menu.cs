@@ -68,6 +68,7 @@ namespace ChilledTreat
 				}
 				else if (_menuItems[_menuPos].Contains("Credits"))
 				{
+					Game1.CreditsScreen();
 					Game1.ChangeState(2);
 				}
 			}
