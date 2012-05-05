@@ -41,7 +41,6 @@ namespace ChilledTreat.GameClasses
         public void Update()
         {
             // Animation frames
-
             timeSinceLastFrame += _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
             if (timeSinceLastFrame > millisecondsPerFrame)
             {

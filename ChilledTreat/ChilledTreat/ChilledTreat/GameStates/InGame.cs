@@ -8,7 +8,7 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly Player _player;
-		readonly EnemyHandler _enemies = new EnemyHandler();
+		readonly EnemyHandler _enemies = EnemyHandler.Instance;
 		readonly InputHandler _input = InputHandler.Instance;
 
 		// Constructor
@@ -33,7 +33,8 @@ namespace ChilledTreat.GameStates
 			if (_input.IsAbortPressed() || Game1.Instance.IsActive == false)
 			{
 				Game1.Instance.IsMouseVisible = true;
-				Game1.ChangeState(3);
+				//Game1.ChangeState(3); VS:
+				Game1.ChangeState(GameState.PauseMenu);
 			}
 		}
 
