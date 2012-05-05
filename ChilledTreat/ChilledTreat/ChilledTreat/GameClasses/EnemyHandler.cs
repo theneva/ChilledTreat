@@ -8,8 +8,8 @@ namespace ChilledTreat.GameClasses
     class EnemyHandler
     {
         List<Enemy> enemies;
+		
 		static EnemyHandler _instance;
-
 		public static EnemyHandler Instance
 		{
 			get { return _instance ?? (_instance = new EnemyHandler()); }
@@ -17,6 +17,7 @@ namespace ChilledTreat.GameClasses
 
         private EnemyHandler()
         {
+			enemies = new List<Enemy>();
         }
 
         public int GetNumberOfEnemies()
