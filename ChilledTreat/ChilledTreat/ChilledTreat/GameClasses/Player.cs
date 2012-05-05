@@ -190,7 +190,10 @@ namespace ChilledTreat.GameClasses
 		private void DrawHealth()
 		{
 			_healthIn10 = _health / 10;
+			//The shift to the side, so that
 			_heartsDrawShift = 0;
+
+			//If the health is not dividable by 2 (i.e. not 2, 4, 8, 10), add a half-heart
 			_drawHalfHeart = _healthIn10 % 2 != 0;
 
 			switch (_healthIn10)
