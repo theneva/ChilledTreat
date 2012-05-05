@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameClasses\EnemyHandler.cs" />
     <Compile Include="GameStates\Credits.cs" />
     <Compile Include="FrameInfo.cs" />
     <Compile Include="Game1.cs" />

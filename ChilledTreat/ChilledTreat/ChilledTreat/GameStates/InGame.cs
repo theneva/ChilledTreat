@@ -8,7 +8,7 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly Player _player;
-		readonly Enemy _enemy;
+        readonly EnemyHandler _enemies;
 		readonly InputHandler _input = InputHandler.Instance;
 
 		// Constructor
@@ -17,7 +17,7 @@ namespace ChilledTreat.GameStates
 		{
 			// CONTENT LOAD
 			_player = new Player(spriteBatch, content);
-			_enemy = new Enemy(spriteBatch, content);
+			_enemies.Add(new Enemy(spriteBatch, content));
 
 			Game1.Instance.IsMouseVisible = false;
 		}
@@ -28,7 +28,7 @@ namespace ChilledTreat.GameStates
 		{
 			// LOGIC
 			_player.Update();
-			_enemy.Update();
+            _enemies.Update();
 
 			if (_input.IsAbortPressed() || Game1.Instance.IsActive == false)
 			{
@@ -40,7 +40,7 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 			// DRAW THAT SHIT
-			_enemy.Draw();
+			_enemies.Draw();
 			_player.Draw();
 		}
 	}
