@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ChilledTreat
+namespace ChilledTreat.GameStates
 {
 	class Menu : GameState
 	{

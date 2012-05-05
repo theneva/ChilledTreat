@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 
-namespace ChilledTreat
+namespace ChilledTreat.GameStates
 {
 	class PauseMenu : GameState
 	{

@@ -107,19 +107,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameState\Credits.cs" />
+    <Compile Include="GameStates\Credits.cs" />
     <Compile Include="FrameInfo.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameClasses\Enemy.cs" />
-    <Compile Include="GameState\PauseMenu.cs" />
-    <Compile Include="GameState\GameStates.cs" />
-    <Compile Include="GameState\InGame.cs" />
+    <Compile Include="GameStates\PauseMenu.cs" />
+    <Compile Include="GameStates\GameStates.cs" />
+    <Compile Include="GameStates\InGame.cs" />
     <Compile Include="InputHandler.cs" />
-    <Compile Include="GameState\Menu.cs" />
+    <Compile Include="GameStates\Menu.cs" />
     <Compile Include="GameClasses\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="GameState\Splash.cs" />
+    <Compile Include="GameStates\Splash.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
