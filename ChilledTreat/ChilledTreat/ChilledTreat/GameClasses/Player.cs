@@ -164,17 +164,15 @@ namespace ChilledTreat.GameClasses
 				_playReloadSound = false;
 			}
 
-			if (_currentTime - _startReloadTime > 2500)
+			if (_currentTime - _startReloadTime <= 2500) return;
+			_ammo = 10;
+
+			for (int i = 0; i < _bullets.Length; i++)
 			{
-				_ammo = 10;
-
-				for (int i = 0; i < _bullets.Length; i++)
-				{
-					_bullets[i] = _bulletTexture;
-				}
-
-				_playerState = States.Alive;
+				_bullets[i] = _bulletTexture;
 			}
+
+			_playerState = States.Alive;
 		}
 
 		public void Damaged(int damage)
