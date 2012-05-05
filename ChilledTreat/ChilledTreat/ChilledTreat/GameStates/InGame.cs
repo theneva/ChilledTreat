@@ -8,7 +8,7 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly Player _player;
-        readonly EnemyHandler _enemies;
+		readonly EnemyHandler _enemies = new EnemyHandler();
 		readonly InputHandler _input = InputHandler.Instance;
 
 		// Constructor
@@ -28,7 +28,7 @@ namespace ChilledTreat.GameStates
 		{
 			// LOGIC
 			_player.Update();
-            _enemies.Update();
+			_enemies.Update();
 
 			if (_input.IsAbortPressed() || Game1.Instance.IsActive == false)
 			{
