@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
@@ -10,56 +6,56 @@ namespace ChilledTreat.GameClasses
 {
 	class Enemy
 	{
-		SpriteBatch spriteBatch;
+		readonly SpriteBatch _spriteBatch;
 
-		Texture2D texture;
-		Vector2 speed = new Vector2(0, 20);
+		readonly Texture2D _texture;
+		Vector2 _speed = new Vector2(0, 20);
 
 		
-		Vector2 position;
+		Vector2 _position;
 		int hp = 20;
 
-		Point frameSize = new Point(203, 228);
-		Point currentFrame = new Point(0, 0);
-		Point sheetSize = new Point(2, 1);
+		Point _frameSize = new Point(203, 228);
+		Point _currentFrame = new Point(0, 0);
+		Point _sheetSize = new Point(2, 1);
 
 		public Enemy(SpriteBatch spriteBatch, ContentManager content)
 		{
-			this.spriteBatch = spriteBatch;
-			position = Vector2.Zero;
-			texture = content.Load<Texture2D>("Images/enemy");
+			_spriteBatch = spriteBatch;
+			_position = Vector2.Zero;
+			_texture = content.Load<Texture2D>("Images/enemy");
 		}
 
 		public void Update()
 		{
 			// Animation frames
-			++currentFrame.X;
-				if (currentFrame.X >= sheetSize.X)
+			++_currentFrame.X;
+				if (_currentFrame.X >= _sheetSize.X)
 				{
-					currentFrame.X = 0;
-					++currentFrame.Y;
-					if (currentFrame.Y >= sheetSize.Y)
-						currentFrame.Y = 0;
+					_currentFrame.X = 0;
+					++_currentFrame.Y;
+					if (_currentFrame.Y >= _sheetSize.Y)
+						_currentFrame.Y = 0;
 				}
 
 				// Movement
-				position.Y -= speed.Y;
+				_position.Y -= _speed.Y;
 
-				if (position.Y > 200)
+				if (_position.Y > 200)
 				{
-					speed.Y *= -1;
-					position.Y = 200;
+					_speed.Y *= -1;
+					_position.Y = 200;
 				}
-				else if (position.Y < 0)
+				else if (_position.Y < 0)
 				{
-					speed.Y *= -1;
-					position.Y = 0;
+					_speed.Y *= -1;
+					_position.Y = 0;
 				}
 		}
 
 		public void Draw()
 		{
-			spriteBatch.Draw(texture, position, Color.White);
+			_spriteBatch.Draw(_texture, _position, Color.White);
 		}
 	}
 }
