@@ -12,10 +12,10 @@ namespace ChilledTreat.GameClasses
 		private readonly InputHandler _input = InputHandler.Instance;
 		private readonly SpriteBatch _spriteBatch;
 
-		private int _health, _healthIn10, _ammo, _fullHeartsToDraw, _emptyHeartsToDraw, _heartsDrawShift;
+		private int _health, _healthIn10, _ammo, _fullHeartsToDraw, _emptyHeartsToDraw, _heartsDrawShift, _timesDrawnFire;
 		private readonly int _widthOfHeart;
 		private double _currentTime, _startShootTime, _startReloadTime;
-		private bool _playReloadSound, _drawHalfHeart;
+		private bool _playReloadSound, _drawHalfHeart, _drawFire;
 		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture, _healthTexture, _coverTexture;
 		private readonly Vector2 _halfReticuleTexture;
 		private Vector2 _vectorGunToMouse, _reticulePosition;
@@ -23,7 +23,7 @@ namespace ChilledTreat.GameClasses
 		private readonly Vector2[] _bulletPositions;
 		private readonly SoundEffect _gunShotSound, _gunReloadSound;
 		private float _gunRotation;
-		private readonly Rectangle _gunPosition, _fullHealthSource, _halfHealthSource, _emptyHealthSource;
+		private readonly Rectangle _gunPosition, _gunSource, _firedGunSource, _fullHealthSource, _halfHealthSource, _emptyHealthSource;
 
 		enum States
 		{
@@ -44,7 +44,9 @@ namespace ChilledTreat.GameClasses
 		{
 			_health = 100;
 			_ammo = 10;
+			_timesDrawnFire = 0;
 			_playReloadSound = false;
+			_drawFire = false;
 			_reticuleTexture = content.Load<Texture2D>("Images/usableReticule");
 			_bulletTexture = content.Load<Texture2D>("Images/usableBullet");
 			_usedBulletTexture = content.Load<Texture2D>("Images/usableUsedBullet");
@@ -57,7 +59,9 @@ namespace ChilledTreat.GameClasses
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 			_bullets = new Texture2D[10];
 			_bulletPositions = new Vector2[10];
-			_gunPosition = new Rectangle(Game1.Instance.GameScreenWidth / 2, Game1.Instance.GameScreenHeight + 40, _gunTexture.Width, _gunTexture.Height);
+			_gunSource = new Rectangle(0, 0, 80, 130);
+			_firedGunSource = new Rectangle(80, 0, 80, 130);
+			_gunPosition = new Rectangle(Game1.Instance.GameScreenWidth / 2, Game1.Instance.GameScreenHeight + 40, _gunTexture.Width / 2, _gunTexture.Height);
 			_widthOfHeart = _healthTexture.Width/3;
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
 			_halfHealthSource = new Rectangle(_widthOfHeart, 0, _widthOfHeart, _healthTexture.Height);
@@ -78,6 +82,12 @@ namespace ChilledTreat.GameClasses
 		public void Update()
 		{
 			if(_playerState == States.Dead) Game1.Instance.Exit();
+
+			if (_timesDrawnFire >= 5)
+			{
+				_drawFire = false;
+				_timesDrawnFire = 0;
+			}
 
 			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 			_reticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
@@ -118,13 +128,23 @@ namespace ChilledTreat.GameClasses
 			if (_playerState != States.InCover)
 			{
 				_spriteBatch.Draw(_reticuleTexture, _reticulePosition - _halfReticuleTexture, Color.White);
-				_spriteBatch.Draw(_gunTexture, _gunPosition, null, Color.White, _gunRotation,
+
+				if (_drawFire) {
+					_spriteBatch.Draw(_gunTexture, _gunPosition, _firedGunSource, Color.White, _gunRotation,
+								   new Vector2(_gunTexture.Width / 2f, _gunTexture.Height), SpriteEffects.None, 1f);
+
+					_timesDrawnFire++;
+				}
+				else
+				{
+					_spriteBatch.Draw(_gunTexture, _gunPosition, _gunSource, Color.White, _gunRotation,
 								  new Vector2(_gunTexture.Width / 2f, _gunTexture.Height), SpriteEffects.None, 1f);
+				}
 			}
 			else
 			{
 				_spriteBatch.Draw(_coverTexture,
-					new Vector2((Game1.Instance.GameScreenWidth - _coverTexture.Width)  / 2f , Game1.Instance.GameScreenHeight - _coverTexture.Height),
+					new Vector2((Game1.Instance.GameScreenWidth - _coverTexture.Width) / 2f, Game1.Instance.GameScreenHeight - _coverTexture.Height),
 					Color.White);
 			}
 
@@ -139,6 +159,7 @@ namespace ChilledTreat.GameClasses
 		private void Shoot()
 		{
 			_gunShotSound.Play();
+			_drawFire = true;
 			_bullets[--_ammo] = _usedBulletTexture;
 
 			if (_ammo == 0 && _playerState != States.Reloading)
