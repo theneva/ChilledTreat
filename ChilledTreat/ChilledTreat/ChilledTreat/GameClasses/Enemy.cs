@@ -30,7 +30,7 @@ namespace ChilledTreat.GameClasses
 
 		bool _walkingLeft = false;
 
-		enum States
+		enum State
 		{
 			WalkingLeft,
 			WalkingRight,
@@ -38,7 +38,7 @@ namespace ChilledTreat.GameClasses
 			Dead
 		}
 
-		States WalkingLeft
+		State WalkingLeft
 		{
 			get
 			{
@@ -49,7 +49,7 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		States WalkingRight
+		State WalkingRight
 		{
 			get
 			{
@@ -60,7 +60,7 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		States Attacking
+		State Attacking
 		{
 			get
 			{
@@ -71,7 +71,7 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		States Dead
+		State Dead
 		{
 			get
 			{
@@ -83,14 +83,14 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		States _currentState;
+		State _currentState;
 
 		public Enemy(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_spriteBatch = spriteBatch;
 			_position = Vector2.Zero;
 			_texture = content.Load<Texture2D>("Images/enemy2");
-			_currentState = States.Dead;
+			_currentState = State.Dead;
 		}
 
 		public Enemy(SpriteBatch spriteBatch, ContentManager content, int hp, Vector2 position)
@@ -122,23 +122,23 @@ namespace ChilledTreat.GameClasses
 
 
 			// Movement
-			_position.Y += _speed.Y;
+			//_position.Y += _speed.Y;
 
-			if (_position.Y > 200)
-			{
-				_speed.Y *= -1;
-				_position.Y = 200;
-			}
-			else if (_position.Y < 0)
-			{
-				_speed.Y *= -1;
-				_position.Y = 0;
-			}
+			//if (_position.Y > 200)
+			//{
+			//    _speed.Y *= -1;
+			//    _position.Y = 200;
+			//}
+			//else if (_position.Y < 0)
+			//{
+			//    _speed.Y *= -1;
+			//    _position.Y = 0;
+			//}
 		}
 
 		public void Draw()
 		{
-			_spriteBatch.Draw(_texture, Vector2.Zero,
+			_spriteBatch.Draw(_texture, _position,
 			new Rectangle(_currentFrame.X * _frameSize.X,
 			_currentFrame.Y * _frameSize.Y,
 			_frameSize.X,
