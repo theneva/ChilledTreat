@@ -32,6 +32,7 @@ namespace ChilledTreat.GameClasses
 			Reloading,
 			InCover,
 			Waiting,
+			Damaged,
 			Dead
 		}
 
@@ -100,7 +101,7 @@ namespace ChilledTreat.GameClasses
 
 			if(_input.IsKeyDown(Keys.Space)) _playerState = States.InCover;
 
-			if(_input.IsKeyPressed(Keys.R) && _playerState == States.Alive)
+			if(_input.IsKeyPressed(Keys.R) && _playerState == States.Alive && _ammo != 10)
 			{
 				_playerState = States.Reloading;
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
@@ -177,6 +178,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Damaged(int damage)
 		{
+			_playerState = States.Damaged;
 			if (_playerState == States.InCover) damage /= 5;
 			_health -= damage;
 

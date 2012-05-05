@@ -44,7 +44,7 @@ namespace ChilledTreat
 			// Logic
 			if (input.IsAbortPressed())
 			{
-				Game1.ChangeState(nextState);
+				Game1.ChangeState(1);
 			}
 
 			lineBreak = 0;
