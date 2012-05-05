@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 
-namespace ChilledTreat
+namespace ChilledTreat.GameStates
 {
 	class PauseMenu : GameState
 	{
@@ -63,6 +63,11 @@ namespace ChilledTreat
 				if (_menuItems[_menuPos].Contains("Main Menu"))
 				{
 					Game1.ChangeState(1);
+				} 
+				else if (_menuItems[_menuPos].Contains("Resume Game"))
+				{
+					Game1.ChangeState(4);
+					Game1.Instance.IsMouseVisible = false;
 				}
 			}
 		}

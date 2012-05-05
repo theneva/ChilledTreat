@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ChilledTreat
+namespace ChilledTreat.GameStates
 {
 	class Menu : GameState
 	{
@@ -18,7 +18,7 @@ namespace ChilledTreat
 			: base(spriteBatch, content)
 		{
 			// Menu content
-			_menuFont = Content.Load<SpriteFont>("fonts/menuFont");
+			_menuFont = Content.Load<SpriteFont>("Fonts/menuFont");
 			_fontColor = Color.Salmon;
 			string[] strings = {"New Game", "Instructions", "Credits", "EXIT"};
 			_menuItems = strings;
@@ -31,7 +31,6 @@ namespace ChilledTreat
 			}
 			_selectedItem[_menuPos] = 150f;
 
-			
 			int yStartPos = 100;
 			_yPos = new int[_menuItems.Length];
 			for (int i = 0; i < _yPos.Length; i++)
@@ -43,12 +42,12 @@ namespace ChilledTreat
 
 		public override void Update()
 		{
-			if (_input.IsKeyPressed(_input.DownKey))
+			if (_input.IsDownPressed())
 			{
 				_menuPos++;
 				if (_menuPos > _selectedItem.Length - 1) _menuPos = 0;
 			}
-			if (_input.IsKeyPressed(_input.UpKey))
+			if (_input.IsUpPressed())
 			{
 				_menuPos--;
 				if (_menuPos < 0) _menuPos = _selectedItem.Length - 1;
@@ -56,7 +55,7 @@ namespace ChilledTreat
 			for (int i = 0; i < _selectedItem.Length; i++) _selectedItem[i] = 100f;
 			_selectedItem[_menuPos] = 150f;
 
-			if (_input.IsKeyPressed(_input.ActionKey))
+			if (_input.IsActionPressed())
 			{
 				if (_menuItems[_menuPos].Contains("EXIT"))
 				{
@@ -64,11 +63,13 @@ namespace ChilledTreat
 				}
 				else if (_menuItems[_menuPos].Contains("New Game"))
 				{
-					Game1.ChangeState(3);
+					Game1.NewGame();
+					Game1.ChangeState(4);
 				}
 				else if (_menuItems[_menuPos].Contains("Credits"))
 				{
-					Game1.ChangeState(4);
+					Game1.CreditsScreen();
+					Game1.ChangeState(2);
 				}
 			}
 		}
@@ -78,8 +79,7 @@ namespace ChilledTreat
 			// Draw here
 			for (int i = 0; i < _menuItems.Length; i++)
 			{
-				SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-				
+				SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);	
 			}
 		}
 	}

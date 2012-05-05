@@ -1,81 +1,61 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
 namespace ChilledTreat.GameClasses
 {
-    class Enemy
-    {
-        SpriteBatch spriteBatch;
+	class Enemy
+	{
+		readonly SpriteBatch _spriteBatch;
 
-        Texture2D texture;
-        Vector2 speed = new Vector2(0, 20);
+		readonly Texture2D _texture;
+		Vector2 _speed = new Vector2(0, 20);
 
-        Vector2 position;
+		
+		Vector2 _position;
+		int hp = 20;
 
-        // int hp = 20; // unused so far
+		Point _frameSize = new Point(203, 228);
+		Point _currentFrame = new Point(0, 0);
+		Point _sheetSize = new Point(2, 1);
 
-        Point frameSize = new Point(203, 228);
-        Point currentFrame = new Point(0, 0);
-        Point sheetSize = new Point(2, 1);
+		public Enemy(SpriteBatch spriteBatch, ContentManager content)
+		{
+			_spriteBatch = spriteBatch;
+			_position = Vector2.Zero;
+			_texture = content.Load<Texture2D>("Images/enemy");
+		}
 
-        public Enemy(SpriteBatch spriteBatch, ContentManager content, int hp, Vector2 position)
-        {
-            new Enemy(spriteBatch, content);
-            this.hp = hp;
-            this.position = position;
+		public void Update()
+		{
+			// Animation frames
+			++_currentFrame.X;
+				if (_currentFrame.X >= _sheetSize.X)
+				{
+					_currentFrame.X = 0;
+					++_currentFrame.Y;
+					if (_currentFrame.Y >= _sheetSize.Y)
+						_currentFrame.Y = 0;
+				}
 
-        }
+				// Movement
+				_position.Y -= _speed.Y;
 
-        public Enemy(SpriteBatch spriteBatch, ContentManager content)
-        {
-            this.spriteBatch = spriteBatch;
-            this.position = Vector2.Zero;
-            this.texture = content.Load<Texture2D>("Images/enemy");
-        }
+				if (_position.Y > 200)
+				{
+					_speed.Y *= -1;
+					_position.Y = 200;
+				}
+				else if (_position.Y < 0)
+				{
+					_speed.Y *= -1;
+					_position.Y = 0;
+				}
+		}
 
-        public void Update()
-        {
-            // TODO: Animation framerate
-            // Animation frames
-            ++currentFrame.X;
-            if (currentFrame.X >= sheetSize.X)
-            {
-                currentFrame.X = 0;
-                ++currentFrame.Y;
-                if (currentFrame.Y >= sheetSize.Y)
-                    currentFrame.Y = 0;
-            }
-
-            // Movement
-            position.Y -= speed.Y;
-
-            if (position.Y > 200)
-            {
-                speed.Y *= -1;
-                position.Y = 200;
-            }
-            else if (position.Y < 0)
-            {
-                speed.Y *= -1;
-                position.Y = 0;
-            }
-        }
-
-        public void Draw()
-        {
-            // TODO: Adjust the FPS
-            spriteBatch.Draw(texture, Vector2.Zero,
-            new Rectangle(currentFrame.X * frameSize.X,
-            currentFrame.Y * frameSize.Y,
-            frameSize.X,
-            frameSize.Y),
-            Color.White, 0, Vector2.Zero,
-            1, SpriteEffects.None, 0);
-        }
-    }
+		public void Draw()
+		{
+			_spriteBatch.Draw(_texture, _position, Color.White);
+		}
+	}
 }

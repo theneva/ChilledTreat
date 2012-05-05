@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using ChilledTreat.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using ChilledTreat.GameClasses;
 
 namespace ChilledTreat
 {
@@ -11,14 +11,14 @@ namespace ChilledTreat
 	/// </summary>
 	public class Game1 : Game
 	{
-		public static Game1 Instance = null;
+		public static Game1 Instance;
 
 		// public for å kunne brukes andre steder
 		public GraphicsDeviceManager Graphics;
 		public SpriteBatch SpriteBatch;
 
-		public int GameScreenWidth = 1280;
-		public int GameScreenHeight = 720;
+		public int GameScreenWidth = 800;
+		public int GameScreenHeight = 600;
 
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;
@@ -45,20 +45,11 @@ namespace ChilledTreat
 			Graphics.PreferredBackBufferWidth = GameScreenWidth;
 			Graphics.PreferredBackBufferHeight = GameScreenHeight;
 
+			//Graphics.IsFullScreen = true;
+
+			IsMouseVisible = true;
+
 			Instance = this;
-		}
-
-		/// <summary>
-		/// Allows the game to perform any initialization it needs to before starting to run.
-		/// This is where it can query for any required services and load any non-graphic
-		/// related content.  Calling base.Initialize will enumerate through any components
-		/// and initialize them as well.
-		/// </summary>
-		protected override void Initialize()
-		{
-			// TODO: Add your initialization logic here
-
-			base.Initialize();
 		}
 
 		/// <summary>
@@ -72,15 +63,13 @@ namespace ChilledTreat
 
 			// Legge til gamestates som klasser i listen
 			// ex: GameStates.add(new InGame(Sprite...., con);
-
+			
 			_gameStates.Add(new Splash(SpriteBatch, Content, 1));
 			_gameStates.Add(new Menu(SpriteBatch, Content));
-			_gameStates.Add(new Credits(SpriteBatch, Content, 1));
-			_gameStates.Add(new InGame(SpriteBatch, Content));
+			_gameStates.Add(new Credits(SpriteBatch, Content));
 			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
 
 			_activeGameState = _gameStates[0];
-			// TODO: use this.Content to load your game content here
 		}
 
 		/// <summary>
@@ -89,7 +78,7 @@ namespace ChilledTreat
 		/// </summary>
 		protected override void UnloadContent()
 		{
-			// TODO: Unload any non ContentManager content here
+		
 		}
 
 		/// <summary>
@@ -101,9 +90,7 @@ namespace ChilledTreat
 		{
 			// Allows the game to exit
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-				this.Exit();
-
-			// TODO: Add your update logic here
+				Exit();
 
 			_frameInfo.GameTime = gameTime;
 
@@ -127,8 +114,6 @@ namespace ChilledTreat
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime)
 		{
-			// TODO: Add your drawing code here
-
 			GraphicsDevice.Clear(Color.WhiteSmoke);
 
 			SpriteBatch.Begin();
@@ -138,6 +123,29 @@ namespace ChilledTreat
 			SpriteBatch.End();
 
 			base.Draw(gameTime);
+		}
+
+		public static void NewGame() 
+		{
+			if (Instance._gameStates.Count < 5)
+			{
+				Instance._gameStates.Add(new InGame(Instance.SpriteBatch, Instance.Content));
+			}
+			else
+			{
+				Instance._gameStates[4] = new InGame(Instance.SpriteBatch, Instance.Content);
+			}
+		}
+		public static void CreditsScreen()
+		{
+			if (Instance._gameStates.Count < 5)
+			{
+				Instance._gameStates.Add(new Credits(Instance.SpriteBatch, Instance.Content));
+			}
+			else
+			{
+				Instance._gameStates[4] = new Credits(Instance.SpriteBatch, Instance.Content);
+			}
 		}
 	}
 }
