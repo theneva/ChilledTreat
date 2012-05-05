@@ -12,9 +12,10 @@ namespace ChilledTreat.GameClasses
 		private readonly InputHandler _input = InputHandler.Instance;
 		private readonly SpriteBatch _spriteBatch;
 
-		private int _health, _ammo, _heartsDrawn, _widthOfHeart;
+		private int _health, _healthIn10, _ammo, _fullHeartsToDraw, _emptyHeartsToDraw, _heartsDrawShift;
+		private readonly int _widthOfHeart;
 		private double _currentTime, _startShootTime, _startReloadTime;
-		private bool _playReloadSound;
+		private bool _playReloadSound, _drawHalfHeart;
 		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture, _healthTexture;
 		private readonly Vector2 _halfReticuleTexture;
 		private Vector2 _vectorGunToMouse, _reticulePosition;
@@ -22,14 +23,14 @@ namespace ChilledTreat.GameClasses
 		private readonly Vector2[] _bulletPositions;
 		private readonly SoundEffect _gunShotSound, _gunReloadSound;
 		private float _gunRotation;
-		private readonly Rectangle _gunPosition, _fullHealthSource, _halfHealthSource, _noHealthSource;
+		private readonly Rectangle _gunPosition, _fullHealthSource, _halfHealthSource, _emptyHealthSource;
 
 		enum States
 		{
 			Alive,
 			Shooting,
 			Reloading,
-			InCover,
+			//InCover,
 			Waiting,
 			Dead
 		}
@@ -58,7 +59,7 @@ namespace ChilledTreat.GameClasses
 			_widthOfHeart = _healthTexture.Width/3;
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
 			_halfHealthSource = new Rectangle(_widthOfHeart, 0, _widthOfHeart, _healthTexture.Height);
-			_noHealthSource = new Rectangle(_widthOfHeart * 2, 0, _widthOfHeart, _healthTexture.Height);
+			_emptyHealthSource = new Rectangle(_widthOfHeart * 2, 0, _widthOfHeart, _healthTexture.Height);
 			_playerState = States.Alive;
 
 			for (int i = 0; i < _bulletPositions.Length; i++)
@@ -103,12 +104,7 @@ namespace ChilledTreat.GameClasses
 				_playReloadSound = true;
 			}
 
-			if (_playerState == States.Shooting)
-			{
-				Shoot();
-
-				//if (_currentTime - _startShootTime > 1000) _playerState = States.Alive;
-			}
+			if (_playerState == States.Shooting) Shoot();
 
 			if (_playerState == States.Reloading) Reload();
 		}
@@ -142,6 +138,9 @@ namespace ChilledTreat.GameClasses
 
 			if (_playerState != States.Reloading && _playerState != States.Waiting && _playerState != States.Dead) _playerState = States.Alive;
 
+			//TODO
+			//This is a test for whether or not the damage function works (and the drawing of the health indicator)
+			//Damaged(5);
 		}
 
 		public void Reload()
@@ -178,134 +177,78 @@ namespace ChilledTreat.GameClasses
 
 		public void DrawHealth()
 		{
-			_heartsDrawn = 0;
-			if (_health == 100)
+			_healthIn10 = _health / 10;
+			_heartsDrawShift = 0;
+			_drawHalfHeart = _healthIn10 % 2 != 0;
+
+			switch (_healthIn10)
 			{
-				for (int i = 0; i < 5; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
-					_heartsDrawn++;
-				}
+				case 10:
+					_fullHeartsToDraw = 5;
+					_emptyHeartsToDraw = 0;
+					break;
+				case 9:
+					_fullHeartsToDraw = 4;
+					_emptyHeartsToDraw = 0;
+					break;
+				case 8:
+					_fullHeartsToDraw = 4;
+					_emptyHeartsToDraw = 1;
+					break;
+				case 7:
+					_fullHeartsToDraw = 3;
+					_emptyHeartsToDraw = 1;
+					break;
+				case 6:
+					_fullHeartsToDraw = 3;
+					_emptyHeartsToDraw = 2;
+					break;
+				case 5:
+					_fullHeartsToDraw = 2;
+					_emptyHeartsToDraw = 2;
+					break;
+				case 4:
+					_fullHeartsToDraw = 2;
+					_emptyHeartsToDraw = 3;
+					break;
+				case 3:
+					_fullHeartsToDraw = 1;
+					_emptyHeartsToDraw = 3;
+					break;
+				case 2:
+					_fullHeartsToDraw = 1;
+					_emptyHeartsToDraw = 4;
+					break;
+				case 1:
+					_fullHeartsToDraw = 0;
+					_emptyHeartsToDraw = 4;
+					break;
+				case 0:
+					_fullHeartsToDraw = 0;
+					_emptyHeartsToDraw = 5;
+					break;
 			}
-			else if (_health >= 90)
-			{
-				for (int i = 0; i < 4; i++)
+
+			
+				for (int i = 0; i < _fullHeartsToDraw; i++)
 				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
-					_heartsDrawn++;
+					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
+					_heartsDrawShift++;
 				}
 
-				_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _halfHealthSource, Color.White);
-			}
-			else if (_health >= 80)
-			{
-				for (int i = 0; i < 4; i++)
+				if (_drawHalfHeart)
 				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
-					_heartsDrawn++;
+					_spriteBatch.Draw(_healthTexture,
+					                  new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60*_heartsDrawShift),
+					                              Game1.Instance.GameScreenHeight - 50), _halfHealthSource, Color.White);
+					_heartsDrawShift++;
 				}
 
-				_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _noHealthSource, Color.White);
-			}
-			else if (_health >= 70)
-			{
-				for (int i = 0; i < 3; i++)
+				for (int i = 0; i < _emptyHeartsToDraw; i++)
 				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
-					_heartsDrawn++;
+					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50), _emptyHealthSource, Color.White);
+					_heartsDrawShift++;
 				}
-
-				_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _halfHealthSource, Color.White);
-				_heartsDrawn++;
-				_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _noHealthSource, Color.White);
-			}
-			else if (_health >= 60)
-			{
-				for (int i = 0; i < 3; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
-					_heartsDrawn++;
-				}
-				for (int i = 0; i < 2; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _noHealthSource, Color.White);
-					_heartsDrawn++;
-				}
-			}
-			else if (_health >= 50)
-			{
-				for (int i = 0; i < 2; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
-					_heartsDrawn++;
-				}
-
-				_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _halfHealthSource, Color.White);
-				_heartsDrawn++;
-
-				for (int i = 0; i < 2; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _noHealthSource, Color.White);
-					_heartsDrawn++;
-				}
-			}
-			else if (_health >= 40)
-			{
-				for (int i = 0; i < 2; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
-					_heartsDrawn++;
-				}
-
-				for (int i = 0; i < 3; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _noHealthSource, Color.White);
-					_heartsDrawn++;
-				}
-			}
-			else if (_health >= 30)
-			{
-				_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
-				_heartsDrawn++;
-				_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _halfHealthSource, Color.White);
-				_heartsDrawn++;
-
-				for (int i = 0; i < 3; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _noHealthSource, Color.White);
-					_heartsDrawn++;
-				}
-			}
-			else if (_health >= 20)
-			{
-				_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
-				_heartsDrawn++;
-
-				for (int i = 0; i < 4; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _noHealthSource, Color.White);
-					_heartsDrawn++;
-				}
-			}
-			else if (_health >= 10)
-			{
-				_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _halfHealthSource, Color.White);
-				_heartsDrawn++;
-
-				for (int i = 0; i < 4; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _noHealthSource, Color.White);
-					_heartsDrawn++;
-				}
-			}
-			else if (_health > 0)
-			{
-				for (int i = 0; i < 5; i++)
-				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawn), Game1.Instance.GameScreenHeight - 50), _noHealthSource, Color.White);
-					_heartsDrawn++;
-				}
-			}
 		}
 	}
 }
