@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Microsoft.Xna.Framework.Input;
 
 namespace ChilledTreat.GameClasses
@@ -42,7 +42,7 @@ namespace ChilledTreat.GameClasses
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
-			_health = 100;
+			_health = 75;
 			_ammo = 10;
 			_timesDrawnFire = 0;
 			_playReloadSound = false;
@@ -62,7 +62,7 @@ namespace ChilledTreat.GameClasses
 			_gunSource = new Rectangle(0, 0, 80, 130);
 			_firedGunSource = new Rectangle(80, 0, 80, 130);
 			_gunPosition = new Rectangle(Game1.Instance.GameScreenWidth / 2, Game1.Instance.GameScreenHeight + 40, _gunTexture.Width / 2, _gunTexture.Height);
-			_widthOfHeart = _healthTexture.Width/3;
+			_widthOfHeart = _healthTexture.Width / 3;
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
 			_halfHealthSource = new Rectangle(_widthOfHeart, 0, _widthOfHeart, _healthTexture.Height);
 			_emptyHealthSource = new Rectangle(_widthOfHeart * 2, 0, _widthOfHeart, _healthTexture.Height);
@@ -81,7 +81,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
-			if(_playerState == States.Dead) Game1.Instance.Exit();
+			if (_playerState == States.Dead) Game1.Instance.Exit();
 
 			if (_timesDrawnFire >= 5)
 			{
@@ -94,7 +94,7 @@ namespace ChilledTreat.GameClasses
 			if (_currentTime - _startShootTime > 200 && _playerState != States.Reloading) _playerState = States.Alive;
 
 			_vectorGunToMouse = new Vector2((_gunPosition.X - _input.MouseState.X), (_gunPosition.Y - _input.MouseState.Y));
-			_gunRotation = (float) Math.Atan2(- _vectorGunToMouse.X, _vectorGunToMouse.Y);
+			_gunRotation = (float)Math.Atan2(-_vectorGunToMouse.X, _vectorGunToMouse.Y);
 
 			if (_reticulePosition.X < 0) _reticulePosition = new Vector2(0, _reticulePosition.Y);
 			else if (_reticulePosition.X > Game1.Instance.GameScreenWidth) _reticulePosition = new Vector2(Game1.Instance.GameScreenWidth, _reticulePosition.Y);
@@ -109,9 +109,9 @@ namespace ChilledTreat.GameClasses
 				_playerState = States.Shooting;
 			}
 
-			if(_input.IsKeyDown(Keys.Space)) _playerState = States.InCover;
+			if (_input.IsKeyDown(Keys.Space)) _playerState = States.InCover;
 
-			if(_input.IsKeyPressed(Keys.R) && _playerState == States.Alive && _ammo != 10)
+			if (_input.IsKeyPressed(Keys.R) && _playerState == States.Alive && _ammo != 10)
 			{
 				_playerState = States.Reloading;
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
@@ -129,7 +129,8 @@ namespace ChilledTreat.GameClasses
 			{
 				_spriteBatch.Draw(_reticuleTexture, _reticulePosition - _halfReticuleTexture, Color.White);
 
-				if (_drawFire) {
+				if (_drawFire)
+				{
 					_spriteBatch.Draw(_gunTexture, _gunPosition, _firedGunSource, Color.White, _gunRotation,
 								   new Vector2(_gunTexture.Width / 2f, _gunTexture.Height), SpriteEffects.None, 1f);
 
@@ -168,7 +169,8 @@ namespace ChilledTreat.GameClasses
 
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 				_playReloadSound = true;
-			} else _playerState = States.Waiting;
+			}
+			else _playerState = States.Waiting;
 
 			if (_playerState != States.Reloading && _playerState != States.Waiting && _playerState != States.Dead) _playerState = States.Alive;
 
@@ -267,30 +269,30 @@ namespace ChilledTreat.GameClasses
 					break;
 			}
 
-			
-				for (int i = 0; i < _fullHeartsToDraw; i++)
-				{
-					_spriteBatch.Draw(_healthTexture,
-						new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50),
-						_fullHealthSource, Color.White);
-					_heartsDrawShift++;
-				}
 
-				if (_drawHalfHeart)
-				{
-					_spriteBatch.Draw(_healthTexture,
-					                  new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60*_heartsDrawShift),
-					                              Game1.Instance.GameScreenHeight - 50), _halfHealthSource, Color.White);
-					_heartsDrawShift++;
-				}
+			for (int i = 0; i < _fullHeartsToDraw; i++)
+			{
+				_spriteBatch.Draw(_healthTexture,
+					new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50),
+					_fullHealthSource, Color.White);
+				_heartsDrawShift++;
+			}
 
-				for (int i = 0; i < _emptyHeartsToDraw; i++)
-				{
-					_spriteBatch.Draw(_healthTexture,
-						new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50),
-						_emptyHealthSource, Color.White);
-					_heartsDrawShift++;
-				}
+			if (_drawHalfHeart)
+			{
+				_spriteBatch.Draw(_healthTexture,
+								  new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift),
+											  Game1.Instance.GameScreenHeight - 50), _halfHealthSource, Color.White);
+				_heartsDrawShift++;
+			}
+
+			for (int i = 0; i < _emptyHeartsToDraw; i++)
+			{
+				_spriteBatch.Draw(_healthTexture,
+					new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50),
+					_emptyHealthSource, Color.White);
+				_heartsDrawShift++;
+			}
 		}
 	}
 }
