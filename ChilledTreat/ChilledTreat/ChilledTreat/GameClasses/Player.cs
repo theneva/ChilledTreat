@@ -16,7 +16,7 @@ namespace ChilledTreat.GameClasses
 		private readonly int _widthOfHeart;
 		private double _currentTime, _startShootTime, _startReloadTime;
 		private bool _playReloadSound, _drawHalfHeart;
-		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture, _healthTexture;
+		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture, _healthTexture, _coverTexture;
 		private readonly Vector2 _halfReticuleTexture;
 		private Vector2 _vectorGunToMouse, _reticulePosition;
 		private readonly Texture2D[] _bullets;
@@ -30,7 +30,7 @@ namespace ChilledTreat.GameClasses
 			Alive,
 			Shooting,
 			Reloading,
-			//InCover,
+			InCover,
 			Waiting,
 			Dead
 		}
@@ -41,7 +41,7 @@ namespace ChilledTreat.GameClasses
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
-			_health = 75;
+			_health = 100;
 			_ammo = 10;
 			_playReloadSound = false;
 			_reticuleTexture = content.Load<Texture2D>("Images/usableReticule");
@@ -49,6 +49,7 @@ namespace ChilledTreat.GameClasses
 			_usedBulletTexture = content.Load<Texture2D>("Images/usableUsedBullet");
 			_gunTexture = content.Load<Texture2D>("Images/gunTest");
 			_healthTexture = content.Load<Texture2D>("Images/normalUsableHeart");
+			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
 			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
 			_gunReloadSound = content.Load<SoundEffect>("Sounds/ReloadSound");
 			_spriteBatch = spriteBatch;
@@ -97,7 +98,9 @@ namespace ChilledTreat.GameClasses
 				_playerState = States.Shooting;
 			}
 
-			if(_input.IsKeyPressed(Keys.R) && _playerState != States.Reloading)
+			if(_input.IsKeyDown(Keys.Space)) _playerState = States.InCover;
+
+			if(_input.IsKeyPressed(Keys.R) && _playerState == States.Alive)
 			{
 				_playerState = States.Reloading;
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
@@ -111,9 +114,18 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			_spriteBatch.Draw(_reticuleTexture, _reticulePosition - _halfReticuleTexture, Color.White);
-			_spriteBatch.Draw(_gunTexture, _gunPosition, null, Color.White, _gunRotation, new Vector2(_gunTexture.Width / 2f, _gunTexture.Height), SpriteEffects.None, 1f);
-
+			if (_playerState != States.InCover)
+			{
+				_spriteBatch.Draw(_reticuleTexture, _reticulePosition - _halfReticuleTexture, Color.White);
+				_spriteBatch.Draw(_gunTexture, _gunPosition, null, Color.White, _gunRotation,
+								  new Vector2(_gunTexture.Width / 2f, _gunTexture.Height), SpriteEffects.None, 1f);
+			}
+			else
+			{
+				_spriteBatch.Draw(_coverTexture,
+					new Vector2((Game1.Instance.GameScreenWidth - _coverTexture.Width)  / 2f , Game1.Instance.GameScreenHeight - _coverTexture.Height),
+					Color.White);
+			}
 
 			for (int i = 0; i < _bullets.Length; i++)
 			{
@@ -167,6 +179,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Damaged(int damage)
 		{
+			if (_playerState == States.InCover) damage /= 5;
 			_health -= damage;
 
 			if (_health <= 0)
@@ -232,7 +245,9 @@ namespace ChilledTreat.GameClasses
 			
 				for (int i = 0; i < _fullHeartsToDraw; i++)
 				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50), _fullHealthSource, Color.White);
+					_spriteBatch.Draw(_healthTexture,
+						new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50),
+						_fullHealthSource, Color.White);
 					_heartsDrawShift++;
 				}
 
@@ -246,7 +261,9 @@ namespace ChilledTreat.GameClasses
 
 				for (int i = 0; i < _emptyHeartsToDraw; i++)
 				{
-					_spriteBatch.Draw(_healthTexture, new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50), _emptyHealthSource, Color.White);
+					_spriteBatch.Draw(_healthTexture,
+						new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50),
+						_emptyHealthSource, Color.White);
 					_heartsDrawShift++;
 				}
 		}
