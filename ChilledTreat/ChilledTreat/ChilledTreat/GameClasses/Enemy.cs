@@ -8,60 +8,74 @@ using Microsoft.Xna.Framework.Content;
 
 namespace ChilledTreat.GameClasses
 {
-	class Enemy
-	{
-		SpriteBatch spriteBatch;
+    class Enemy
+    {
+        SpriteBatch spriteBatch;
 
-		Texture2D texture;
-		/*Vector2 speed = new Vector2(0, 20);
+        Texture2D texture;
+        Vector2 speed = new Vector2(0, 20);
 
-		*/
-		Vector2 position;/*
-		int hp = 20;
+        Vector2 position;
 
-		Point frameSize = new Point(203, 228);
-		Point currentFrame = new Point(0, 0);
-		Point sheetSize = new Point(2, 1);*/
+        // int hp = 20; // unused so far
 
-		public Enemy(SpriteBatch spriteBatch, ContentManager content)
-		{
-			this.spriteBatch = spriteBatch;
-			//position = Vector2.Zero;
-			texture = content.Load<Texture2D>("Images/enemy");
-		}
+        Point frameSize = new Point(203, 228);
+        Point currentFrame = new Point(0, 0);
+        Point sheetSize = new Point(2, 1);
 
-		public void Update()
-		{
-			// Animation frames
-			/*	++currentFrame.X;
-				if (currentFrame.X >= sheetSize.X)
-				{
-					currentFrame.X = 0;
-					++currentFrame.Y;
-					if (currentFrame.Y >= sheetSize.Y)
-						currentFrame.Y = 0;
-				}
+        public Enemy(SpriteBatch spriteBatch, ContentManager content, int hp, Vector2 position)
+        {
+            new Enemy(spriteBatch, content);
+            this.hp = hp;
+            this.position = position;
 
-				// Movement
-				position.Y -= speed.Y;
+        }
 
-				if (position.Y > 200)
-				{
-					speed.Y *= -1;
-					position.Y = 200;
-				}
-				else if (position.Y < 0)
-				{
-					speed.Y *= -1;
-					position.Y = 0;
-				}*/
-		}
+        public Enemy(SpriteBatch spriteBatch, ContentManager content)
+        {
+            this.spriteBatch = spriteBatch;
+            this.position = Vector2.Zero;
+            this.texture = content.Load<Texture2D>("Images/enemy");
+        }
 
-		public void Draw()
-		{
-			spriteBatch.Draw(texture,
-				position,
-				Color.White);
-		}
-	}
+        public void Update()
+        {
+            // TODO: Animation framerate
+            // Animation frames
+            ++currentFrame.X;
+            if (currentFrame.X >= sheetSize.X)
+            {
+                currentFrame.X = 0;
+                ++currentFrame.Y;
+                if (currentFrame.Y >= sheetSize.Y)
+                    currentFrame.Y = 0;
+            }
+
+            // Movement
+            position.Y -= speed.Y;
+
+            if (position.Y > 200)
+            {
+                speed.Y *= -1;
+                position.Y = 200;
+            }
+            else if (position.Y < 0)
+            {
+                speed.Y *= -1;
+                position.Y = 0;
+            }
+        }
+
+        public void Draw()
+        {
+            // TODO: Adjust the FPS
+            spriteBatch.Draw(texture, Vector2.Zero,
+            new Rectangle(currentFrame.X * frameSize.X,
+            currentFrame.Y * frameSize.Y,
+            frameSize.X,
+            frameSize.Y),
+            Color.White, 0, Vector2.Zero,
+            1, SpriteEffects.None, 0);
+        }
+    }
 }
