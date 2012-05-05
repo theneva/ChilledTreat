@@ -135,7 +135,7 @@ namespace ChilledTreat.GameClasses
 			DrawHealth();
 		}
 
-		public void Shoot()
+		private void Shoot()
 		{
 			_gunShotSound.Play();
 			_bullets[--_ammo] = _usedBulletTexture;
@@ -155,7 +155,7 @@ namespace ChilledTreat.GameClasses
 			//Damaged(5);
 		}
 
-		public void Reload()
+		private void Reload()
 		{
 			if (_playReloadSound)
 			{
@@ -188,7 +188,8 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		public void DrawHealth()
+		//This method determines how many hearts are drawn on the screen (i.e. how much health is left), and draws them on the screen
+		private void DrawHealth()
 		{
 			_healthIn10 = _health / 10;
 			_heartsDrawShift = 0;
