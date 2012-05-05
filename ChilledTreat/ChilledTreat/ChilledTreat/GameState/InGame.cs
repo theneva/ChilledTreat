@@ -18,6 +18,8 @@ namespace ChilledTreat
 			// CONTENT LOAD
 			_player = new Player(spriteBatch, content);
 			_enemy = new Enemy(spriteBatch, content);
+
+			Game1.Instance.IsMouseVisible = false;
 		}
 
 		// Methods
@@ -28,8 +30,9 @@ namespace ChilledTreat
 			_player.Update();
 			_enemy.Update();
 
-			if (_input.IsAbortPressed())
+			if (_input.IsAbortPressed() || Game1.Instance.IsActive == false)
 			{
+				Game1.Instance.IsMouseVisible = true;
 				Game1.ChangeState(3);
 			}
 		}

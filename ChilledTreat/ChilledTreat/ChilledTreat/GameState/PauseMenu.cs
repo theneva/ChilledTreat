@@ -67,6 +67,7 @@ namespace ChilledTreat
 				else if (_menuItems[_menuPos].Contains("Resume Game"))
 				{
 					Game1.ChangeState(4);
+					Game1.Instance.IsMouseVisible = false;
 				}
 			}
 		}

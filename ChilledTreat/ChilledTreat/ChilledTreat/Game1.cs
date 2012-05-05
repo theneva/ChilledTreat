@@ -46,6 +46,8 @@ namespace ChilledTreat
 
 			//Graphics.IsFullScreen = true;
 
+			IsMouseVisible = true;
+
 			Instance = this;
 		}
 
