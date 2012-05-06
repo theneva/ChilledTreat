@@ -24,6 +24,7 @@ namespace ChilledTreat.GameClasses
 		private readonly SoundEffect _gunShotSound, _gunReloadSound;
 		private float _gunRotation;
 		private readonly Rectangle _gunPosition, _gunSource, _firedGunSource, _fullHealthSource, _halfHealthSource, _emptyHealthSource;
+		private Rectangle _hitBox;
 
 		enum State
 		{
@@ -67,6 +68,7 @@ namespace ChilledTreat.GameClasses
 			_halfHealthSource = new Rectangle(_widthOfHeart, 0, _widthOfHeart, _healthTexture.Height);
 			_emptyHealthSource = new Rectangle(_widthOfHeart * 2, 0, _widthOfHeart, _healthTexture.Height);
 			_playerState = State.Alive;
+			_hitBox = new Rectangle();
 
 			for (int i = 0; i < _bulletPositions.Length; i++)
 			{
@@ -105,6 +107,8 @@ namespace ChilledTreat.GameClasses
 			if (_playerState == State.Alive && _input.IsLeftMouseButtonPressed())
 			{
 				_startShootTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
+
+				_hitBox = new Rectangle(_input.MouseState.X - 20, _input.MouseState.Y - 20, 40, 40);
 
 				_playerState = State.Shooting;
 			}
@@ -162,6 +166,8 @@ namespace ChilledTreat.GameClasses
 			_gunShotSound.Play();
 			_drawFire = true;
 			_bullets[--_ammo] = _usedBulletTexture;
+
+			EnemyHandler.Instance.RecievedDamage(_hitBox);
 
 			if (_ammo == 0 && _playerState != State.Reloading)
 			{

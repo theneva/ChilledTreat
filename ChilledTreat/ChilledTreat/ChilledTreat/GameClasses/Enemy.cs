@@ -146,5 +146,10 @@ namespace ChilledTreat.GameClasses
 			Color.White, 0, Vector2.Zero,
 			2, _walkingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0);
 		}
+
+		public Rectangle GetPosition()
+		{
+			return new Rectangle((int) _position.X, (int) _position.Y, _frameSize.X, _frameSize.Y);
+		}
 	}
 }

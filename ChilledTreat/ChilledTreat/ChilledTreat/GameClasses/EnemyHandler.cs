@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace ChilledTreat.GameClasses
 {
 	class EnemyHandler
 	{
-		List<Enemy> enemies;
-		
+		readonly List<Enemy> _enemies;
+
 		static EnemyHandler _instance;
 		public static EnemyHandler Instance
 		{
@@ -17,17 +16,17 @@ namespace ChilledTreat.GameClasses
 
 		private EnemyHandler()
 		{
-			enemies = new List<Enemy>();
+			_enemies = new List<Enemy>();
 		}
 
 		public int GetNumberOfEnemies()
 		{
-			return enemies.Count;
+			return _enemies.Count;
 		}
 
 		public void Update()
 		{
-			foreach (Enemy e in enemies)
+			foreach (Enemy e in _enemies)
 			{
 				e.Update();
 			}
@@ -35,7 +34,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			foreach (Enemy e in enemies)
+			foreach (Enemy e in _enemies)
 			{
 				e.Draw();
 			}
@@ -43,17 +42,22 @@ namespace ChilledTreat.GameClasses
 
 		public void Add(Enemy e)
 		{
-			enemies.Add(e);
+			_enemies.Add(e);
 		}
 
 		public void Remove(Enemy e)
 		{
-			enemies.Remove(e);
+			_enemies.Remove(e);
 		}
 
 		public void Clear()
 		{
-			enemies.Clear();
+			_enemies.Clear();
+		}
+
+		public void RecievedDamage(Rectangle shot)
+		{
+			foreach (Enemy e in _enemies.Where(e => shot.Intersects(e.GetPosition()))) Remove(e);
 		}
 	}
 }
