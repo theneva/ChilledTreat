@@ -17,8 +17,8 @@ namespace ChilledTreat
 		public GraphicsDeviceManager Graphics;
 		public SpriteBatch SpriteBatch;
 
-		public int GameScreenWidth = 800;
-		public int GameScreenHeight = 600;
+		public int GameScreenWidth = 1280;
+		public int GameScreenHeight = 720;
 
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;
@@ -64,7 +64,7 @@ namespace ChilledTreat
 			// Legge til gamestates som klasser i listen
 			// ex: GameStates.add(new InGame(Sprite...., con);
 			
-			_gameStates.Add(new Splash(SpriteBatch, Content, 1));
+			_gameStates.Add(new Splash(SpriteBatch, Content));
 			_gameStates.Add(new Menu(SpriteBatch, Content));
 			_gameStates.Add(new Credits(SpriteBatch, Content));
 			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
@@ -125,6 +125,9 @@ namespace ChilledTreat
 			base.Draw(gameTime);
 		}
 
+
+        // Kun InGame gamestatet som skal ha en metode som dette
+        // ---- Den lager nytt InGame object når du starter på ny
 		public static void NewGame() 
 		{
 			if (Instance._gameStates.Count < 5)
@@ -134,17 +137,6 @@ namespace ChilledTreat
 			else
 			{
 				Instance._gameStates[4] = new InGame(Instance.SpriteBatch, Instance.Content);
-			}
-		}
-		public static void CreditsScreen()
-		{
-			if (Instance._gameStates.Count < 5)
-			{
-				Instance._gameStates.Add(new Credits(Instance.SpriteBatch, Instance.Content));
-			}
-			else
-			{
-				Instance._gameStates[4] = new Credits(Instance.SpriteBatch, Instance.Content);
 			}
 		}
 	}

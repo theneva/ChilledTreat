@@ -8,13 +8,12 @@ namespace ChilledTreat.GameStates
 	{
 		//Texture2D SplashTexture;
 
-		readonly int _nextState;
 
 
-		public Splash(SpriteBatch spriteBatch, ContentManager content, int nextState)
+		public Splash(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
 		{
-			_nextState = nextState;
+			// LOAD CONTENT
 		}		
 		public override void Update()
 		{
@@ -23,7 +22,7 @@ namespace ChilledTreat.GameStates
 
 			if (input.IsActionPressed())
 			{
-				Game1.ChangeState(_nextState);
+				Game1.ChangeState(GameState.Menu);
 			}
 
 		}

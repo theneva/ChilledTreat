@@ -32,7 +32,7 @@ namespace ChilledTreat.GameStates
 			// Logic
 			if (_input.IsAbortPressed())
 			{
-				Game1.ChangeState(1);
+				Game1.ChangeState(GameState.Menu);
 			}
 
 			_lineBreak = 0;

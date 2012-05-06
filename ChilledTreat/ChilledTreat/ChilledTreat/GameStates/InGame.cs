@@ -33,8 +33,6 @@ namespace ChilledTreat.GameStates
 
 			if (_input.IsAbortPressed() || Game1.Instance.IsActive == false)
 			{
-				Game1.Instance.IsMouseVisible = true;
-				//Game1.ChangeState(3); VS:
 				Game1.ChangeState(GameState.PauseMenu);
 			}
 		}

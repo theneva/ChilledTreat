@@ -62,7 +62,7 @@ namespace ChilledTreat.GameStates
 			{
 				if (_menuItems[_menuPos].Contains("Main Menu"))
 				{
-					Game1.ChangeState(1);
+					Game1.ChangeState(GameState.Menu);
 				} 
 				else if (_menuItems[_menuPos].Contains("Resume Game"))
 				{
