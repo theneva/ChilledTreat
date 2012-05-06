@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
@@ -57,7 +58,7 @@ namespace ChilledTreat.GameClasses
 
 		public void RecievedDamage(Rectangle shot)
 		{
-			foreach (Enemy e in _enemies.Where(e => shot.Intersects(e.GetPosition()))) Remove(e);
+			foreach (Enemy e in _enemies.Where(e => shot.Intersects(e.GetPosition()))) Console.WriteLine("Hit!");
 		}
 	}
 }
