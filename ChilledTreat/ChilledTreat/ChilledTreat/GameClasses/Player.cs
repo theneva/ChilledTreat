@@ -188,7 +188,7 @@ namespace ChilledTreat.GameClasses
 				_playReloadSound = false;
 			}
 
-			if (_currentTime - _startReloadTime <= 2500) return;
+			if (_currentTime - _startReloadTime <= _gunReloadSound.Duration.TotalMilliseconds) return;
 			_ammo = 10;
 
 			for (int i = 0; i < _bullets.Length; i++)
