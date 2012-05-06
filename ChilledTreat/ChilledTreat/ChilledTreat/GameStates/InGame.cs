@@ -1,4 +1,5 @@
 ﻿using ChilledTreat.GameClasses;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -18,7 +19,7 @@ namespace ChilledTreat.GameStates
 			// CONTENT LOAD
 			_player = new Player(spriteBatch, content);
 			_enemies.Add(new Enemy(spriteBatch, content));
-			_enemies.Add(new Enemy(spriteBatch, content, 100, new Microsoft.Xna.Framework.Vector2(200, 300)));
+			_enemies.Add(new Enemy(spriteBatch, content, 100, new Vector2(200, 300)));
 
 			Game1.Instance.IsMouseVisible = false;
 		}
