@@ -15,7 +15,11 @@ namespace ChilledTreat.GameClasses
 		Texture2D texture;
 		Vector2 speed = new Vector2(0, 20);
 
-		
+        FrameInfo inf = FrameInfo.Instance;
+
+        double currentTime = 0;
+        double changeDirTime = 0;
+
 		Vector2 position;
 		int hp = 20;
 
@@ -32,34 +36,43 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
+            currentTime = inf.GameTime.TotalGameTime.TotalMilliseconds;
 			// Animation frames
-			++currentFrame.X;
-				if (currentFrame.X >= sheetSize.X)
-				{
-					currentFrame.X = 0;
-					++currentFrame.Y;
-					if (currentFrame.Y >= sheetSize.Y)
-						currentFrame.Y = 0;
-				}
+            if (currentTime > changeDirTime + 200)
+            {
+                changeDirTime = currentTime;
+                ++currentFrame.X;
+                if (currentFrame.X >= sheetSize.X)
+                {
+                    currentFrame.X = 0;
+                    ++currentFrame.Y;
+                    if (currentFrame.Y >= sheetSize.Y)
+                        currentFrame.Y = 0;
+                }
 
-				// Movement
-				position.Y -= speed.Y;
+                // Movement
+                position.Y -= speed.Y;
 
-				if (position.Y > 200)
-				{
-					speed.Y *= -1;
-					position.Y = 200;
-				}
-				else if (position.Y < 0)
-				{
-					speed.Y *= -1;
-					position.Y = 0;
-				}
+                if (position.Y > 200)
+                {
+                    speed.Y *= -1;
+                    position.Y = 200;
+                }
+                else if (position.Y < 0)
+                {
+                    speed.Y *= -1;
+                    position.Y = 0;
+                }
+            }
+			
 		}
 
 		public void Draw()
 		{
-			spriteBatch.Draw(texture, position, Color.White);
+			//spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, Vector2.Zero, 
+                new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), 
+                Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 		}
 	}
 }
