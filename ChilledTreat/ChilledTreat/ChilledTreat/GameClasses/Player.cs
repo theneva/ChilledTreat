@@ -25,7 +25,7 @@ namespace ChilledTreat.GameClasses
 		private float _gunRotation;
 		private readonly Rectangle _gunPosition, _gunSource, _firedGunSource, _fullHealthSource, _halfHealthSource, _emptyHealthSource;
 
-		enum States
+		enum State
 		{
 			Alive,
 			Shooting,
@@ -36,7 +36,7 @@ namespace ChilledTreat.GameClasses
 			Dead
 		}
 
-		States _playerState;
+		State _playerState;
 
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
@@ -66,7 +66,7 @@ namespace ChilledTreat.GameClasses
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
 			_halfHealthSource = new Rectangle(_widthOfHeart, 0, _widthOfHeart, _healthTexture.Height);
 			_emptyHealthSource = new Rectangle(_widthOfHeart * 2, 0, _widthOfHeart, _healthTexture.Height);
-			_playerState = States.Alive;
+			_playerState = State.Alive;
 
 			for (int i = 0; i < _bulletPositions.Length; i++)
 			{
@@ -81,7 +81,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
-			if (_playerState == States.Dead) Game1.Instance.Exit();
+			if (_playerState == State.Dead) Game1.Instance.Exit();
 
 			if (_timesDrawnFire >= 5)
 			{
@@ -91,7 +91,7 @@ namespace ChilledTreat.GameClasses
 
 			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 			_reticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
-			if (_currentTime - _startShootTime > 200 && _playerState != States.Reloading) _playerState = States.Alive;
+			if (_currentTime - _startShootTime > 200 && _playerState != State.Reloading) _playerState = State.Alive;
 
 			_vectorGunToMouse = new Vector2((_gunPosition.X - _input.MouseState.X), (_gunPosition.Y - _input.MouseState.Y));
 			_gunRotation = (float)Math.Atan2(-_vectorGunToMouse.X, _vectorGunToMouse.Y);
@@ -102,30 +102,30 @@ namespace ChilledTreat.GameClasses
 			if (_reticulePosition.Y < 0) _reticulePosition = new Vector2(_reticulePosition.X, 0);
 			else if (_reticulePosition.Y > Game1.Instance.GameScreenHeight) _reticulePosition = new Vector2(_reticulePosition.X, Game1.Instance.GameScreenHeight);
 
-			if (_playerState == States.Alive && _input.IsLeftMouseButtonPressed())
+			if (_playerState == State.Alive && _input.IsLeftMouseButtonPressed())
 			{
 				_startShootTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-				_playerState = States.Shooting;
+				_playerState = State.Shooting;
 			}
 
-			if (_input.IsKeyDown(Keys.Space)) _playerState = States.InCover;
+			if (_input.IsKeyDown(Keys.Space)) _playerState = State.InCover;
 
-			if (_input.IsKeyPressed(Keys.R) && _playerState == States.Alive && _ammo != 10)
+			if (_input.IsKeyPressed(Keys.R) && _playerState == State.Alive && _ammo != 10)
 			{
-				_playerState = States.Reloading;
+				_playerState = State.Reloading;
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 				_playReloadSound = true;
 			}
 
-			if (_playerState == States.Shooting) Shoot();
+			if (_playerState == State.Shooting) Shoot();
 
-			if (_playerState == States.Reloading) Reload();
+			if (_playerState == State.Reloading) Reload();
 		}
 
 		public void Draw()
 		{
-			if (_playerState != States.InCover)
+			if (_playerState != State.InCover)
 			{
 				_spriteBatch.Draw(_reticuleTexture, _reticulePosition - _halfReticuleTexture, Color.White);
 
@@ -163,16 +163,16 @@ namespace ChilledTreat.GameClasses
 			_drawFire = true;
 			_bullets[--_ammo] = _usedBulletTexture;
 
-			if (_ammo == 0 && _playerState != States.Reloading)
+			if (_ammo == 0 && _playerState != State.Reloading)
 			{
-				_playerState = States.Reloading;
+				_playerState = State.Reloading;
 
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 				_playReloadSound = true;
 			}
-			else _playerState = States.Waiting;
+			else _playerState = State.Waiting;
 
-			if (_playerState != States.Reloading && _playerState != States.Waiting && _playerState != States.Dead) _playerState = States.Alive;
+			if (_playerState != State.Reloading && _playerState != State.Waiting && _playerState != State.Dead) _playerState = State.Alive;
 
 			//TODO
 			//This is a test for whether or not the damage function works (and the drawing of the health indicator)
@@ -196,18 +196,18 @@ namespace ChilledTreat.GameClasses
 				_bullets[i] = _bulletTexture;
 			}
 
-			_playerState = States.Alive;
+			_playerState = State.Alive;
 		}
 
 		public void Damaged(int damage)
 		{
-			_playerState = States.Damaged;
-			if (_playerState == States.InCover) damage /= 5;
+			_playerState = State.Damaged;
+			if (_playerState == State.InCover) damage /= 5;
 			_health -= damage;
 
 			if (_health <= 0)
 			{
-				_playerState = States.Dead;
+				_playerState = State.Dead;
 			}
 		}
 
