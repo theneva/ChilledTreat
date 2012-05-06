@@ -126,8 +126,8 @@ namespace ChilledTreat
 		}
 
 
-        // Kun InGame gamestatet som skal ha en metode som dette
-        // ---- Den lager nytt InGame object når du starter på ny
+		// Kun InGame gamestatet som skal ha en metode som dette
+		// ---- Den lager nytt InGame object når du starter på ny
 		public static void NewGame() 
 		{
 			if (Instance._gameStates.Count < 5)
