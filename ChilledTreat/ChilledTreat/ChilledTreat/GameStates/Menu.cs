@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ChilledTreat
+namespace ChilledTreat.GameStates
 {
 	class Menu : GameState
 	{
@@ -18,7 +18,7 @@ namespace ChilledTreat
 			: base(spriteBatch, content)
 		{
 			// Menu content
-			_menuFont = Content.Load<SpriteFont>("fonts/menuFont");
+			_menuFont = Content.Load<SpriteFont>("Fonts/menuFont");
 			_fontColor = Color.Salmon;
 			string[] strings = {"New Game", "Instructions", "Credits", "EXIT"};
 			_menuItems = strings;
@@ -68,6 +68,7 @@ namespace ChilledTreat
 				}
 				else if (_menuItems[_menuPos].Contains("Credits"))
 				{
+					Game1.CreditsScreen();
 					Game1.ChangeState(2);
 				}
 			}

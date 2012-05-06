@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -10,69 +6,145 @@ namespace ChilledTreat.GameClasses
 {
 	class Enemy
 	{
-		SpriteBatch spriteBatch;
+		readonly SpriteBatch _spriteBatch;
 
-		Texture2D texture;
-		Vector2 speed = new Vector2(0, 20);
+		readonly Texture2D _texture;
+		Vector2 _position = new Vector2(20, 40);
+		Vector2 _speed = new Vector2(0, 20);
 
-        FrameInfo inf = FrameInfo.Instance;
+		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
-        double currentTime = 0;
-        double changeDirTime = 0;
+		int timeSinceLastFrame = 0;
+		int millisecondsPerFrame = 100;
 
-		Vector2 position;
+
 		int hp = 20;
 
-		Point frameSize = new Point(203, 228);
-		Point currentFrame = new Point(0, 0);
-		Point sheetSize = new Point(2, 1);
+		Point _frameSize = new Point(41, 80);
+		Point _currentFrame = new Point(0, 0);
+		Point _sheetSize = new Point(7, 1);
+		
+		//Point _frameSize = new Point(41, 80);
+		//Point _currentFrame = new Point(5, 4);
+		//Point _sheetSize = new Point(1, 1);
+
+		bool _walkingLeft = false;
+
+		enum State
+		{
+			WalkingLeft,
+			WalkingRight,
+			Attacking,
+			Dead
+		}
+
+		State WalkingLeft
+		{
+			get
+			{
+				_walkingLeft = true;
+				_currentFrame = new Point();
+				_sheetSize = new Point();
+				return WalkingLeft;
+			}
+		}
+
+		State WalkingRight
+		{
+			get
+			{
+				_walkingLeft = false;
+				_currentFrame = new Point();
+				_sheetSize = new Point();
+				return WalkingRight;
+			}
+		}
+
+		State Attacking
+		{
+			get
+			{
+				_walkingLeft = false;
+				_currentFrame = new Point();
+				_sheetSize = new Point();
+				return Attacking;
+			}
+		}
+
+		State Dead
+		{
+			get
+			{
+				_walkingLeft = false;
+				_frameSize = new Point(57, 57);
+				_currentFrame = new Point(7, 2);
+				_sheetSize = new Point(1, 1);
+				return Dead;
+			}
+		}
+
+		State _currentState;
 
 		public Enemy(SpriteBatch spriteBatch, ContentManager content)
 		{
-			this.spriteBatch = spriteBatch;
-			position = Vector2.Zero;
-			texture = content.Load<Texture2D>("Images/enemy");
+			_spriteBatch = spriteBatch;
+			_position = Vector2.Zero;
+			_texture = content.Load<Texture2D>("Images/enemy2");
+			_currentState = State.Dead;
 		}
+
+		public Enemy(SpriteBatch spriteBatch, ContentManager content, int hp, Vector2 position)
+			: this(spriteBatch, content)
+		{
+			this.hp = hp;
+			this._position = position;
+		}
+
 
 		public void Update()
 		{
-            currentTime = inf.GameTime.TotalGameTime.TotalMilliseconds;
 			// Animation frames
-            if (currentTime > changeDirTime + 200)
-            {
-                changeDirTime = currentTime;
-                ++currentFrame.X;
-                if (currentFrame.X >= sheetSize.X)
-                {
-                    currentFrame.X = 0;
-                    ++currentFrame.Y;
-                    if (currentFrame.Y >= sheetSize.Y)
-                        currentFrame.Y = 0;
-                }
+			timeSinceLastFrame += _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
+			if (timeSinceLastFrame > millisecondsPerFrame)
+			{
+				timeSinceLastFrame -= millisecondsPerFrame;
 
-                // Movement
-                position.Y -= speed.Y;
+				if (++_currentFrame.X >= _sheetSize.X)
+				{
+					_currentFrame.X = 0;
+					++_currentFrame.Y;
+					if (_currentFrame.Y >= _sheetSize.Y)
+						_currentFrame.Y = 0;
+				}
+			}
 
-                if (position.Y > 200)
-                {
-                    speed.Y *= -1;
-                    position.Y = 200;
-                }
-                else if (position.Y < 0)
-                {
-                    speed.Y *= -1;
-                    position.Y = 0;
-                }
-            }
 			
+
+
+			// Movement
+			//_position.Y += _speed.Y;
+
+			//if (_position.Y > 200)
+			//{
+			//    _speed.Y *= -1;
+			//    _position.Y = 200;
+			//}
+			//else if (_position.Y < 0)
+			//{
+			//    _speed.Y *= -1;
+			//    _position.Y = 0;
+			//}
 		}
 
 		public void Draw()
 		{
-			//spriteBatch.Draw(texture, position, Color.White);
-            spriteBatch.Draw(texture, Vector2.Zero, 
-                new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * frameSize.Y, frameSize.X, frameSize.Y), 
-                Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+			_spriteBatch.Draw(_texture, _position,
+			new Rectangle(_currentFrame.X * _frameSize.X,
+			_currentFrame.Y * _frameSize.Y,
+			_frameSize.X,
+			_frameSize.Y),
+			Color.White, 0, Vector2.Zero,
+			2, _walkingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0);
 		}
 	}
 }
