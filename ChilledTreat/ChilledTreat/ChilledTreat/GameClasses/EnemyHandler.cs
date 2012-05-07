@@ -10,6 +10,8 @@ namespace ChilledTreat.GameClasses
 	{
 		readonly List<Enemy> _enemies;
 
+		public static readonly Random _random = new Random();
+
 		private const int DefaultDamage = 20;
 
 		static EnemyHandler _instance;

@@ -16,7 +16,6 @@ namespace ChilledTreat.GameClasses
 		Vector2 _position = new Vector2(20, 40);
 		Vector2 _speed = new Vector2(0, 20);
 		private int _damageInflicted;
-		private readonly Random _random = new Random();
 
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
@@ -132,7 +131,7 @@ namespace ChilledTreat.GameClasses
 			}
 
 			//if(_random.Next(1000) == 0) Shoot();
-			if (_random.Next(100) == 0)
+			if (EnemyHandler._random.Next(100) == 0)
 			{
 				Attack(); // <- approximately every 8 seconds
 				_drawMuzzleFlare = true;
@@ -221,7 +220,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Attack()
 		{
-			_damageInflicted = _random.Next(20);
+			_damageInflicted = EnemyHandler._random.Next(20);
 
 			Console.WriteLine("Player hit for " + _damageInflicted + "points!");
 			Console.WriteLine(FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
