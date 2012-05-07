@@ -20,20 +20,21 @@ namespace ChilledTreat.GameStates
 		{
 			// CONTENT LOAD
 			_player = Player.Instance;
-			_enemies.Add(new Enemy(spriteBatch, content, 100, Vector2.Zero));
-			_enemies.Add(new Enemy(spriteBatch, content, 100, new Vector2(200, 300)));
-
 			Game1.Instance.IsMouseVisible = false;
 		}
 
 		// Methods
 
+		// Testing
+		private int _timeSinceLastAdd;
 		public override void Update()
 		{
 			// LOGIC
-			if (Game1.Instance.TargetElapsedTime.Milliseconds % 2 == 0)
+			_timeSinceLastAdd += Game1.Instance.TargetElapsedTime.Milliseconds;
+			if (_timeSinceLastAdd % 20 == 0)
 			{
-				EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 100, new Vector2(_random.Next(1080), _random.Next(720))));
+				_timeSinceLastAdd -= 20;
+				EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(_random.Next(1080), _random.Next(720))));
 			}
 
 			_enemies.Update();
