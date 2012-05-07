@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace ChilledTreat.GameClasses
@@ -10,7 +8,7 @@ namespace ChilledTreat.GameClasses
 	{
 		readonly List<Enemy> _enemies;
 
-		public static readonly Random _random = new Random();
+		public static readonly Random Random = new Random();
 
 		private const int DefaultDamage = 20;
 
@@ -32,6 +30,8 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
+
+
 			foreach (Enemy enemy in _enemies)
 			{
 				enemy.Update();

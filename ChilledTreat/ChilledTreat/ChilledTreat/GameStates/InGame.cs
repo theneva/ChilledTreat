@@ -1,4 +1,5 @@
-﻿using ChilledTreat.GameClasses;
+﻿using System;
+using ChilledTreat.GameClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,6 +12,7 @@ namespace ChilledTreat.GameStates
 		readonly Player _player;
 		readonly EnemyHandler _enemies = EnemyHandler.Instance;
 		readonly InputHandler _input = InputHandler.Instance;
+		private readonly Random _random = new Random();
 
 		// Constructor
 		public InGame(SpriteBatch spriteBatch, ContentManager content)
@@ -29,8 +31,14 @@ namespace ChilledTreat.GameStates
 		public override void Update()
 		{
 			// LOGIC
-			_player.Update();
+			if (Game1.Instance.TargetElapsedTime.Milliseconds % 2 == 0)
+			{
+				EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 100, new Vector2(_random.Next(1080), _random.Next(720))));
+			}
+
 			_enemies.Update();
+			_player.Update();
+			
 
 			if (_input.IsAbortPressed() || Game1.Instance.IsActive == false)
 			{

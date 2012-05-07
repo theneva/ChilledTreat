@@ -130,7 +130,7 @@ namespace ChilledTreat.GameClasses
 				}
 			}
 
-			if (EnemyHandler._random.Next(1000) == 0) // <- approximately every 8 seconds
+			if (EnemyHandler.Random.Next(1000) == 0) // <- approximately every 8 seconds
 			{
 				Attack();
 				_drawMuzzleFlare = true;
@@ -219,7 +219,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Attack()
 		{
-			_damageInflicted = EnemyHandler._random.Next(20);
+			_damageInflicted = EnemyHandler.Random.Next(20);
 
 			Console.WriteLine("Player hit for " + _damageInflicted + "points!");
 			Console.WriteLine(FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
