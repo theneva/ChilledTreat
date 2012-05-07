@@ -17,8 +17,10 @@ namespace ChilledTreat.GameClasses
 
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
-		int timeSinceLastFrame = 0;
-		int millisecondsPerFrame = 100;
+		int _timeSinceLastFrame;
+		int _millisecondsPerFrame = 100;
+
+		//private SpriteEffects _walkingLeft = false; prøver med bool først
 
 
 		int hp = 20;
@@ -26,7 +28,7 @@ namespace ChilledTreat.GameClasses
 		Point _frameSize = new Point(41, 80);
 		Point _currentFrame = new Point(0, 0);
 		Point _sheetSize = new Point(7, 1);
-		
+
 		//Point _frameSize = new Point(41, 80);
 		//Point _currentFrame = new Point(5, 4);
 		//Point _sheetSize = new Point(1, 1);
@@ -107,10 +109,10 @@ namespace ChilledTreat.GameClasses
 		public void Update()
 		{
 			// Animation frames
-			timeSinceLastFrame += _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
-			if (timeSinceLastFrame > millisecondsPerFrame)
+			_timeSinceLastFrame += _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
+			if (_timeSinceLastFrame > _millisecondsPerFrame)
 			{
-				timeSinceLastFrame -= millisecondsPerFrame;
+				_timeSinceLastFrame -= _millisecondsPerFrame;
 
 				if (++_currentFrame.X >= _sheetSize.X)
 				{
@@ -124,11 +126,11 @@ namespace ChilledTreat.GameClasses
 			//if(_random.Next(1000) == 0) Shoot();
 			if (_random.Next(500) == 0) Shoot(); // <- approximately every 8 seconds
 
-			
+
 			// Movement based on state
 			switch (_currentState)
 			{
-					// Don't move
+				// Don't move
 				case State.WalkingLeft:
 					// Move right with _walkingLeft set to true so frames are flipped horizontally.
 					break;
@@ -147,25 +149,16 @@ namespace ChilledTreat.GameClasses
 		public void Draw()
 		{
 			_spriteBatch.Draw(_texture, _position,
-			new Rectangle(_currentFrame.X * _frameSize.X,
-			_currentFrame.Y * _frameSize.Y,
-			_frameSize.X,
-			_frameSize.Y),
-			Color.White, 0, Vector2.Zero,
-			2, _walkingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0);
+			new Rectangle(x: _currentFrame.X * _frameSize.X, y: _currentFrame.Y * _frameSize.Y, width: _frameSize.X, height: _frameSize.Y),
+			Color.White, 0, origin: Vector2.Zero, scale: 2, effects: _walkingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth: 0);
 		}
 
 		public Rectangle GetRectangle()
 		{
-			return new Rectangle((int) _position.X, (int) _position.Y, _frameSize.X, _frameSize.Y);
+			return new Rectangle((int)_position.X, (int)_position.Y, _frameSize.X, _frameSize.Y);
 		}
 
-		public bool Hit(Rectangle attackedArea)
-		{
-			if (attackedArea.Intersects((GetRectangle())))
-				Console.WriteLine("Enemy hit!");
-			return attackedArea.Intersects(GetRectangle());
-		}
+
 
 		public void Shoot()
 		{
@@ -177,6 +170,14 @@ namespace ChilledTreat.GameClasses
 			//TODO
 			//Set up a singleton of the player-object
 			//Player.Damaged(_damageInflicted);
+		}
+
+		public void TakeDamage(int damage)
+		{
+			Console.WriteLine("Enemy hit! Remaining hp: " + hp);
+			hp -= damage;
+			if (hp <= 0)
+				_currentState = State.Dead;
 		}
 	}
 }

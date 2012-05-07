@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
@@ -8,6 +9,8 @@ namespace ChilledTreat.GameClasses
 	class EnemyHandler
 	{
 		readonly List<Enemy> _enemies;
+
+		private int _defaultDamage = 20;
 
 		static EnemyHandler _instance;
 		public static EnemyHandler Instance
@@ -55,11 +58,15 @@ namespace ChilledTreat.GameClasses
 		{
 			_enemies.Clear();
 		}
-
-		//public void RecievedDamage(Rectangle shot)
-		//{
-		//    foreach (Enemy e in _enemies.Where(e => shot.Intersects(e.GetPosition()))) Console.WriteLine("Hit!");
-		//}
-		//Ser ingen grunn til å ikke ha denne i Enemy lol this is why you don't code at 2 am
+		
+		// Letting the handler check if an enemy is hit, and damage that one enemy
+		public void FiredAt(Rectangle attackedArea)
+		{
+			foreach (var e in _enemies)
+			{
+				if (!attackedArea.Intersects(e.GetRectangle())) continue;
+					e.TakeDamage(_defaultDamage);
+			}
+		}
 	}
 }
