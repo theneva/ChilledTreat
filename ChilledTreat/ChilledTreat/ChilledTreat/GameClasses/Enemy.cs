@@ -205,7 +205,7 @@ namespace ChilledTreat.GameClasses
 
 			//TODO
 			//Set up a singleton of the player-object
-			//Player.Damaged(_damageInflicted);
+			Player.Instance.Damaged(_damageInflicted);
 		}
 		
 		// Update health, check if dead
