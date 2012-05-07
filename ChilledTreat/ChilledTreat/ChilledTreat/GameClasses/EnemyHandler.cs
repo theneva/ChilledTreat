@@ -27,7 +27,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
-			foreach (Enemy e in _enemies)
+			foreach (var e in _enemies)
 			{
 				e.Update();
 			}
@@ -35,7 +35,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			foreach (Enemy e in _enemies)
+			foreach (var e in _enemies)
 			{
 				e.Draw();
 			}
@@ -56,9 +56,10 @@ namespace ChilledTreat.GameClasses
 			_enemies.Clear();
 		}
 
-		public void RecievedDamage(Rectangle shot)
-		{
-			foreach (Enemy e in _enemies.Where(e => shot.Intersects(e.GetPosition()))) Console.WriteLine("Hit!");
-		}
+		//public void RecievedDamage(Rectangle shot)
+		//{
+		//    foreach (Enemy e in _enemies.Where(e => shot.Intersects(e.GetPosition()))) Console.WriteLine("Hit!");
+		//}
+		//Ser ingen grunn til å ikke ha denne i Enemy lol this is why you don't code at 2 am
 	}
 }

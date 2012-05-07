@@ -121,21 +121,27 @@ namespace ChilledTreat.GameClasses
 				}
 			}
 
-			if(_random.Next(1000) == 0) Shoot();
+			//if(_random.Next(1000) == 0) Shoot();
+			if (_random.Next(500) == 0) Shoot(); // <- approximately every 8 seconds
 
-			// Movement
-			//_position.Y += _speed.Y;
-
-			//if (_position.Y > 200)
-			//{
-			//    _speed.Y *= -1;
-			//    _position.Y = 200;
-			//}
-			//else if (_position.Y < 0)
-			//{
-			//    _speed.Y *= -1;
-			//    _position.Y = 0;
-			//}
+			
+			// Movement based on state
+			switch (_currentState)
+			{
+					// Don't move
+				case State.WalkingLeft:
+					// Move right with _walkingLeft set to true so frames are flipped horizontally.
+					break;
+				case State.WalkingRight:
+					// Move right
+					break;
+				case State.Attacking:
+					break;
+				case State.Dead:
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 		}
 
 		public void Draw()
@@ -149,16 +155,23 @@ namespace ChilledTreat.GameClasses
 			2, _walkingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0);
 		}
 
-		public Rectangle GetPosition()
+		public Rectangle GetRectangle()
 		{
 			return new Rectangle((int) _position.X, (int) _position.Y, _frameSize.X, _frameSize.Y);
+		}
+
+		public bool Hit(Rectangle attackedArea)
+		{
+			if (attackedArea.Intersects((GetRectangle())))
+				Console.WriteLine("Enemy hit!");
+			return attackedArea.Intersects(GetRectangle());
 		}
 
 		public void Shoot()
 		{
 			_damageInflicted = _random.Next(20);
 
-			Console.WriteLine("Auch!!");
+			Console.WriteLine("Player hit!");
 			Console.WriteLine(FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
 
 			//TODO
