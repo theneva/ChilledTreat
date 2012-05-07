@@ -17,7 +17,7 @@ namespace ChilledTreat.GameStates
 			: base (spriteBatch, content)
 		{
 			// CONTENT LOAD
-			_player = new Player(spriteBatch, content);
+			_player = Player.Instance;
 			_enemies.Add(new Enemy(spriteBatch, content, 100, Vector2.Zero));
 			_enemies.Add(new Enemy(spriteBatch, content, 100, new Vector2(200, 300)));
 
@@ -34,7 +34,7 @@ namespace ChilledTreat.GameStates
 
 			if (_input.IsAbortPressed() || Game1.Instance.IsActive == false)
 			{
-				Game1.ChangeState(GameState.PauseMenu);
+				Game1.ChangeState(PauseMenu);
 			}
 		}
 

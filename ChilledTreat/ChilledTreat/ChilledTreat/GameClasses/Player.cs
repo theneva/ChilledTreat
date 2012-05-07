@@ -38,12 +38,19 @@ namespace ChilledTreat.GameClasses
 		}
 
 		State _playerState;
+		static Player _instance;
+		public static Player Instance
+		{
+			get { return _instance ?? (_instance = new Player(Game1.Instance.SpriteBatch, Game1.Instance.Content)); }
+		}
 
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
-		public Player(SpriteBatch spriteBatch, ContentManager content)
+		private Player(SpriteBatch spriteBatch, ContentManager content)
 		{
-			_health = 75;
+			_spriteBatch = spriteBatch;
+			
+			_health = 100;
 			_ammo = 10;
 			_timesDrawnFire = 0;
 			_playReloadSound = false;
@@ -56,7 +63,6 @@ namespace ChilledTreat.GameClasses
 			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
 			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
 			_gunReloadSound = content.Load<SoundEffect>("Sounds/ReloadSound");
-			_spriteBatch = spriteBatch;
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 			_bullets = new Texture2D[10];
 			_bulletPositions = new Vector2[10];
