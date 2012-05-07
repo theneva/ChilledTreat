@@ -62,14 +62,14 @@ namespace ChilledTreat
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// Legge til gamestates som klasser i listen
-			// ex: GameStates.add(new InGame(Sprite...., con);
+			// ex: _gameStates.add(new InGame(Sprite...., con);
 
 			_gameStates.Add(new Splash(SpriteBatch, Content));
 			_gameStates.Add(new Menu(SpriteBatch, Content));
 			_gameStates.Add(new Credits(SpriteBatch, Content));
 			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
 
-			_activeGameState = _gameStates[0]; // TODO: Use static constant (GameStates.Splash);
+			_activeGameState = _gameStates[0]; // TODO: Use static constants (GameStates.Splash);
 		}
 
 		/// <summary>

@@ -43,50 +43,52 @@ namespace ChilledTreat.GameClasses
 			Dead
 		}
 
-		State WalkingLeft
-		{
-			get
-			{
-				_walkingLeft = true;
-				_currentFrame = new Point();
-				_sheetSize = new Point();
-				return WalkingLeft;
-			}
-		}
+		// Fuck this shit
 
-		State WalkingRight
-		{
-			get
-			{
-				_walkingLeft = false;
-				_currentFrame = new Point();
-				_sheetSize = new Point();
-				return WalkingRight;
-			}
-		}
+		//State WalkingLeft
+		//{
+		//    get
+		//    {
+		//        _walkingLeft = true;
+		//        _currentFrame = new Point();
+		//        _sheetSize = new Point();
+		//        return WalkingLeft;
+		//    }
+		//}
 
-		State Attacking
-		{
-			get
-			{
-				_walkingLeft = false;
-				_currentFrame = new Point();
-				_sheetSize = new Point();
-				return Attacking;
-			}
-		}
+		//State WalkingRight
+		//{
+		//    get
+		//    {
+		//        _walkingLeft = false;
+		//        _currentFrame = new Point();
+		//        _sheetSize = new Point();
+		//        return WalkingRight;
+		//    }
+		//}
 
-		State Dead
-		{
-			get
-			{
-				_walkingLeft = false;
-				_frameSize = new Point(57, 57);
-				_currentFrame = new Point(7, 2);
-				_sheetSize = new Point(1, 1);
-				return Dead;
-			}
-		}
+		//State Attacking
+		//{
+		//    get
+		//    {
+		//        _walkingLeft = false;
+		//        _currentFrame = new Point();
+		//        _sheetSize = new Point();
+		//        return Attacking;
+		//    }
+		//}
+
+		//State Dead
+		//{
+		//    get
+		//    {
+		//        _walkingLeft = false;
+		//        _frameSize = new Point(57, 57);
+		//        _currentFrame = new Point(7, 2);
+		//        _sheetSize = new Point(1, 1);
+		//        return Dead;
+		//    }
+		//}
 
 		State _currentState;
 
@@ -130,33 +132,37 @@ namespace ChilledTreat.GameClasses
 			// Movement based on state
 			switch (_currentState)
 			{
-				// Don't move
+			//    // Don't move
 				case State.WalkingLeft:
-					// Move right with _walkingLeft set to true so frames are flipped horizontally.
-					MoveLeft();
+			//        // Move right with _walkingLeft set to true so frames are flipped horizontally.
+			//        MoveLeft();
 					break;
 				case State.WalkingRight:
-					// Move right
-					MoveRight();
-					// Too far right
-					if (_position.X > 1280) // TODO: Give each Enemy a platform and check for end of that rectangle
-					{
-						_walkingLeft = true;
-						_position.X = 1280;
-					}
+			//        // Move right
+			//        MoveRight();
+			//        // Too far right
+			//        if (_position.X > 1280) // TODO: Give each Enemy a platform and check for end of that rectangle
+			//        {
+			//            _walkingLeft = true;
+			//            _position.X = 1280;
+			//        }
 					break;
 				case State.Attacking:
-					// Move "towards" player
+			//        // Move "towards" player
 					break;
 				case State.Dead:
-
-
-
-					EnemyHandler.Instance.Remove(this);
+					Die();
 					break;
-				default:
-					throw new ArgumentOutOfRangeException();
+			    default:
+			        throw new ArgumentOutOfRangeException();
 			}
+
+			
+		}
+
+		public void Die()
+		{
+			// TODO: Animation through spritesheet ending in setting a boolean equal to true so the enemy can be removed from the list
 		}
 
 		public void MoveLeft()
@@ -177,10 +183,6 @@ namespace ChilledTreat.GameClasses
 			
 		}
 
-		public int GetHealth()
-		{
-			return _health;
-		}
 
 		public void Draw()
 		{
@@ -215,6 +217,8 @@ namespace ChilledTreat.GameClasses
 			if (_health > 0) return;
 
 			_currentState = State.Dead;
+			// TODO: find a better solution
+			EnemyHandler.Instance.Remove(this);
 		}
 	}
 }

@@ -30,28 +30,28 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
-			foreach (var e in _enemies)
+			foreach (Enemy enemy in _enemies)
 			{
-				e.Update();
+				enemy.Update();
 			}
 		}
 
 		public void Draw()
 		{
-			foreach (var e in _enemies)
+			foreach (Enemy enemy in _enemies)
 			{
-				e.Draw();
+				enemy.Draw();
 			}
 		}
 
-		public void Add(Enemy e)
+		public void Add(Enemy enemy)
 		{
-			_enemies.Add(e);
+			_enemies.Add(enemy);
 		}
 
-		public void Remove(Enemy e)
+		public void Remove(Enemy enemy)
 		{
-			_enemies.Remove(e);
+			_enemies.Remove(enemy);
 		}
 
 		public void Clear()
@@ -62,11 +62,15 @@ namespace ChilledTreat.GameClasses
 		// Letting the handler check if an enemy is hit, and damage that one enemy
 		public void FiredAt(Rectangle attackedArea)
 		{
-			foreach (Enemy enemy in _enemies.Where(e => attackedArea.Intersects(e.GetRectangle())))
-			{
-				enemy.TakeDamage(DefaultDamage);
-				break; // exactly one enemy can be damaged/killed per shot
-			}
+			//foreach (Enemy enemy in _enemies.Where(e => attackedArea.Intersects(e.GetRectangle())))
+			//{
+			//    enemy.TakeDamage(DefaultDamage);
+			//}
+
+			// Hackish as fuck but it works
+			for (int i = _enemies.Count - 1; i >= 0; i--)
+				if (_enemies[i].GetRectangle().Intersects(attackedArea))
+					_enemies[i].TakeDamage(DefaultDamage);
 		}
 	}
 }

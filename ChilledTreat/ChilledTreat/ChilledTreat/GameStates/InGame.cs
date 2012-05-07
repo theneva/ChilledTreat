@@ -18,7 +18,7 @@ namespace ChilledTreat.GameStates
 		{
 			// CONTENT LOAD
 			_player = new Player(spriteBatch, content);
-			_enemies.Add(new Enemy(spriteBatch, content));
+			_enemies.Add(new Enemy(spriteBatch, content, 100, Vector2.Zero));
 			_enemies.Add(new Enemy(spriteBatch, content, 100, new Vector2(200, 300)));
 
 			Game1.Instance.IsMouseVisible = false;
