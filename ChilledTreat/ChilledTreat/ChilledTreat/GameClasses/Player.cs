@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -12,7 +13,7 @@ namespace ChilledTreat.GameClasses
 		private readonly InputHandler _input = InputHandler.Instance;
 		private readonly SpriteBatch _spriteBatch;
 
-		private int _health, _healthIn10, _ammo, _heartsDrawShift, _timesDrawnMuzzleFlare;
+		private int _health, _healthIn10, _ammo, _heartsDrawShift, _timesDrawnMuzzleFlare, _totalScore;
 		private readonly int _widthOfHeart;
 		private double _currentTime, _startShootTime, _startReloadTime;
 		private bool _playReloadSound, _drawMuzzleFlare;
@@ -25,6 +26,7 @@ namespace ChilledTreat.GameClasses
 		private float _gunRotation;
 		private readonly Rectangle _gunPosition, _gunSource, _firedGunSource, _fullHealthSource, _halfHealthSource, _emptyHealthSource;
 		private Rectangle _hitBox;
+		readonly SpriteFont _scoreFont;
 
 		enum State
 		{
@@ -53,6 +55,7 @@ namespace ChilledTreat.GameClasses
 			_health = 100;
 			_ammo = 10;
 			_timesDrawnMuzzleFlare = 0;
+			_totalScore = 0;
 			_playReloadSound = false;
 			_drawMuzzleFlare = false;
 			_reticuleTexture = content.Load<Texture2D>("Images/usableReticule");
@@ -63,6 +66,7 @@ namespace ChilledTreat.GameClasses
 			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
 			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
 			_gunReloadSound = content.Load<SoundEffect>("Sounds/ReloadSound");
+			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 			_bullets = new Texture2D[10];
 			_bulletPositions = new Vector2[10];
@@ -169,6 +173,8 @@ namespace ChilledTreat.GameClasses
 			}
 
 			DrawHealth();
+
+			_spriteBatch.DrawString(_scoreFont, _totalScore.ToString(), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
 		}
 
 		private void Shoot()
@@ -254,6 +260,11 @@ namespace ChilledTreat.GameClasses
 					_emptyHealthSource, Color.White);
 				_heartsDrawShift++;
 			}
+		}
+
+		public void SuccesfullKill()
+		{
+			_totalScore++;
 		}
 	}
 }
