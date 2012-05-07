@@ -12,10 +12,10 @@ namespace ChilledTreat.GameClasses
 		private readonly InputHandler _input = InputHandler.Instance;
 		private readonly SpriteBatch _spriteBatch;
 
-		private int _health, _healthIn10, _ammo, _heartsDrawShift, _timesDrawnFire;
+		private int _health, _healthIn10, _ammo, _heartsDrawShift, _timesDrawnMuzzleFlare;
 		private readonly int _widthOfHeart;
 		private double _currentTime, _startShootTime, _startReloadTime;
-		private bool _playReloadSound, _drawFire;
+		private bool _playReloadSound, _drawMuzzleFlare;
 		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture, _healthTexture, _coverTexture;
 		private readonly Vector2 _halfReticuleTexture;
 		private Vector2 _vectorGunToMouse, _reticulePosition;
@@ -52,9 +52,9 @@ namespace ChilledTreat.GameClasses
 			
 			_health = 100;
 			_ammo = 10;
-			_timesDrawnFire = 0;
+			_timesDrawnMuzzleFlare = 0;
 			_playReloadSound = false;
-			_drawFire = false;
+			_drawMuzzleFlare = false;
 			_reticuleTexture = content.Load<Texture2D>("Images/usableReticule");
 			_bulletTexture = content.Load<Texture2D>("Images/usableBullet");
 			_usedBulletTexture = content.Load<Texture2D>("Images/usableUsedBullet");
@@ -91,10 +91,10 @@ namespace ChilledTreat.GameClasses
 		{
 			if (_playerState == State.Dead) Game1.Instance.Exit();
 
-			if (_timesDrawnFire >= 5)
+			if (_timesDrawnMuzzleFlare >= 5)
 			{
-				_drawFire = false;
-				_timesDrawnFire = 0;
+				_drawMuzzleFlare = false;
+				_timesDrawnMuzzleFlare = 0;
 			}
 
 			_healthIn10 = _health / 10;
@@ -143,12 +143,12 @@ namespace ChilledTreat.GameClasses
 			{
 				_spriteBatch.Draw(_reticuleTexture, _reticulePosition - _halfReticuleTexture, Color.White);
 
-				if (_drawFire)
+				if (_drawMuzzleFlare)
 				{
 					_spriteBatch.Draw(_gunTexture, _gunPosition, _firedGunSource, Color.White, _gunRotation,
 								   new Vector2(_gunTexture.Width / 4f, _gunTexture.Height), SpriteEffects.None, 1f);
 
-					_timesDrawnFire++;
+					_timesDrawnMuzzleFlare++;
 				}
 				else
 				{
@@ -174,7 +174,7 @@ namespace ChilledTreat.GameClasses
 		private void Shoot()
 		{
 			_gunShotSound.Play();
-			_drawFire = true;
+			_drawMuzzleFlare = true;
 			_bullets[--_ammo] = _usedBulletTexture;
 
 			EnemyHandler.Instance.FiredAt(_hitBox);
