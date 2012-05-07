@@ -63,7 +63,7 @@ namespace ChilledTreat
 
 			// Legge til gamestates som klasser i listen
 			// ex: GameStates.add(new InGame(Sprite...., con);
-			
+
 			_gameStates.Add(new Splash(SpriteBatch, Content));
 			_gameStates.Add(new Menu(SpriteBatch, Content));
 			_gameStates.Add(new Credits(SpriteBatch, Content));
@@ -78,7 +78,7 @@ namespace ChilledTreat
 		/// </summary>
 		protected override void UnloadContent()
 		{
-		
+
 		}
 
 		/// <summary>
@@ -128,7 +128,7 @@ namespace ChilledTreat
 
 		// Kun InGame gamestatet som skal ha en metode som dette
 		// ---- Den lager nytt InGame object når du starter på ny
-		public static void NewGame() 
+		public static void NewGame()
 		{
 			if (Instance._gameStates.Count < 5)
 			{
@@ -138,6 +138,11 @@ namespace ChilledTreat
 			{
 				Instance._gameStates[4] = new InGame(Instance.SpriteBatch, Instance.Content);
 			}
+
+			// Hvorfor funker ikke dette?
+			////Instance._gameStates[4] = new InGame(Instance.SpriteBatch, Instance.Content);
+
+			// Kunne vi brukt et Array i stedet for en liste, og initialisert det med fem plasser for å slippe dette rotet?
 		}
 	}
 }
