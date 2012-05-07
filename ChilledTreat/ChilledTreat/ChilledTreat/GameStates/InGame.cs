@@ -31,14 +31,15 @@ namespace ChilledTreat.GameStates
 		{
 			// LOGIC
 			_timeSinceLastAdd += Game1.Instance.TargetElapsedTime.Milliseconds;
-			if (_timeSinceLastAdd % 20 == 0)
+			if (_timeSinceLastAdd >= 500)
 			{
-				_timeSinceLastAdd -= 20;
+				_timeSinceLastAdd -= 500;
 				EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(_random.Next(1080), _random.Next(720))));
 			}
 
-			_enemies.Update();
 			_player.Update();
+			_enemies.Update();
+
 			
 
 			if (_input.IsAbortPressed() || Game1.Instance.IsActive == false)
