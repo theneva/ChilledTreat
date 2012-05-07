@@ -12,7 +12,7 @@ namespace ChilledTreat.GameClasses
 		private readonly InputHandler _input = InputHandler.Instance;
 		private readonly SpriteBatch _spriteBatch;
 
-		private int _health, _healthIn5, _ammo, _heartsDrawShift, _timesDrawnFire;
+		private int _health, _healthIn10, _ammo, _heartsDrawShift, _timesDrawnFire;
 		private readonly int _widthOfHeart;
 		private double _currentTime, _startShootTime, _startReloadTime;
 		private bool _playReloadSound, _drawFire;
@@ -43,7 +43,7 @@ namespace ChilledTreat.GameClasses
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
-			_health =60;
+			_health = 75;
 			_ammo = 10;
 			_timesDrawnFire = 0;
 			_playReloadSound = false;
@@ -91,8 +91,8 @@ namespace ChilledTreat.GameClasses
 				_timesDrawnFire = 0;
 			}
 
-			_healthIn5 = _health / 20;
-			//The shift to the side, so that they're not drawn on top of each other
+			_healthIn10 = _health / 10;
+			//The shift to the side, so that the hearts are not drawn on top of each other
 			_heartsDrawShift = 0;
 
 			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
@@ -224,7 +224,7 @@ namespace ChilledTreat.GameClasses
 		//This method determines how many hearts are drawn on the screen (i.e. how much health is left), and draws them on the screen
 		private void DrawHealth()
 		{
-			for (int i = 0; i < _healthIn5; i++)
+			for (int i = 0; i < _healthIn10 / 2; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
 					new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50),
@@ -232,8 +232,8 @@ namespace ChilledTreat.GameClasses
 				_heartsDrawShift++;
 			}
 
-			//Always draw 5 hearts. if the loops only draw 4, add the half-heart missing
-			if (_healthIn5 == 4)
+			//Always draw 5 hearts. If the int division ends up removing
+			if (_healthIn10 % 2 != 0)
 			{
 				_spriteBatch.Draw(_healthTexture,
 								  new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift),
@@ -241,7 +241,7 @@ namespace ChilledTreat.GameClasses
 				_heartsDrawShift++;
 			}
 
-			for (int i = _healthIn5; i < 5; i++)
+			for (int i = _healthIn10 / 2; i < 5; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
 					new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50),
