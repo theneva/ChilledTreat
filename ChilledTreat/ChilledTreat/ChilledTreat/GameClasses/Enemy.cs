@@ -130,8 +130,7 @@ namespace ChilledTreat.GameClasses
 				}
 			}
 
-			//if(_random.Next(1000) == 0) Shoot();
-			if (EnemyHandler._random.Next(100) == 0) // <- approximately every 8 seconds
+			if (EnemyHandler._random.Next(1000) == 0) // <- approximately every 8 seconds
 			{
 				Attack();
 				_drawMuzzleFlare = true;
@@ -241,6 +240,7 @@ namespace ChilledTreat.GameClasses
 			_currentState = State.Dead;
 			// TODO: find a better solution
 			EnemyHandler.Instance.Remove(this);
+			Player.Instance.SuccesfullKill();
 		}
 	}
 }
