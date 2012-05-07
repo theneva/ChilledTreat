@@ -131,9 +131,9 @@ namespace ChilledTreat.GameClasses
 			}
 
 			//if(_random.Next(1000) == 0) Shoot();
-			if (EnemyHandler._random.Next(100) == 0)
+			if (EnemyHandler._random.Next(100) == 0) // <- approximately every 8 seconds
 			{
-				Attack(); // <- approximately every 8 seconds
+				Attack();
 				_drawMuzzleFlare = true;
 			}
 
