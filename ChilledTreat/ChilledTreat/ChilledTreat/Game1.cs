@@ -69,7 +69,7 @@ namespace ChilledTreat
 			_gameStates.Add(new Credits(SpriteBatch, Content));
 			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
 
-			_activeGameState = _gameStates[0];
+			_activeGameState = _gameStates[0]; // TODO: Use static constant (GameStates.Splash);
 		}
 
 		/// <summary>

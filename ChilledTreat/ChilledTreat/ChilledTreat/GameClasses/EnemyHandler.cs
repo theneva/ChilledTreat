@@ -65,10 +65,6 @@ namespace ChilledTreat.GameClasses
 			foreach (Enemy enemy in _enemies.Where(e => attackedArea.Intersects(e.GetRectangle())))
 			{
 				enemy.TakeDamage(DefaultDamage);
-				if (enemy.GetHealth() <= 0)
-				{
-					_enemies.Remove(enemy);
-				}
 				break; // exactly one enemy can be damaged/killed per shot
 			}
 		}

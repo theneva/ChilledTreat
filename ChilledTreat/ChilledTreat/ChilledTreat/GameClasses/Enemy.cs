@@ -133,18 +133,48 @@ namespace ChilledTreat.GameClasses
 				// Don't move
 				case State.WalkingLeft:
 					// Move right with _walkingLeft set to true so frames are flipped horizontally.
+					MoveLeft();
 					break;
 				case State.WalkingRight:
 					// Move right
+					MoveRight();
+					// Too far right
+					if (_position.X > 1280) // TODO: Give each Enemy a platform and check for end of that rectangle
+					{
+						_walkingLeft = true;
+						_position.X = 1280;
+					}
 					break;
 				case State.Attacking:
 					// Move "towards" player
 					break;
 				case State.Dead:
+
+
+
+					EnemyHandler.Instance.Remove(this);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+		}
+
+		public void MoveLeft()
+		{
+			if (_position.X >= 0)
+			{
+
+
+				return;
+			}
+
+			_walkingLeft = false;
+			_position.X = 0;
+		}
+
+		public void MoveRight()
+		{
+			
 		}
 
 		public int GetHealth()
@@ -175,12 +205,16 @@ namespace ChilledTreat.GameClasses
 			//Set up a singleton of the player-object
 			//Player.Damaged(_damageInflicted);
 		}
-
-		// Change health. EnemyHandler takes care of removing the Enemy
+		
+		// Update health, check if dead
 		public void TakeDamage(int damage)
 		{
 			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
 			_health -= damage;
+			
+			if (_health > 0) return;
+
+			_currentState = State.Dead;
 		}
 	}
 }
