@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -11,6 +12,8 @@ namespace ChilledTreat.GameClasses
 		readonly Texture2D _texture;
 		Vector2 _position = new Vector2(20, 40);
 		Vector2 _speed = new Vector2(0, 20);
+		private int _damageInflicted;
+		private readonly Random _random = new Random();
 
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
@@ -118,8 +121,7 @@ namespace ChilledTreat.GameClasses
 				}
 			}
 
-			
-
+			if(_random.Next(1000) == 0) Shoot();
 
 			// Movement
 			//_position.Y += _speed.Y;
@@ -150,6 +152,18 @@ namespace ChilledTreat.GameClasses
 		public Rectangle GetPosition()
 		{
 			return new Rectangle((int) _position.X, (int) _position.Y, _frameSize.X, _frameSize.Y);
+		}
+
+		public void Shoot()
+		{
+			_damageInflicted = _random.Next(20);
+
+			Console.WriteLine("Auch!!");
+			Console.WriteLine(FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
+
+			//TODO
+			//Set up a singleton of the player-object
+			//Player.Damaged(_damageInflicted);
 		}
 	}
 }

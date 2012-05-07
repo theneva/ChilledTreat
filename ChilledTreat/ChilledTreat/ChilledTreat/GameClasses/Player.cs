@@ -43,6 +43,7 @@ namespace ChilledTreat.GameClasses
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
+			_spriteBatch = spriteBatch;
 			_health = 100;
 			_ammo = 10;
 			_timesDrawnFire = 0;
@@ -56,7 +57,6 @@ namespace ChilledTreat.GameClasses
 			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
 			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
 			_gunReloadSound = content.Load<SoundEffect>("Sounds/ReloadSound");
-			_spriteBatch = spriteBatch;
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 			_bullets = new Texture2D[10];
 			_bulletPositions = new Vector2[10];
@@ -179,10 +179,6 @@ namespace ChilledTreat.GameClasses
 			else _playerState = State.Waiting;
 
 			if (_playerState != State.Reloading && _playerState != State.Waiting && _playerState != State.Dead) _playerState = State.Alive;
-
-			//TODO
-			//This is a test for whether or not the damage function works (and the drawing of the health indicator)
-			//Damaged(5);
 		}
 
 		private void Reload()
