@@ -51,7 +51,7 @@ namespace ChilledTreat.GameClasses
 		private Player(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_spriteBatch = spriteBatch;
-			
+
 			_health = 100;
 			_ammo = 10;
 			_timesDrawnMuzzleFlare = 0;
@@ -179,11 +179,13 @@ namespace ChilledTreat.GameClasses
 
 		private void Shoot()
 		{
+
 			_gunShotSound.Play();
 			_drawMuzzleFlare = true;
-			_bullets[--_ammo] = _usedBulletTexture;
-
 			EnemyHandler.Instance.FiredAt(_hitBox);
+			//if (_ammo > 0)
+				_bullets[--_ammo] = _usedBulletTexture;
+
 
 			if (_ammo == 0 && _playerState != State.Reloading)
 			{
@@ -211,9 +213,9 @@ namespace ChilledTreat.GameClasses
 			}
 
 			if (_currentTime - _startReloadTime <= _gunReloadSound.Duration.TotalMilliseconds) return;
-			_ammo = 10;
+			_ammo = 10; // should be done in the loop vvvv
 
-			for (var i = 0; i < _bullets.Length; i++)
+			for (int i = 0; i < _bullets.Length; i++)
 			{
 				_bullets[i] = _bulletTexture;
 			}
@@ -230,6 +232,8 @@ namespace ChilledTreat.GameClasses
 			if (_health <= 0)
 			{
 				_playerState = State.Dead;
+				// TODO: Remove this
+				Console.WriteLine("You died!");
 			}
 		}
 

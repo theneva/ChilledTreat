@@ -21,21 +21,34 @@ namespace ChilledTreat.GameStates
 			// CONTENT LOAD
 			_player = Player.Instance;
 			Game1.Instance.IsMouseVisible = false;
+
+			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(250, 50)));
+			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(350, 150)));
+			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(50, 250)));
+			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(250, 150)));
+			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(350, 250)));
+			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(50, 50)));
+		
 		}
 
 		// Methods
 
 		// Testing
-		private int _timeSinceLastAdd;
+		private float _timeSinceLastAdd;
+		private const float EnemiesPerSecond = 4f;
+
 		public override void Update()
 		{
 			// LOGIC
-			_timeSinceLastAdd += Game1.Instance.TargetElapsedTime.Milliseconds;
-			if (_timeSinceLastAdd >= 500)
-			{
-				_timeSinceLastAdd -= 500;
-				EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(_random.Next(1080), _random.Next(720))));
-			}
+			//_timeSinceLastAdd += Game1.Instance.TargetElapsedTime.Milliseconds;
+			
+			//if (_timeSinceLastAdd >= 1000 / EnemiesPerSecond)
+			//{
+			//    _timeSinceLastAdd -= 1000 / EnemiesPerSecond;
+			//    EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(_random.Next(1080), _random.Next(720))));
+			//}
+
+			
 
 			_player.Update();
 			_enemies.Update();

@@ -27,7 +27,7 @@ namespace ChilledTreat.GameClasses
 
 		int _health = 20;
 
-		Point _frameSize = new Point(41, 80);
+		private Point _frameSize;
 		Point _currentFrame = new Point(0, 0);
 		Point _sheetSize = new Point(7, 1);
 
@@ -98,6 +98,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_spriteBatch = spriteBatch;
 			_position = Vector2.Zero;
+			_frameSize = new Point(41, 80);
 			_texture = content.Load<Texture2D>("Images/enemy2");
 			_muzzleFlare = content.Load<Texture2D>("Images/usableMuzzleFlare");
 			_currentState = State.Dead;
@@ -221,8 +222,8 @@ namespace ChilledTreat.GameClasses
 		{
 			_damageInflicted = EnemyHandler.Random.Next(20);
 
-			Console.WriteLine("Player hit for " + _damageInflicted + "points!");
-			Console.WriteLine(FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
+			// TODO: Debug purposes
+			Console.WriteLine("Player hit for " + _damageInflicted + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
 
 			//TODO
 			//Set up a singleton of the player-object
@@ -232,8 +233,8 @@ namespace ChilledTreat.GameClasses
 		// Update health, check if dead
 		public void TakeDamage(int damage)
 		{
-			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
 			_health -= damage;
+			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
 
 			if (_health > 0) return;
 
