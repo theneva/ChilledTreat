@@ -10,7 +10,7 @@ namespace ChilledTreat.GameClasses
 	{
 		readonly List<Enemy> _enemies;
 
-		private int _defaultDamage = 20;
+		private const int DefaultDamage = 20;
 
 		static EnemyHandler _instance;
 		public static EnemyHandler Instance
@@ -58,14 +58,18 @@ namespace ChilledTreat.GameClasses
 		{
 			_enemies.Clear();
 		}
-		
+
 		// Letting the handler check if an enemy is hit, and damage that one enemy
 		public void FiredAt(Rectangle attackedArea)
 		{
-			foreach (var e in _enemies)
+			foreach (Enemy enemy in _enemies.Where(e => attackedArea.Intersects(e.GetRectangle())))
 			{
-				if (!attackedArea.Intersects(e.GetRectangle())) continue;
-					e.TakeDamage(_defaultDamage);
+				enemy.TakeDamage(DefaultDamage);
+				if (enemy.GetHealth() <= 0)
+				{
+					_enemies.Remove(enemy);
+				}
+				break; // exactly one enemy can be damaged/killed per shot
 			}
 		}
 	}

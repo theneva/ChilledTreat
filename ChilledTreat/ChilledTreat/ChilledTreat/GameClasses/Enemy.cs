@@ -18,12 +18,12 @@ namespace ChilledTreat.GameClasses
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
 		int _timeSinceLastFrame;
-		int _millisecondsPerFrame = 100;
+		private const int MillisecondsPerFrame = 100;
 
 		//private SpriteEffects _walkingLeft = false; prøver med bool først
 
 
-		int hp = 20;
+		int _health = 20;
 
 		Point _frameSize = new Point(41, 80);
 		Point _currentFrame = new Point(0, 0);
@@ -101,7 +101,7 @@ namespace ChilledTreat.GameClasses
 		public Enemy(SpriteBatch spriteBatch, ContentManager content, int hp, Vector2 position)
 			: this(spriteBatch, content)
 		{
-			this.hp = hp;
+			this._health = hp;
 			this._position = position;
 		}
 
@@ -110,9 +110,9 @@ namespace ChilledTreat.GameClasses
 		{
 			// Animation frames
 			_timeSinceLastFrame += _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
-			if (_timeSinceLastFrame > _millisecondsPerFrame)
+			if (_timeSinceLastFrame > MillisecondsPerFrame)
 			{
-				_timeSinceLastFrame -= _millisecondsPerFrame;
+				_timeSinceLastFrame -= MillisecondsPerFrame;
 
 				if (++_currentFrame.X >= _sheetSize.X)
 				{
@@ -124,7 +124,7 @@ namespace ChilledTreat.GameClasses
 			}
 
 			//if(_random.Next(1000) == 0) Shoot();
-			if (_random.Next(500) == 0) Shoot(); // <- approximately every 8 seconds
+			if (_random.Next(1000) == 0) Attack(); // <- approximately every 8 seconds
 
 
 			// Movement based on state
@@ -138,12 +138,18 @@ namespace ChilledTreat.GameClasses
 					// Move right
 					break;
 				case State.Attacking:
+					// Move "towards" player
 					break;
 				case State.Dead:
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+		}
+
+		public int GetHealth()
+		{
+			return _health;
 		}
 
 		public void Draw()
@@ -158,13 +164,11 @@ namespace ChilledTreat.GameClasses
 			return new Rectangle((int)_position.X, (int)_position.Y, _frameSize.X, _frameSize.Y);
 		}
 
-
-
-		public void Shoot()
+		public void Attack()
 		{
 			_damageInflicted = _random.Next(20);
 
-			Console.WriteLine("Player hit!");
+			Console.WriteLine("Player hit for " + _damageInflicted + "points!");
 			Console.WriteLine(FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
 
 			//TODO
@@ -172,12 +176,11 @@ namespace ChilledTreat.GameClasses
 			//Player.Damaged(_damageInflicted);
 		}
 
+		// Change health. EnemyHandler takes care of removing the Enemy
 		public void TakeDamage(int damage)
 		{
-			Console.WriteLine("Enemy hit! Remaining hp: " + hp);
-			hp -= damage;
-			if (hp <= 0)
-				_currentState = State.Dead;
+			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
+			_health -= damage;
 		}
 	}
 }
