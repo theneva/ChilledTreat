@@ -12,10 +12,10 @@ namespace ChilledTreat.GameClasses
 		private readonly InputHandler _input = InputHandler.Instance;
 		private readonly SpriteBatch _spriteBatch;
 
-		private int _health, _healthIn10, _ammo, _fullHeartsToDraw, _emptyHeartsToDraw, _heartsDrawShift, _timesDrawnFire;
+		private int _health, _healthIn5, _ammo, _heartsDrawShift, _timesDrawnFire;
 		private readonly int _widthOfHeart;
 		private double _currentTime, _startShootTime, _startReloadTime;
-		private bool _playReloadSound, _drawHalfHeart, _drawFire;
+		private bool _playReloadSound, _drawFire;
 		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture, _healthTexture, _coverTexture;
 		private readonly Vector2 _halfReticuleTexture;
 		private Vector2 _vectorGunToMouse, _reticulePosition;
@@ -43,7 +43,7 @@ namespace ChilledTreat.GameClasses
 
 		public Player(SpriteBatch spriteBatch, ContentManager content)
 		{
-			_health = 100;
+			_health =60;
 			_ammo = 10;
 			_timesDrawnFire = 0;
 			_playReloadSound = false;
@@ -90,6 +90,10 @@ namespace ChilledTreat.GameClasses
 				_drawFire = false;
 				_timesDrawnFire = 0;
 			}
+
+			_healthIn5 = _health / 20;
+			//The shift to the side, so that they're not drawn on top of each other
+			_heartsDrawShift = 0;
 
 			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 			_reticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
@@ -220,64 +224,7 @@ namespace ChilledTreat.GameClasses
 		//This method determines how many hearts are drawn on the screen (i.e. how much health is left), and draws them on the screen
 		private void DrawHealth()
 		{
-			_healthIn10 = _health / 10;
-			//The shift to the side, so that
-			_heartsDrawShift = 0;
-
-			//If the health is not dividable by 2 (i.e. not 2, 4, 8, 10), add a half-heart
-			_drawHalfHeart = _healthIn10 % 2 != 0;
-
-			// TODO: Denne ser helt jævlig ut :P
-			switch (_healthIn10)
-			{
-				case 10:
-					_fullHeartsToDraw = 5;
-					_emptyHeartsToDraw = 0;
-					break;
-				case 9:
-					_fullHeartsToDraw = 4;
-					_emptyHeartsToDraw = 0;
-					break;
-				case 8:
-					_fullHeartsToDraw = 4;
-					_emptyHeartsToDraw = 1;
-					break;
-				case 7:
-					_fullHeartsToDraw = 3;
-					_emptyHeartsToDraw = 1;
-					break;
-				case 6:
-					_fullHeartsToDraw = 3;
-					_emptyHeartsToDraw = 2;
-					break;
-				case 5:
-					_fullHeartsToDraw = 2;
-					_emptyHeartsToDraw = 2;
-					break;
-				case 4:
-					_fullHeartsToDraw = 2;
-					_emptyHeartsToDraw = 3;
-					break;
-				case 3:
-					_fullHeartsToDraw = 1;
-					_emptyHeartsToDraw = 3;
-					break;
-				case 2:
-					_fullHeartsToDraw = 1;
-					_emptyHeartsToDraw = 4;
-					break;
-				case 1:
-					_fullHeartsToDraw = 0;
-					_emptyHeartsToDraw = 4;
-					break;
-				case 0:
-					_fullHeartsToDraw = 0;
-					_emptyHeartsToDraw = 5;
-					break;
-			}
-
-
-			for (int i = 0; i < _fullHeartsToDraw; i++)
+			for (int i = 0; i < _healthIn5; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
 					new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50),
@@ -285,7 +232,8 @@ namespace ChilledTreat.GameClasses
 				_heartsDrawShift++;
 			}
 
-			if (_drawHalfHeart)
+			//Always draw 5 hearts. if the loops only draw 4, add the half-heart missing
+			if (_healthIn5 == 4)
 			{
 				_spriteBatch.Draw(_healthTexture,
 								  new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift),
@@ -293,7 +241,7 @@ namespace ChilledTreat.GameClasses
 				_heartsDrawShift++;
 			}
 
-			for (int i = 0; i < _emptyHeartsToDraw; i++)
+			for (int i = _healthIn5; i < 5; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
 					new Vector2(((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift), Game1.Instance.GameScreenHeight - 50),
