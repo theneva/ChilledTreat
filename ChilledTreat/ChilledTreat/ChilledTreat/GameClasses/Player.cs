@@ -40,7 +40,7 @@ namespace ChilledTreat.GameClasses
 
 		public int Score
 		{
-			get{ return _totalScore;}
+			get { return _totalScore; }
 			private set { _totalScore = value; }
 		}
 
@@ -190,7 +190,7 @@ namespace ChilledTreat.GameClasses
 			_drawMuzzleFlare = true;
 			EnemyHandler.Instance.FiredAt(_hitBox);
 			//if (_ammo > 0)
-				_bullets[--_ammo] = _usedBulletTexture;
+			_bullets[--_ammo] = _usedBulletTexture;
 
 
 			if (_ammo == 0 && _playerState != State.Reloading)
@@ -227,7 +227,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Damaged(int damage)
 		{
-			if(_playerState != State.Reloading) _playerState = State.Damaged;
+			if (_playerState != State.Reloading) _playerState = State.Damaged;
 			if (_inCover) damage /= 5;
 			Console.WriteLine(damage);
 			_health -= damage;
@@ -235,8 +235,6 @@ namespace ChilledTreat.GameClasses
 			if (_health <= 0)
 			{
 				_playerState = State.Dead;
-				// TODO: Remove this
-				Console.WriteLine("You died!");
 			}
 		}
 
