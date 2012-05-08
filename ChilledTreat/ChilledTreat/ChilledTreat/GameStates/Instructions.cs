@@ -24,7 +24,7 @@ namespace ChilledTreat.GameStates
 			_fontColor = Color.Salmon;
 			_InstructionsContent = new[] { 
 				"Shoot Stan from Monkey Island with Mouse1",
- 				" ",
+				" ",
 				"Press space to take cover", 
 				"Useful to avoid taking damage while reloading", 
 				" ",
@@ -53,7 +53,7 @@ namespace ChilledTreat.GameStates
 			foreach (string creditEntry in _InstructionsContent)
 			{
 				_lineBreak += 60;
-			 	SpriteBatch.DrawString(_InstructionsFont, creditEntry, new Vector2(40, _lineBreak), _fontColor);
+				SpriteBatch.DrawString(_InstructionsFont, creditEntry, new Vector2(40, _lineBreak), _fontColor);
 			}
 		}
 	}
