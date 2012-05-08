@@ -22,7 +22,7 @@ namespace ChilledTreat.GameClasses
 		int _timeSinceLastFrame;
 		private const int MillisecondsPerFrame = 100;
 
-		//private SpriteEffects _walkingLeft = false; prøver med bool først
+		//private SpriteEffects _walkingLeft = false; prï¿½ver med bool fï¿½rst
 
 
 		int _health = 20;
