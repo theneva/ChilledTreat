@@ -34,7 +34,10 @@ namespace ChilledTreat
 		public Keys ActionKey = Keys.Enter;
 		public Keys AbortKey = Keys.Escape;
 
+		public Keys ReloadKey = Keys.R;
+		public Keys CoverKey = Keys.Space;
 		
+
 #endif
 
 #if !XBOX
@@ -53,6 +56,12 @@ namespace ChilledTreat
 
 		public Buttons ActionButton = Buttons.A;
 		public Buttons AbortButton = Buttons.B;
+
+		public Buttons ShootButton = Buttons.LeftTrigger;
+		public Buttons CoverButton = Buttons.RightTrigger;
+		public Buttons ReloadButton = Buttons.Y;
+
+
 
 		public PlayerIndex PlayerIndex = PlayerIndex.One;
 #endif
@@ -303,6 +312,32 @@ namespace ChilledTreat
 #elif XBOX
 			return IsButtonPressed(RightButton);
 #endif
+		}
+		
+		public bool IsReloadPressed()
+		{
+#if WINDOWS
+			return IsKeyPressed(ReloadKey);
+#elif XBOX
+			return IsButtonPressed(ReloadButton);	
+#endif
+		}
+		public bool IsCoverPressed()
+		{
+#if WINDOWS
+			return IsKeyPressed(CoverKey);
+#elif XBOX
+			return IsButtonPressed(CoverButton);
+#endif
+		}
+		public bool IsShootPressed()
+		{
+#if WINDOWS
+			return IsLeftMouseButtonPressed();
+#elif XBOX
+			return IsButtonPressed(ShootButton);
+#endif
+
 		}
 		#endregion
 	}
