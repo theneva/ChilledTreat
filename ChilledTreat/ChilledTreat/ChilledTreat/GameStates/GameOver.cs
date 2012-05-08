@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Xml;
+using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
@@ -11,81 +11,78 @@ namespace ChilledTreat.GameStates
 	class GameOver : GameState
 	{
 		// FIELDS
-		SpriteFont menuFont;
-		Color fontColor;
-		InputHandler input = InputHandler.Instance;
+		readonly SpriteFont _menuFont;
+		public static bool NewScoreToAdd { private get; set; }
+		private int _shift;
+		Color _fontColor;
+		readonly InputHandler _input = InputHandler.Instance;
+		private List<Highscore> _highScoreList;
 
-		public static void WriteHighScore()
+		private static List<Highscore> CreateHighScore()
 		{
-			try
-			{
-				String[,] scoreArray = new String[5, 2];
-				
-				scoreArray[0, 0] = "Simen";
-				scoreArray[0, 1] = "50";
-				scoreArray[0, 0] = "Martin";
-				scoreArray[0, 1] = "-40";
-				scoreArray[0, 0] = "Vegard";
-				scoreArray[0, 1] = "10";
-				scoreArray[0, 0] = "Steinar";
-				scoreArray[0, 1] = "20";
-				scoreArray[0, 0] = "Pluto";
-				scoreArray[0, 1] = "30";
+			List<Highscore> highScoreList = new List<Highscore>
+			                                	{
+			                                		new Highscore("Per", 10),
+			                                		new Highscore("Ole", 5),
+			                                	};
 
-				// Creates an XML file is not exist 
-				XmlTextWriter writer = new XmlTextWriter("C:\\temp\\xmltest.xml", null);
-				// Starts a new document 
-				writer.WriteStartDocument();
-				// Add elements to the file 
-
-				writer.WriteProcessingInstruction("Instruction", "Person Record");
-				// Add elements to the file 
-				writer.WriteStartElement("p", "person", "urn:person"); 
-				for(int i = 0; i <= scoreArray.GetUpperBound(0); i++)
-				{
-					writer.WriteStartElement("Navn", "");
-					writer.WriteString(scoreArray[i, 0]);
-					writer.WriteEndElement();
-					writer.WriteStartElement("Score", "");
-					writer.WriteString(scoreArray[i, 1]);
-					writer.WriteEndElement();
-				}
-				// Ends the document 
-				writer.WriteEndDocument();
-
-				writer.Close();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine("Exception: {0}", e.ToString());
-
-			}
-
+			return highScoreList;
 		}
-
-
-
 
 		public GameOver(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
 		{
 			// LOAD CONTENT
-			menuFont = content.Load<SpriteFont>("Fonts/menuFont");
-			fontColor = Color.RoyalBlue;
+			_menuFont = content.Load<SpriteFont>("Fonts/menuFont");
+			_fontColor = Color.RoyalBlue;
+			_highScoreList = CreateHighScore();
 		}
 
 		public override void Update()
 		{
-			if (input.IsAbortPressed())
+			if (NewScoreToAdd)
 			{
-				Game1.ChangeState(GameState.Menu);
+				_highScoreList.Add(new Highscore("Simen", Player.Instance.Score));
+				_highScoreList = _highScoreList.OrderBy(x => x.Score).Reverse().ToList();
+				NewScoreToAdd = false;
+			}
+			_shift = 0;
+			if (_input.IsAbortPressed())
+			{
+				Game1.ChangeState(Menu);
 			}
 		}
 
 		public override void Draw()
 		{
-			SpriteBatch.DrawString(menuFont, "GAME OVER\nU DIED! LuL", new Vector2(200, 100), Color.White);
-			SpriteBatch.DrawString(menuFont, "Score: " + Convert.ToString(Player.Instance.Score), new Vector2(300, 300), Color.White);
+			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(200, 100), Color.White);
+
+
+			foreach (Highscore hs in _highScoreList)
+			{
+				SpriteBatch.DrawString(_menuFont, hs.Name, new Vector2(150, 300 + (_shift * 150)), Color.White);
+				SpriteBatch.DrawString(_menuFont, Convert.ToString(hs.Score), new Vector2(750, 300 + (_shift * 150)), Color.White);
+				_shift++;
+			}
+		}
+	}
+
+	/// <summary>
+	/// This class makes objects out of the highscore a player achieves, to "easily" keep track
+	/// </summary>
+	internal class Highscore
+	{
+		//C:\\Users\\Simen B\\SkyDrive\\XNA\\HighScore for Chilled Treat.xml
+
+		public string Name { get; private set; }
+		public int Score { get; private set; }
+
+		/// <param name="name">The name of the Player</param>
+		/// <param name="score">The score of the Player</param>
+		public Highscore(String name, int score)
+		{
+			Name = name;
+			Score = score;
 		}
 	}
 }
