@@ -58,7 +58,7 @@ namespace ChilledTreat.GameClasses
 			_spriteBatch = spriteBatch;
 
 			_health = 100;
-			_ammo = 10;
+			
 			_timesDrawnMuzzleFlare = 0;
 			_totalScore = 0;
 			_playReloadSound = false;
@@ -73,8 +73,11 @@ namespace ChilledTreat.GameClasses
 			_gunReloadSound = content.Load<SoundEffect>("Sounds/ReloadSound");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
-			_bullets = new Texture2D[10];
-			_bulletPositions = new Vector2[10];
+			//_bullets = new Texture2D[10];
+			_bullets = new Texture2D[500];
+			_ammo = _bullets.Length;
+
+			_bulletPositions = new Vector2[_bullets.Length];
 			_gunSource = new Rectangle(0, 0, 80, 130);
 			_firedGunSource = new Rectangle(80, 0, 80, 130);
 			_gunPosition = new Rectangle(Game1.Instance.GameScreenWidth / 2, Game1.Instance.GameScreenHeight + 40, _gunTexture.Width / 2, _gunTexture.Height);
@@ -87,7 +90,7 @@ namespace ChilledTreat.GameClasses
 
 			for (int i = 0; i < _bulletPositions.Length; i++)
 			{
-				_bulletPositions[i] = new Vector2(i * 20, Game1.Instance.GameScreenHeight - 100);
+				_bulletPositions[i] = new Vector2(i * _bulletTexture.Width + 5, Game1.Instance.GameScreenHeight - _bulletTexture.Height);
 			}
 
 			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _bulletTexture;
@@ -98,7 +101,7 @@ namespace ChilledTreat.GameClasses
 			if (_playerState == State.Dead)
 			{
 				EnemyHandler.Instance.Clear();
-				Game1.ChangeState(GameState.Menu);
+				Game1.ChangeState(GameState.InGame);
 			}
 
 			if (_timesDrawnMuzzleFlare >= 5)
@@ -135,7 +138,7 @@ namespace ChilledTreat.GameClasses
 
 			_inCover = _input.IsKeyDown(Keys.Space);
 
-			if (_input.IsKeyPressed(Keys.R) && _playerState == State.Alive && _ammo != 10)
+			if (_input.IsKeyPressed(Keys.R) && _playerState == State.Alive && _ammo != _bullets.Length)
 			{
 				_playerState = State.Reloading;
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
@@ -277,9 +280,13 @@ namespace ChilledTreat.GameClasses
 		public void ResetPlayer()
 		{
 			_health = 100;
-			_ammo = 10;
+			//_ammo = 10;
 			Score = 0;
-			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _bulletTexture;
+			for (int i = 0; i < _bullets.Length; i++)
+			{
+				_bullets[i] = _bulletTexture;
+				++_ammo;
+			}
 		}
 	}
 }

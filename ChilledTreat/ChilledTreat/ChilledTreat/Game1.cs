@@ -68,6 +68,8 @@ namespace ChilledTreat
 			_gameStates.Add(new Menu(SpriteBatch, Content));
 			_gameStates.Add(new Credits(SpriteBatch, Content));
 			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
+			//_gameStates.Add(new GameOver(SpriteBatch, Content));
+			
 
 			_activeGameState = _gameStates[0]; // TODO: Use static constants (GameStates.Splash);
 		}
@@ -130,13 +132,13 @@ namespace ChilledTreat
 		// ---- Den lager nytt InGame object når du starter på ny
 		public static void NewGame()
 		{
-			if (Instance._gameStates.Count < 5)
+			if (Instance._gameStates.Count < 6)
 			{
 				Instance._gameStates.Add(new InGame(Instance.SpriteBatch, Instance.Content));
 			}
 			else
 			{
-				Instance._gameStates[4] = new InGame(Instance.SpriteBatch, Instance.Content);
+				Instance._gameStates[GameState.InGame] = new InGame(Instance.SpriteBatch, Instance.Content);
 			}
 
 			// Hvorfor funker ikke dette?

@@ -19,10 +19,10 @@ namespace ChilledTreat
 		public KeyboardState KeyboardState { get; private set; }
 		public KeyboardState PreviousKeyboardState { get; private set; }
 
-		public Keys LeftKey = Keys.Left;
-		public Keys RightKey = Keys.Right;
-		public Keys UpKey = Keys.Up;
-		public Keys DownKey = Keys.Down;
+		public Keys UpKey = Keys.W;
+		public Keys LeftKey = Keys.A;
+		public Keys RightKey = Keys.D;
+		public Keys DownKey = Keys.S;
 
 		public Keys ActionKey = Keys.Enter;
 		public Keys AbortKey = Keys.Escape;
