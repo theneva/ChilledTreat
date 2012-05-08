@@ -84,10 +84,7 @@ namespace ChilledTreat.GameClasses
 				_bulletPositions[i] = new Vector2(i * 20, Game1.Instance.GameScreenHeight - 100);
 			}
 
-			for (int i = 0; i < _bullets.Length; i++)
-			{
-				_bullets[i] = _bulletTexture;
-			}
+			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _bulletTexture;
 		}
 
 		public void Update()
@@ -269,6 +266,13 @@ namespace ChilledTreat.GameClasses
 		public void SuccesfullKill()
 		{
 			_totalScore++;
+		}
+
+		public void ResetPlayer()
+		{
+			_health = 100;
+			_ammo = 10;
+			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _bulletTexture;
 		}
 	}
 }
