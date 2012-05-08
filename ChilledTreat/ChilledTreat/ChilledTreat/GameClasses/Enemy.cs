@@ -94,7 +94,7 @@ namespace ChilledTreat.GameClasses
 
 		State _currentState;
 
-		public Enemy(SpriteBatch spriteBatch, ContentManager content)
+		private Enemy(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_spriteBatch = spriteBatch;
 			_position = Vector2.Zero;

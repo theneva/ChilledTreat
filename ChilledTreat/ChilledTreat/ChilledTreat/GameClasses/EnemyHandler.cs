@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ChilledTreat.GameClasses
 {
@@ -46,9 +48,9 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		public void Add(Enemy enemy)
+		public void AddEnemy(SpriteBatch spriteBatch, ContentManager content, int health, Vector2 position)
 		{
-			_enemies.Add(enemy);
+			_enemies.Add(new Enemy(spriteBatch, content, health, position));
 		}
 
 		public void Remove(Enemy enemy)
