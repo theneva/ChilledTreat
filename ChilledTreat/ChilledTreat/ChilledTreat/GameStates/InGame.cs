@@ -29,7 +29,7 @@ namespace ChilledTreat.GameStates
 
 		// Testing
 		private float _timeSinceLastAdd;
-		private const float EnemiesPerSecond = 1.6f;
+		private const float EnemiesPerSecond = 20f;
 
 		public override void Update()
 		{

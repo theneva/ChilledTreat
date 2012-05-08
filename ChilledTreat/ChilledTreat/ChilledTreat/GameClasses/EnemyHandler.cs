@@ -50,7 +50,7 @@ namespace ChilledTreat.GameClasses
 
 		public void AddEnemy(SpriteBatch spriteBatch, ContentManager content, int health)
 		{
-			_enemies.Add(new Enemy(spriteBatch, content, health, new Vector2(Random.Next(Game1.Instance.Window.ClientBounds.Width - Enemy.GetOriginTexture().X), Random.Next(Game1.Instance.Window.ClientBounds.Height - Enemy.GetOriginTexture().Y))));
+			_enemies.Add(new Enemy(spriteBatch, content, health));
 		}
 
 		public void Remove(Enemy enemy)

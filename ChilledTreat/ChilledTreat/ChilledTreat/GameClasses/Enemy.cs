@@ -14,15 +14,17 @@ namespace ChilledTreat.GameClasses
 
 		readonly Texture2D _texture, _muzzleFlare;
 		Vector2 _position = new Vector2(20, 40);
-		Vector2 _speed = new Vector2(0, 20);
+		Vector2 _speed = new Vector2(0, 0.5f);
 		private int _damageInflicted;
+
+		private readonly Random _random = new Random();
 
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
 		int _timeSinceLastFrame;
 		private const int MillisecondsPerFrame = 100;
 
-		private const float SpeedX = 20;
+		private static float _scale = 2f;
 
 		//private SpriteEffects _walkingLeft = false; pr�ver med bool f�rst
 
@@ -33,12 +35,10 @@ namespace ChilledTreat.GameClasses
 		Point _currentFrame;
 		private Point _sheetSize;
 
-		bool _walkingLeft = false;
+		bool _walkingLeft;
 
 		enum State
 		{
-			WalkingLeft,
-			WalkingRight,
 			Attacking,
 			Dead
 		}
@@ -50,22 +50,29 @@ namespace ChilledTreat.GameClasses
 			_spriteBatch = spriteBatch;
 			_position = Vector2.Zero;
 			_frameSize = new Point(41, 80);
-			
+
 			_currentFrame = new Point(0, 0);
 			_sheetSize = new Point(7, 1);
 
 			_texture = content.Load<Texture2D>("Images/enemy2");
 			_muzzleFlare = content.Load<Texture2D>("Images/usableMuzzleFlare");
-			_currentState = State.Dead;
+			_currentState = State.Attacking;
 			_drawMuzzleFlare = false;
 			_timesDrawnMuzzleFlare = 0;
 		}
 
-		public Enemy(SpriteBatch spriteBatch, ContentManager content, int hp, Vector2 position)
+		public Enemy(SpriteBatch spriteBatch, ContentManager content, int hp)
 			: this(spriteBatch, content)
 		{
 			_health = hp;
-			_position = position;
+			//_position = position;
+			_position = new Vector2(_random.Next(Game1.Instance.Window.ClientBounds.Width - _texture.Width) + _texture.Width,
+				Game1.Instance.Window.ClientBounds.Height - _random.Next(510));
+
+
+			_scale = 100f / _position.Y;
+
+			// TODO: Generate a scale based on y (currently 2f)
 		}
 
 		// TODO: THIS IS SHIT.
@@ -107,40 +114,14 @@ namespace ChilledTreat.GameClasses
 			// Movement based on state
 			switch (_currentState)
 			{
-				//    // Don't move
-				case State.WalkingLeft:
-					//        // Move right with _walkingLeft set to true so frames are flipped horizontally.
-					//        MoveLeft();
-					_position.X -= SpeedX;
-					if (_position.X < 0)
-					{
-						_position.X = 0;
-						_currentState = State.WalkingRight;
-					}
-					break;
-				case State.WalkingRight:
-
-					//        // Move right
-
-					_position.X += SpeedX;
-					// Too far right
-					if (_position.X > 1280 - _texture.Width) // TODO: Give each Enemy a platform and check for end of that rectangle
-					{
-						_position.X = 1280 - _texture.Width;
-						_currentState = State.WalkingLeft;
-					}
-					break;
 				case State.Attacking:
-					//        // Move "towards" player
+					_position.Y += _speed.Y;
 					break;
 				case State.Dead:
-					Die();
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-
-
 		}
 
 		public void Die()
@@ -171,7 +152,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_spriteBatch.Draw(_texture, _position,
 			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
-			Color.White, 0, Vector2.Zero, 2, _walkingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth: 0);
+			Color.White, 0, Vector2.Zero, _scale, _walkingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0);
 
 			if (_drawMuzzleFlare)
 			{
@@ -189,8 +170,9 @@ namespace ChilledTreat.GameClasses
 		public void Attack()
 		{
 			_damageInflicted = EnemyHandler.Random.Next(15, 20);
-
-			Player.Instance.Damaged(_damageInflicted);
+			// TODO: Debug purposes
+			//Player.Instance.Damaged(_damageInflicted);
+			Player.Instance.Damaged(0);
 		}
 
 		// Update health, check if dead
