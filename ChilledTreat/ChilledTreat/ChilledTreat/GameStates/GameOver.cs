@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
@@ -11,7 +13,7 @@ namespace ChilledTreat.GameStates
 	class GameOver : GameState
 	{
 		// FIELDS
-		readonly SpriteFont _menuFont;
+		readonly SpriteFont _menuFont, _scoreFont;
 		public static bool NewScoreToAdd { private get; set; }
 		private int _shift;
 		Color _fontColor;
@@ -20,11 +22,7 @@ namespace ChilledTreat.GameStates
 
 		private static List<Highscore> CreateHighScore()
 		{
-			List<Highscore> highScoreList = new List<Highscore>
-			                                	{
-			                                		new Highscore("Per", 10),
-			                                		new Highscore("Ole", 5),
-			                                	};
+			List<Highscore> highScoreList = Highscore.DeserializeFromXml();
 
 			return highScoreList;
 		}
@@ -34,6 +32,7 @@ namespace ChilledTreat.GameStates
 		{
 			// LOAD CONTENT
 			_menuFont = content.Load<SpriteFont>("Fonts/menuFont");
+			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 			_fontColor = Color.RoyalBlue;
 			_highScoreList = CreateHighScore();
 		}
@@ -43,7 +42,10 @@ namespace ChilledTreat.GameStates
 			if (NewScoreToAdd)
 			{
 				_highScoreList.Add(new Highscore("Simen", Player.Instance.Score));
-				_highScoreList = _highScoreList.OrderBy(x => x.Score).Reverse().ToList();
+				_highScoreList = _highScoreList.OrderByDescending(x => x.Score).ThenBy(x => x.CurrentTime).ToList();
+
+				Highscore.SerializeToXml(_highScoreList);
+
 				NewScoreToAdd = false;
 			}
 			_shift = 0;
@@ -55,14 +57,15 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
-			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(200, 100), Color.White);
+			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.Instance.GameScreenWidth / 2f, 100), Color.White);
 
 
 			foreach (Highscore hs in _highScoreList)
 			{
-				SpriteBatch.DrawString(_menuFont, hs.Name, new Vector2(150, 300 + (_shift * 150)), Color.White);
-				SpriteBatch.DrawString(_menuFont, Convert.ToString(hs.Score), new Vector2(750, 300 + (_shift * 150)), Color.White);
 				_shift++;
+				SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.Instance.GameScreenWidth / 3f - 25, 250 + (_shift * 50)), Color.White);
+				SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.Instance.GameScreenWidth / 3f, 250 + (_shift * 50)), Color.White);
+				SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.Instance.GameScreenWidth / 3f * 2f, 250 + (_shift * 50)), Color.White);
 			}
 		}
 	}
@@ -70,12 +73,11 @@ namespace ChilledTreat.GameStates
 	/// <summary>
 	/// This class makes objects out of the highscore a player achieves, to "easily" keep track
 	/// </summary>
-	internal class Highscore
+	public class Highscore
 	{
-		//C:\\Users\\Simen B\\SkyDrive\\XNA\\HighScore for Chilled Treat.xml
-
-		public string Name { get; private set; }
-		public int Score { get; private set; }
+		public string Name { get;  set; }
+		public int Score { get;  set; }
+		public DateTime CurrentTime { get; set; }
 
 		/// <param name="name">The name of the Player</param>
 		/// <param name="score">The score of the Player</param>
@@ -83,6 +85,27 @@ namespace ChilledTreat.GameStates
 		{
 			Name = name;
 			Score = score;
+			CurrentTime = DateTime.Now;
+		}
+
+		public Highscore() { }
+
+		static public void SerializeToXml(List<Highscore> highscores)
+		{
+			XmlSerializer serializer = new XmlSerializer(typeof(List<Highscore>));
+			TextWriter textWriter = new StreamWriter(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
+			serializer.Serialize(textWriter, highscores);
+			textWriter.Close();
+		}
+
+		public static List<Highscore> DeserializeFromXml()
+		{
+			XmlSerializer deserializer = new XmlSerializer(typeof(List<Highscore>));
+			TextReader textReader = new StreamReader(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
+			List<Highscore> scores = (List<Highscore>)deserializer.Deserialize(textReader);
+			textReader.Close();
+
+			return scores;
 		}
 	}
 }
