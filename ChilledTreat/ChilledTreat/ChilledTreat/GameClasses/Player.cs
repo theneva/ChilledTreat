@@ -16,7 +16,7 @@ namespace ChilledTreat.GameClasses
 		private int _health, _healthIn10, _ammo, _heartsDrawShift, _timesDrawnMuzzleFlare, _totalScore;
 		private readonly int _widthOfHeart;
 		private double _currentTime, _startShootTime, _startReloadTime;
-		private bool _playReloadSound, _drawMuzzleFlare;
+		private bool _playReloadSound, _drawMuzzleFlare, _inCover;
 		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture, _healthTexture, _coverTexture;
 		private readonly Vector2 _halfReticuleTexture;
 		private Vector2 _vectorGunToMouse, _reticulePosition;
@@ -33,7 +33,6 @@ namespace ChilledTreat.GameClasses
 			Alive,
 			Shooting,
 			Reloading,
-			InCover,
 			Waiting,
 			Damaged,
 			Dead
@@ -131,7 +130,7 @@ namespace ChilledTreat.GameClasses
 				_playerState = State.Shooting;
 			}
 
-			if (_input.IsKeyDown(Keys.Space)) _playerState = State.InCover;
+			_inCover = _input.IsKeyDown(Keys.Space);
 
 			if (_input.IsKeyPressed(Keys.R) && _playerState == State.Alive && _ammo != 10)
 			{
@@ -147,7 +146,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			if (_playerState != State.InCover)
+			if (!_inCover)
 			{
 				_spriteBatch.Draw(_reticuleTexture, _reticulePosition - _halfReticuleTexture, Color.White);
 
@@ -225,8 +224,9 @@ namespace ChilledTreat.GameClasses
 
 		public void Damaged(int damage)
 		{
-			_playerState = State.Damaged;
-			if (_playerState == State.InCover) damage /= 5;
+			if(_playerState != State.Reloading) _playerState = State.Damaged;
+			if (_inCover) damage /= 5;
+			Console.WriteLine(damage);
 			_health -= damage;
 
 			if (_health <= 0)
