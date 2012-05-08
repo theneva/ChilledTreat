@@ -113,6 +113,59 @@ namespace ChilledTreat.GameClasses
 			this._position = position;
 		}
 
+		public Rectangle GetRectangle()
+		{
+			return new Rectangle((int)_position.X, (int)_position.Y, _frameSize.X, _frameSize.Y);
+		}
+		
+
+		void WalkLeft()
+		{
+			if (_position.X >= 0)
+			{
+				return;
+			}
+
+			_walkingLeft = false;
+			_position.X = 0;
+		}
+
+		void WalkRight()
+		{
+
+		}
+
+		void Attack()
+		{
+			_damageInflicted = EnemyHandler.Random.Next(20);
+
+			// TODO: Debug purposes
+			Console.WriteLine("Player hit for " + _damageInflicted + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
+
+			//TODO
+			//Set up a singleton of the player-object
+			Player.Instance.Damaged(_damageInflicted);
+		}
+
+		// Update health, check if dead
+		public void TakeDamage(int damage)
+		{
+			_health -= damage;
+			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
+
+			if (_health > 0) return;
+
+			_currentState = State.Dead;
+			// TODO: find a better solution
+			EnemyHandler.Instance.Remove(this);
+			Player.Instance.SuccesfullKill();
+		}
+
+		// TODO: Kill enemy using Simen's reload algorithm
+		public void Die()
+		{
+			// TODO: Animation through spritesheet ending in setting a boolean equal to true so the enemy can be removed from the list
+		}
 
 		public void Update()
 		{
@@ -175,30 +228,6 @@ namespace ChilledTreat.GameClasses
 
 		}
 
-		public void Die()
-		{
-			// TODO: Animation through spritesheet ending in setting a boolean equal to true so the enemy can be removed from the list
-		}
-
-		public void MoveLeft()
-		{
-			if (_position.X >= 0)
-			{
-
-
-				return;
-			}
-
-			_walkingLeft = false;
-			_position.X = 0;
-		}
-
-		public void MoveRight()
-		{
-
-		}
-
-
 		public void Draw()
 		{
 			_spriteBatch.Draw(_texture, _position,
@@ -213,35 +242,8 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		public Rectangle GetRectangle()
-		{
-			return new Rectangle((int)_position.X, (int)_position.Y, _frameSize.X, _frameSize.Y);
-		}
 
-		public void Attack()
-		{
-			_damageInflicted = EnemyHandler.Random.Next(20);
 
-			// TODO: Debug purposes
-			Console.WriteLine("Player hit for " + _damageInflicted + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
 
-			//TODO
-			//Set up a singleton of the player-object
-			Player.Instance.Damaged(_damageInflicted);
-		}
-
-		// Update health, check if dead
-		public void TakeDamage(int damage)
-		{
-			_health -= damage;
-			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
-
-			if (_health > 0) return;
-
-			_currentState = State.Dead;
-			// TODO: find a better solution
-			EnemyHandler.Instance.Remove(this);
-			Player.Instance.SuccesfullKill();
-		}
 	}
 }
