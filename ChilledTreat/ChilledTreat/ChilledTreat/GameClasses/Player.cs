@@ -138,7 +138,7 @@ namespace ChilledTreat.GameClasses
 
 			_inCover = _input.IsCoverDown();
 
-			if (_input.IsKeyPressed(Keys.R) && _playerState == State.Alive && _ammo != _bullets.Length)
+			if (_input.IsReloadPressed() && _playerState == State.Alive && _ammo != _bullets.Length)
 			{
 				_playerState = State.Reloading;
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
