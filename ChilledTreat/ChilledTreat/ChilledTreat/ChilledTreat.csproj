@@ -113,6 +113,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="GameClasses\Enemy.cs" />
     <Compile Include="GameStates\GameOver.cs" />
+    <Compile Include="GameStates\Instructions.cs" />
     <Compile Include="GameStates\PauseMenu.cs" />
     <Compile Include="GameStates\GameStates.cs" />
     <Compile Include="GameStates\InGame.cs" />
