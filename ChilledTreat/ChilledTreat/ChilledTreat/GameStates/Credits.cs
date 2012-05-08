@@ -20,7 +20,7 @@ namespace ChilledTreat.GameStates
 			: base(spriteBatch, content)
 		{
 			// Credits content
-			_creditsFont = content.Load<SpriteFont>("Fonts/menuFont");
+			_creditsFont = content.Load<SpriteFont>("Fonts/credInsFont");
 			_fontColor = Color.Salmon;
 			_creditsContent = new[] { "Linje----------------", "Linje----------------", "Linje----------------", "Linje----------------" };
 		}

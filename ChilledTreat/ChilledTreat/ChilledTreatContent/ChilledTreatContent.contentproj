@@ -42,8 +42,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fonts\menuFont.spritefont">
-      <Name>menuFont</Name>
+    <Compile Include="Fonts\credInsFont.spritefont">
+      <Name>credInsFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <SubType>Designer</SubType>
@@ -127,6 +127,14 @@
   <ItemGroup>
     <Compile Include="Fonts\ScoreFont.spritefont">
       <Name>ScoreFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Fonts\menuFont.spritefont">
+      <SubType>Designer</SubType>
+      <Name>menuFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
