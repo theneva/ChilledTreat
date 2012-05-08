@@ -47,7 +47,7 @@ namespace ChilledTreat.GameStates
 			foreach (string creditEntry in _InstructionsContent)
 			{
 				_lineBreak += 100;
-				SpriteBatch.DrawString(_InstructionsFont, creditEntry, new Vector2(360, _lineBreak), _fontColor);
+			//	SpriteBatch.DrawString(_InstructionsFont, creditEntry, new Vector2(360, _lineBreak), _fontColor);
 			}
 		}
 	}
