@@ -70,7 +70,7 @@ namespace ChilledTreat.GameClasses
 			//}
 
 			// Hackish as fuck but it works
-			for (int i = _enemies.Count - 1; i >= 0; i--)
+			for (int i = GetNumberOfEnemies() - 1; i >= 0; i--)
 				if (_enemies[i].GetRectangle().Intersects(attackedArea))
 					_enemies[i].TakeDamage(DefaultDamage);
 		}

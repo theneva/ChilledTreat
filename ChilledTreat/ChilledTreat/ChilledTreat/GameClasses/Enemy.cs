@@ -109,8 +109,8 @@ namespace ChilledTreat.GameClasses
 		public Enemy(SpriteBatch spriteBatch, ContentManager content, int hp, Vector2 position)
 			: this(spriteBatch, content)
 		{
-			this._health = hp;
-			this._position = position;
+			_health = hp;
+			_position = position;
 		}
 
 
@@ -202,8 +202,8 @@ namespace ChilledTreat.GameClasses
 		public void Draw()
 		{
 			_spriteBatch.Draw(_texture, _position,
-			new Rectangle(x: _currentFrame.X * _frameSize.X, y: _currentFrame.Y * _frameSize.Y, width: _frameSize.X, height: _frameSize.Y),
-			Color.White, 0, origin: Vector2.Zero, scale: 2, effects: _walkingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth: 0);
+			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
+			Color.White, 0, Vector2.Zero, 2, _walkingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth: 0);
 
 			if (_drawMuzzleFlare)
 			{
@@ -225,8 +225,6 @@ namespace ChilledTreat.GameClasses
 			// TODO: Debug purposes
 			Console.WriteLine("Player hit for " + _damageInflicted + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
 
-			//TODO
-			//Set up a singleton of the player-object
 			Player.Instance.Damaged(_damageInflicted);
 		}
 
