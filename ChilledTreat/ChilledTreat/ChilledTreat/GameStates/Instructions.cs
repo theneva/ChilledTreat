@@ -25,7 +25,7 @@ namespace ChilledTreat.GameStates
 			_InstructionsContent = new[] { 
 				"Shoot Stan from Monkey Island with Mouse1",
 				" ",
-				"Press space to take cover", 
+				"Hold space to take cover", 
 				"Useful to avoid taking damage while reloading", 
 				" ",
 				"This line of text is completely unnecessary" };
