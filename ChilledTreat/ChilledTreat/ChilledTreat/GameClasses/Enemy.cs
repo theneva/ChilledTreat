@@ -188,10 +188,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Attack()
 		{
-			_damageInflicted = EnemyHandler.Random.Next(20);
-
-			// TODO: Debug purposes
-			Console.WriteLine("Player hit for " + _damageInflicted + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
+			_damageInflicted = EnemyHandler.Random.Next(15, 20);
 
 			Player.Instance.Damaged(_damageInflicted);
 		}

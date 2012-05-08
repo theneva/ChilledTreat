@@ -232,6 +232,11 @@ namespace ChilledTreat.GameClasses
 		{
 			if (_playerState != State.Reloading) _playerState = State.Damaged;
 			if (_inCover) damage /= 5;
+
+
+				// TODO: Debug purposes
+				Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
+
 			_health -= damage;
 
 			if (_health <= 0)
