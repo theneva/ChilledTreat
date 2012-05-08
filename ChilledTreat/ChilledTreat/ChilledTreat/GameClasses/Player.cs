@@ -229,7 +229,6 @@ namespace ChilledTreat.GameClasses
 		{
 			if (_playerState != State.Reloading) _playerState = State.Damaged;
 			if (_inCover) damage /= 5;
-			Console.WriteLine(damage);
 			_health -= damage;
 
 			if (_health <= 0)
