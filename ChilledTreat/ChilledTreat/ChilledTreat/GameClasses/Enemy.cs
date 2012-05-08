@@ -24,7 +24,12 @@ namespace ChilledTreat.GameClasses
 		int _timeSinceLastFrame;
 		private const int MillisecondsPerFrame = 100;
 
-		private float _scale;
+		public float _scale;
+
+		public float GetScale()
+		{
+			return _scale;
+		}
 
 		//private SpriteEffects _walkingLeft = false; pr�ver med bool f�rst
 
@@ -76,10 +81,40 @@ namespace ChilledTreat.GameClasses
 			return new Point(41, 80);
 		}
 
+		public Rectangle GetRectangle()
+		{
+			return new Rectangle((int)_position.X, (int)_position.Y, (int) (_scale * _frameSize.X), (int) (_scale * _frameSize.Y));
+		}
+
+		void Attack()
+		{
+			_damageInflicted = EnemyHandler.Random.Next(15, 20);
+			// TODO: Debug purposes
+			//Player.Instance.Damaged(_damageInflicted);
+			Player.Instance.Damaged(0);
+		}
+
+		// Update health, check if dead
+		public void TakeDamage(int damage)
+		{
+			_health -= damage;
+			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
+
+			if (_health > 0) return;
+
+			_currentState = State.Dead;
+			// TODO: find a better solution
+			EnemyHandler.Instance.Remove(this);
+			Player.Instance.SuccesfullKill();
+		}
+
+		void Die()
+		{
+			// TODO: Animation through spritesheet ending in setting a boolean equal to true so the enemy can be removed from the list
+		}
+
 		public void Update()
 		{
-			_scale = 0.005f * (_position.Y);
-
 			// Animation frames
 			_timeSinceLastFrame += _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
 			if (_timeSinceLastFrame > MillisecondsPerFrame)
@@ -113,17 +148,15 @@ namespace ChilledTreat.GameClasses
 			{
 				case State.Attacking:
 					_position.Y += _speed.Y;
+					_scale = 0.008f * (_position.Y);
+					if (_position.Y > Game1.Instance.Window.ClientBounds.Height - 300)
+						_position.Y = Game1.Instance.Window.ClientBounds.Height - 300;
 					break;
 				case State.Dead:
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-		}
-
-		void Die()
-		{
-			// TODO: Animation through spritesheet ending in setting a boolean equal to true so the enemy can be removed from the list
 		}
 
 		public void Draw()
@@ -139,31 +172,8 @@ namespace ChilledTreat.GameClasses
 			_timesDrawnMuzzleFlare++;
 		}
 
-		public Rectangle GetRectangle()
-		{
-			return new Rectangle((int)_position.X, (int)_position.Y, _frameSize.X, _frameSize.Y);
-		}
 
-		void Attack()
-		{
-			_damageInflicted = EnemyHandler.Random.Next(15, 20);
-			// TODO: Debug purposes
-			//Player.Instance.Damaged(_damageInflicted);
-			Player.Instance.Damaged(0);
-		}
 
-		// Update health, check if dead
-		public void TakeDamage(int damage)
-		{
-			_health -= damage;
-			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
-
-			if (_health > 0) return;
-
-			_currentState = State.Dead;
-			// TODO: find a better solution
-			EnemyHandler.Instance.Remove(this);
-			Player.Instance.SuccesfullKill();
-		}
+		
 	}
 }

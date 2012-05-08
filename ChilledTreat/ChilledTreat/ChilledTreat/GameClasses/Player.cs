@@ -58,7 +58,7 @@ namespace ChilledTreat.GameClasses
 			_health = 100;
 			_timesDrawnMuzzleFlare = 0;
 			_totalScore = 0;
-			_bullets = new Texture2D[10];
+			_bullets = new Texture2D[2000];
 			_ammo = _bullets.Length;
 			_playReloadSound = false;
 			_drawMuzzleFlare = false;
