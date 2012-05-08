@@ -23,10 +23,13 @@ namespace ChilledTreat
 		public Keys LeftKey = Keys.Left;
 		public Keys RightKey = Keys.Right;
 		public Keys DownKey = Keys.Down;
-		public Keys WKey = Keys.W;
-		public Keys AKey = Keys.A;
-		public Keys SKey = Keys.S;
-		public Keys DKey = Keys.D;
+
+/*- = = L E H M A N N  H A N D I C A P E T = = -*/
+/*Lehmann*/ public Keys WKey = Keys.W; /*Lehmann*/
+/*Lehmann*/ public Keys AKey = Keys.A; /*Lehmann*/
+/*Lehmann*/ public Keys SKey = Keys.S; /*Lehmann*/
+/*Lehmann*/ public Keys DKey = Keys.D; /*Lehmann*/
+/*- = = L E H M A N N  H A N D I C A P E T = = -*/
 
 		public Keys ActionKey = Keys.Enter;
 		public Keys AbortKey = Keys.Escape;
