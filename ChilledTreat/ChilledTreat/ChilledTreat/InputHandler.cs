@@ -322,12 +322,12 @@ namespace ChilledTreat
 			return IsButtonPressed(ReloadButton);	
 #endif
 		}
-		public bool IsCoverPressed()
+		public bool IsCoverDown()
 		{
 #if WINDOWS
-			return IsKeyPressed(CoverKey);
+			return IsKeyDown(CoverKey);
 #elif XBOX
-			return IsButtonPressed(CoverButton);
+			return IsButtonDown(CoverButton);
 #endif
 		}
 		public bool IsShootPressed()
