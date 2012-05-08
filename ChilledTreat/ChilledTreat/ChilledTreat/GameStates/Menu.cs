@@ -19,7 +19,7 @@ namespace ChilledTreat.GameStates
 		{
 			// Menu content
 			_menuFont = Content.Load<SpriteFont>("Fonts/menuFont");
-			_fontColor = Color.Salmon;
+			_fontColor = Color.Honeydew;
 			string[] strings = {"New Game", "Instructions", "Credits", "EXIT"};
 			_menuItems = strings;
 			_menuPos = 0;
