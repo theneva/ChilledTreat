@@ -38,6 +38,12 @@ namespace ChilledTreat.GameClasses
 			Dead
 		}
 
+		public int Score
+		{
+			get{ return _totalScore;}
+			private set { _totalScore = value; }
+		}
+
 		State _playerState;
 		static Player _instance;
 		public static Player Instance
@@ -174,7 +180,7 @@ namespace ChilledTreat.GameClasses
 
 			DrawHealth();
 
-			_spriteBatch.DrawString(_scoreFont, Convert.ToString(_totalScore), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
+			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
 		}
 
 		private void Shoot()
@@ -263,15 +269,19 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
+		//If an enemy is killed, add 1 tot the score
 		public void SuccesfullKill()
 		{
-			_totalScore++;
+			Score++;
 		}
 
+		//This method resets the player's score, health, ammo and ammoindicator.
+		//Since the player is a singleton, the constructor is only called once. Because of that, we use this method
 		public void ResetPlayer()
 		{
 			_health = 100;
 			_ammo = 10;
+			Score = 0;
 			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _bulletTexture;
 		}
 	}
