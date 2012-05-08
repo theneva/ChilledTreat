@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Globalization;
+using ChilledTreat.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -93,7 +93,11 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
-			if (_playerState == State.Dead) Game1.Instance.Exit();
+			if (_playerState == State.Dead)
+			{
+				EnemyHandler.Instance.Clear();
+				Game1.ChangeState(GameState.Menu);
+			}
 
 			if (_timesDrawnMuzzleFlare >= 5)
 			{
@@ -174,7 +178,7 @@ namespace ChilledTreat.GameClasses
 
 			DrawHealth();
 
-			_spriteBatch.DrawString(_scoreFont, _totalScore.ToString(), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
+			_spriteBatch.DrawString(_scoreFont, Convert.ToString(_totalScore), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
 		}
 
 		private void Shoot()
@@ -233,7 +237,7 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		//This method determines how many hearts are drawn on the screen (i.e. how much health is left), and draws them on the screen
+		//This method determines how many hearts are drawn on the screen (according to how much health is left), and draws them on the screen
 		private void DrawHealth()
 		{
 			for (int i = 0; i < _healthIn10 / 2; i++)
@@ -244,7 +248,7 @@ namespace ChilledTreat.GameClasses
 				_heartsDrawShift++;
 			}
 
-			//Always draw 5 hearts. If the int division ends up removing
+			//Always draw 5 hearts. If the int division ends up removing the fraction
 			if (_healthIn10 % 2 != 0)
 			{
 				_spriteBatch.Draw(_healthTexture,

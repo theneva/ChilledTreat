@@ -12,8 +12,10 @@ namespace ChilledTreat.GameStates
 		//    _gameStates.Add(new Menu(SpriteBatch, Content));
 		//    _gameStates.Add(new Credits(SpriteBatch, Content));
 		//    _gameStates.Add(new PauseMenu(SpriteBatch, Content));
-        // What is this^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-		protected static int Splash = 0, Menu = 1, Credits = 2, PauseMenu = 3;
+		// What is this^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		protected static int Splash = 0;
+		protected internal static int Menu = 1;
+		protected static int Credits = 2, PauseMenu = 3;
 
 
 		public GameState(SpriteBatch spriteBatch, ContentManager content)
