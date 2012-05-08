@@ -20,9 +20,15 @@ namespace ChilledTreat.GameStates
 			: base(spriteBatch, content)
 		{
 			// Credits content
-			_InstructionsFont = content.Load<SpriteFont>("Fonts/menuFont");
+			_InstructionsFont = content.Load<SpriteFont>("Fonts/credInsFont");
 			_fontColor = Color.Salmon;
-			_InstructionsContent = new[] { "Skyt Stan fra Monkey Island - Mouse1", "Trykk space for å gå i cover", "Dette kan være lurt å gjøre mens du lader", "Linje----------------" };
+			_InstructionsContent = new[] { 
+				"Shoot Stan from Monkey Island with Mouse1",
+ 				" ",
+				"Press space to take cover", 
+				"Useful to avoid taking damage while reloading", 
+				" ",
+				"This line of text is completely unnecessary" };
 		}
 
 		// Methods
@@ -46,8 +52,8 @@ namespace ChilledTreat.GameStates
 			// DRAW!!!! LåååL
 			foreach (string creditEntry in _InstructionsContent)
 			{
-				_lineBreak += 100;
-			//	SpriteBatch.DrawString(_InstructionsFont, creditEntry, new Vector2(360, _lineBreak), _fontColor);
+				_lineBreak += 60;
+			 	SpriteBatch.DrawString(_InstructionsFont, creditEntry, new Vector2(40, _lineBreak), _fontColor);
 			}
 		}
 	}
