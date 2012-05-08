@@ -46,6 +46,9 @@ namespace ChilledTreat.GameClasses
 			{
 				enemy.Draw();
 			}
+
+			if (_enemies.Count > 0)
+				Console.WriteLine(_enemies[0].GetScale());
 		}
 
 		public void AddEnemy(SpriteBatch spriteBatch, ContentManager content, int health)
