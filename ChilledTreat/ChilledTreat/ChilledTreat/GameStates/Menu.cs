@@ -64,7 +64,7 @@ namespace ChilledTreat.GameStates
 				else if (_menuItems[_menuPos].Contains("New Game"))
 				{
 					Game1.NewGame();
-					Game1.ChangeState(4);
+					Game1.ChangeState(GameState.InGame);
 				}
 				else if (_menuItems[_menuPos].Contains("Credits"))
 				{
