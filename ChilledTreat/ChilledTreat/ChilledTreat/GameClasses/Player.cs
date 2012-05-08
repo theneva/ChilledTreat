@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Globalization;
+using ChilledTreat.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -16,7 +16,7 @@ namespace ChilledTreat.GameClasses
 		private int _health, _healthIn10, _ammo, _heartsDrawShift, _timesDrawnMuzzleFlare, _totalScore;
 		private readonly int _widthOfHeart;
 		private double _currentTime, _startShootTime, _startReloadTime;
-		private bool _playReloadSound, _drawMuzzleFlare;
+		private bool _playReloadSound, _drawMuzzleFlare, _inCover;
 		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture, _healthTexture, _coverTexture;
 		private readonly Vector2 _halfReticuleTexture;
 		private Vector2 _vectorGunToMouse, _reticulePosition;
@@ -33,10 +33,15 @@ namespace ChilledTreat.GameClasses
 			Alive,
 			Shooting,
 			Reloading,
-			InCover,
 			Waiting,
 			Damaged,
 			Dead
+		}
+
+		public int Score
+		{
+			get { return _totalScore; }
+			private set { _totalScore = value; }
 		}
 
 		State _playerState;
@@ -85,15 +90,16 @@ namespace ChilledTreat.GameClasses
 				_bulletPositions[i] = new Vector2(i * 20, Game1.Instance.GameScreenHeight - 100);
 			}
 
-			for (int i = 0; i < _bullets.Length; i++)
-			{
-				_bullets[i] = _bulletTexture;
-			}
+			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _bulletTexture;
 		}
 
 		public void Update()
 		{
-			if (_playerState == State.Dead) Game1.Instance.Exit();
+			if (_playerState == State.Dead)
+			{
+				EnemyHandler.Instance.Clear();
+				Game1.ChangeState(GameState.Menu);
+			}
 
 			if (_timesDrawnMuzzleFlare >= 5)
 			{
@@ -127,7 +133,7 @@ namespace ChilledTreat.GameClasses
 				_playerState = State.Shooting;
 			}
 
-			if (_input.IsKeyDown(Keys.Space)) _playerState = State.InCover;
+			_inCover = _input.IsKeyDown(Keys.Space);
 
 			if (_input.IsKeyPressed(Keys.R) && _playerState == State.Alive && _ammo != 10)
 			{
@@ -143,7 +149,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			if (_playerState != State.InCover)
+			if (!_inCover)
 			{
 				_spriteBatch.Draw(_reticuleTexture, _reticulePosition - _halfReticuleTexture, Color.White);
 
@@ -174,7 +180,7 @@ namespace ChilledTreat.GameClasses
 
 			DrawHealth();
 
-			_spriteBatch.DrawString(_scoreFont, _totalScore.ToString(), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
+			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
 		}
 
 		private void Shoot()
@@ -184,7 +190,7 @@ namespace ChilledTreat.GameClasses
 			_drawMuzzleFlare = true;
 			EnemyHandler.Instance.FiredAt(_hitBox);
 			//if (_ammo > 0)
-				_bullets[--_ammo] = _usedBulletTexture;
+			_bullets[--_ammo] = _usedBulletTexture;
 
 
 			if (_ammo == 0 && _playerState != State.Reloading)
@@ -197,10 +203,6 @@ namespace ChilledTreat.GameClasses
 			else _playerState = State.Waiting;
 
 			if (_playerState != State.Reloading && _playerState != State.Waiting && _playerState != State.Dead) _playerState = State.Alive;
-
-			//TODO
-			//This is a test for whether or not the damage function works (and the drawing of the health indicator)
-			//Damaged(5);
 		}
 
 		private void Reload()
@@ -213,7 +215,7 @@ namespace ChilledTreat.GameClasses
 			}
 
 			if (_currentTime - _startReloadTime <= _gunReloadSound.Duration.TotalMilliseconds) return;
-			_ammo = 10; // should be done in the loop vvvv
+			_ammo = 10; // should be done in the loop vvvv  <-- (what?????)
 
 			for (int i = 0; i < _bullets.Length; i++)
 			{
@@ -225,19 +227,18 @@ namespace ChilledTreat.GameClasses
 
 		public void Damaged(int damage)
 		{
-			_playerState = State.Damaged;
-			if (_playerState == State.InCover) damage /= 5;
+			if (_playerState != State.Reloading) _playerState = State.Damaged;
+			if (_inCover) damage /= 5;
+			Console.WriteLine(damage);
 			_health -= damage;
 
 			if (_health <= 0)
 			{
 				_playerState = State.Dead;
-				// TODO: Remove this
-				Console.WriteLine("You died!");
 			}
 		}
 
-		//This method determines how many hearts are drawn on the screen (i.e. how much health is left), and draws them on the screen
+		//This method determines how many hearts are drawn on the screen (according to how much health is left), and draws them on the screen
 		private void DrawHealth()
 		{
 			for (int i = 0; i < _healthIn10 / 2; i++)
@@ -248,7 +249,7 @@ namespace ChilledTreat.GameClasses
 				_heartsDrawShift++;
 			}
 
-			//Always draw 5 hearts. If the int division ends up removing
+			//Always draw 5 hearts. If the int division ends up removing the fraction
 			if (_healthIn10 % 2 != 0)
 			{
 				_spriteBatch.Draw(_healthTexture,
@@ -266,9 +267,20 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
+		//If an enemy is killed, add 1 tot the score
 		public void SuccesfullKill()
 		{
-			_totalScore++;
+			Score++;
+		}
+
+		//This method resets the player's score, health, ammo and ammoindicator.
+		//Since the player is a singleton, the constructor is only called once. Because of that, we use this method
+		public void ResetPlayer()
+		{
+			_health = 100;
+			_ammo = 10;
+			Score = 0;
+			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _bulletTexture;
 		}
 	}
 }

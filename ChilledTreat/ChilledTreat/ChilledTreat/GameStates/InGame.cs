@@ -22,12 +22,12 @@ namespace ChilledTreat.GameStates
 			_player = Player.Instance;
 			Game1.Instance.IsMouseVisible = false;
 
-			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(250, 50)));
-			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(350, 150)));
-			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(50, 250)));
-			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(250, 150)));
-			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(350, 250)));
-			EnemyHandler.Instance.Add(new Enemy(SpriteBatch, Content, 1, new Vector2(50, 50)));
+			EnemyHandler.Instance.AddEnemy(SpriteBatch, Content, 1, new Vector2(250, 50));
+			EnemyHandler.Instance.AddEnemy(SpriteBatch, Content, 1, new Vector2(350, 150));
+			EnemyHandler.Instance.AddEnemy(SpriteBatch, Content, 1, new Vector2(50, 250));
+			EnemyHandler.Instance.AddEnemy(SpriteBatch, Content, 1, new Vector2(250, 150));
+			EnemyHandler.Instance.AddEnemy(SpriteBatch, Content, 1, new Vector2(350, 250));
+			EnemyHandler.Instance.AddEnemy(SpriteBatch, Content, 1, new Vector2(50, 50));
 		
 		}
 

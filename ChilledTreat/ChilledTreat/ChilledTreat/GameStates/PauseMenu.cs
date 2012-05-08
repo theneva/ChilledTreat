@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using ChilledTreat.GameClasses;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 
@@ -62,7 +63,10 @@ namespace ChilledTreat.GameStates
 			{
 				if (_menuItems[_menuPos].Contains("Main Menu"))
 				{
-					Game1.ChangeState(GameState.Menu);
+					Player.Instance.ResetPlayer();
+
+					EnemyHandler.Instance.Clear();
+					Game1.ChangeState(Menu);
 				} 
 				else if (_menuItems[_menuPos].Contains("Resume Game"))
 				{
