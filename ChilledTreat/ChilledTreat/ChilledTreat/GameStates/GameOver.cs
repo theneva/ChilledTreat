@@ -6,6 +6,7 @@ namespace ChilledTreat.GameStates
 	class GameOver : GameState
 	{
 		// FIELDS
+		SpriteFont gameOverFont;
 
 		public GameOver(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
