@@ -24,7 +24,7 @@ namespace ChilledTreat.GameClasses
 		int _timeSinceLastFrame;
 		private const int MillisecondsPerFrame = 100;
 
-		private static float _scale = 2f;
+		private float _scale;
 
 		//private SpriteEffects _walkingLeft = false; pr�ver med bool f�rst
 
@@ -34,8 +34,6 @@ namespace ChilledTreat.GameClasses
 		private Point _frameSize;
 		Point _currentFrame;
 		private Point _sheetSize;
-
-		bool _walkingLeft;
 
 		enum State
 		{
@@ -69,9 +67,6 @@ namespace ChilledTreat.GameClasses
 			_position = new Vector2(_random.Next(Game1.Instance.Window.ClientBounds.Width - _texture.Width) + _texture.Width,
 				Game1.Instance.Window.ClientBounds.Height - _random.Next(510));
 
-
-			_scale = 100f / _position.Y;
-
 			// TODO: Generate a scale based on y (currently 2f)
 		}
 
@@ -83,6 +78,8 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
+			_scale = 0.005f * (_position.Y);
+
 			// Animation frames
 			_timeSinceLastFrame += _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
 			if (_timeSinceLastFrame > MillisecondsPerFrame)
@@ -124,42 +121,22 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		public void Die()
+		void Die()
 		{
 			// TODO: Animation through spritesheet ending in setting a boolean equal to true so the enemy can be removed from the list
 		}
-
-		public void MoveLeft()
-		{
-			if (_position.X >= 0)
-			{
-
-
-				return;
-			}
-
-			_walkingLeft = false;
-			_position.X = 0;
-		}
-
-		public void MoveRight()
-		{
-
-		}
-
 
 		public void Draw()
 		{
 			_spriteBatch.Draw(_texture, _position,
 			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
-			Color.White, 0, Vector2.Zero, _scale, _walkingLeft ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0);
+			Color.White, 0, origin: Vector2.Zero, scale: _scale, effects: SpriteEffects.None, layerDepth: 0);
 
-			if (_drawMuzzleFlare)
-			{
-				_spriteBatch.Draw(_muzzleFlare, new Vector2(_position.X - (_muzzleFlare.Width / 2f), _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), Color.White);
+			if (!_drawMuzzleFlare) return;
 
-				_timesDrawnMuzzleFlare++;
-			}
+			_spriteBatch.Draw(_muzzleFlare, position: new Vector2(_position.X - (_muzzleFlare.Width / 2f), y: _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), color: Color.White);
+
+			_timesDrawnMuzzleFlare++;
 		}
 
 		public Rectangle GetRectangle()
@@ -167,7 +144,7 @@ namespace ChilledTreat.GameClasses
 			return new Rectangle((int)_position.X, (int)_position.Y, _frameSize.X, _frameSize.Y);
 		}
 
-		public void Attack()
+		void Attack()
 		{
 			_damageInflicted = EnemyHandler.Random.Next(15, 20);
 			// TODO: Debug purposes

@@ -29,20 +29,30 @@ namespace ChilledTreat.GameStates
 
 		// Testing
 		private float _timeSinceLastAdd;
-		private const float EnemiesPerSecond = 20f;
+		private float _enemiesPerSecond = 1f;
+
+		private int _timeSinceLastIntervalIncrease;
+		private const int AddEnemyInterval = 5000; // milliseconds
+
 
 		public override void Update()
 		{
 			// LOGIC
+
+			if ((_timeSinceLastIntervalIncrease += Game1.Instance.TargetElapsedTime.Milliseconds) >= AddEnemyInterval)
+			{
+				_timeSinceLastIntervalIncrease -= AddEnemyInterval;
+				++_enemiesPerSecond;
+			}
+
 			_timeSinceLastAdd += Game1.Instance.TargetElapsedTime.Milliseconds;
 
-			if (_timeSinceLastAdd >= 1000 / EnemiesPerSecond)
+			if (_timeSinceLastAdd >= 1000 / _enemiesPerSecond)
 			{
-				_timeSinceLastAdd -= 1000 / EnemiesPerSecond;
+				_timeSinceLastAdd -= 1000 / _enemiesPerSecond;
 				EnemyHandler.Instance.AddEnemy(SpriteBatch, Content, 20);
 			}
 
-			
 
 			_player.Update();
 			_enemies.Update();
