@@ -56,11 +56,14 @@ namespace ChilledTreat.GameClasses
 			_spriteBatch = spriteBatch;
 
 			_health = 100;
-			
 			_timesDrawnMuzzleFlare = 0;
 			_totalScore = 0;
+			_bullets = new Texture2D[10];
+			_ammo = _bullets.Length;
 			_playReloadSound = false;
 			_drawMuzzleFlare = false;
+
+			//Load all textures, sounds and fonts
 			_reticuleTexture = content.Load<Texture2D>("Images/usableReticule");
 			_bulletTexture = content.Load<Texture2D>("Images/usableBullet");
 			_usedBulletTexture = content.Load<Texture2D>("Images/usableUsedBullet");
@@ -70,10 +73,9 @@ namespace ChilledTreat.GameClasses
 			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
 			_gunReloadSound = content.Load<SoundEffect>("Sounds/ReloadSound");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
+
+			//Set a vector at the center of the reticule, so it's drawn around the mousepointer
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
-			_bullets = new Texture2D[10];
-			//_bullets = new Texture2D[500];
-			_ammo = _bullets.Length;
 
 			_bulletPositions = new Vector2[_bullets.Length];
 			_gunSource = new Rectangle(0, 0, 80, 130);
