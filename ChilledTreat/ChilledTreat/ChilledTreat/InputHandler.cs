@@ -19,10 +19,14 @@ namespace ChilledTreat
 		public KeyboardState KeyboardState { get; private set; }
 		public KeyboardState PreviousKeyboardState { get; private set; }
 
-		public Keys UpKey = Keys.W;
-		public Keys LeftKey = Keys.A;
-		public Keys RightKey = Keys.D;
-		public Keys DownKey = Keys.S;
+		public Keys UpKey = Keys.Up;
+		public Keys LeftKey = Keys.Left;
+		public Keys RightKey = Keys.Right;
+		public Keys DownKey = Keys.Down;
+		public Keys WKey = Keys.W;
+		public Keys AKey = Keys.A;
+		public Keys SKey = Keys.S;
+		public Keys DKey = Keys.D;
 
 		public Keys ActionKey = Keys.Enter;
 		public Keys AbortKey = Keys.Escape;
@@ -268,7 +272,7 @@ namespace ChilledTreat
 		public bool IsUpPressed()
 		{
 #if WINDOWS
-			return IsKeyPressed(UpKey);
+			return IsKeyPressed(UpKey) || IsKeyPressed(WKey); ;
 #elif XBOX
 			return IsButtonPressed(UpButton);
 #endif
@@ -276,7 +280,7 @@ namespace ChilledTreat
 		public bool IsDownPressed()
 		{
 #if WINDOWS
-			return IsKeyPressed(DownKey);
+			return IsKeyPressed(DownKey) || IsKeyPressed(SKey);
 #elif XBOX
 			return IsButtonPressed(DownButton);
 #endif
@@ -284,7 +288,7 @@ namespace ChilledTreat
 		public bool IsLeftPressed()
 		{
 #if WINDOWS
-			return IsKeyPressed(LeftKey);
+			return IsKeyPressed(LeftKey) || IsKeyPressed(AKey); ;
 #elif XBOX
 			return IsButtonPressed(LeftButton);
 #endif
@@ -292,7 +296,7 @@ namespace ChilledTreat
 		public bool IsRightPressed()
 		{
 #if WINDOWS
-			return IsKeyPressed(RightKey);
+			return IsKeyPressed(RightKey) || IsKeyPressed(DKey);
 #elif XBOX
 			return IsButtonPressed(RightButton);
 #endif
