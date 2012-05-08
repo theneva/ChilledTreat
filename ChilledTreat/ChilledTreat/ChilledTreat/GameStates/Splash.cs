@@ -9,7 +9,6 @@ namespace ChilledTreat.GameStates
 		//Texture2D SplashTexture;
 
 
-
 		public Splash(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
 		{
@@ -31,7 +30,7 @@ namespace ChilledTreat.GameStates
 		{
 			//SpriteBatch.Draw(SplashTexture, Vector2.Zero, Color.White);
 
-			Game1.Instance.GraphicsDevice.Clear(Color.Aqua);
+			Game1.Instance.GraphicsDevice.Clear(Color.Olive);
 
 
 		}
