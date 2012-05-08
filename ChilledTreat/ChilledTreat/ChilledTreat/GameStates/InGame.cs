@@ -13,6 +13,7 @@ namespace ChilledTreat.GameStates
 		readonly EnemyHandler _enemies = EnemyHandler.Instance;
 		readonly InputHandler _input = InputHandler.Instance;
 		private readonly Random _random = new Random();
+		private readonly Texture2D _background;
 
 		// Constructor
 		public InGame(SpriteBatch spriteBatch, ContentManager content)
@@ -21,6 +22,7 @@ namespace ChilledTreat.GameStates
 			// CONTENT LOAD
 			_player = Player.Instance;
 			Game1.Instance.IsMouseVisible = false;
+			_background = content.Load<Texture2D>("Images/bg");
 		}
 
 		// Methods
@@ -56,6 +58,7 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 			// DRAW THAT SHIT
+			SpriteBatch.Draw(_background, Vector2.Zero, Color.White);
 			_enemies.Draw();
 			_player.Draw();
 		}
