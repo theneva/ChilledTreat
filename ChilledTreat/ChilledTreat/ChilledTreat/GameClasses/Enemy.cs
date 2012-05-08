@@ -22,18 +22,16 @@ namespace ChilledTreat.GameClasses
 		int _timeSinceLastFrame;
 		private const int MillisecondsPerFrame = 100;
 
+		private const float SpeedX = 20;
+
 		//private SpriteEffects _walkingLeft = false; pr�ver med bool f�rst
 
 
 		int _health = 20;
 
 		private Point _frameSize;
-		Point _currentFrame = new Point(0, 0);
-		Point _sheetSize = new Point(7, 1);
-
-		//Point _frameSize = new Point(41, 80);
-		//Point _currentFrame = new Point(5, 4);
-		//Point _sheetSize = new Point(1, 1);
+		Point _currentFrame;
+		private Point _sheetSize;
 
 		bool _walkingLeft = false;
 
@@ -45,53 +43,6 @@ namespace ChilledTreat.GameClasses
 			Dead
 		}
 
-		// Fuck this shit
-
-		//State WalkingLeft
-		//{
-		//    get
-		//    {
-		//        _walkingLeft = true;
-		//        _currentFrame = new Point();
-		//        _sheetSize = new Point();
-		//        return WalkingLeft;
-		//    }
-		//}
-
-		//State WalkingRight
-		//{
-		//    get
-		//    {
-		//        _walkingLeft = false;
-		//        _currentFrame = new Point();
-		//        _sheetSize = new Point();
-		//        return WalkingRight;
-		//    }
-		//}
-
-		//State Attacking
-		//{
-		//    get
-		//    {
-		//        _walkingLeft = false;
-		//        _currentFrame = new Point();
-		//        _sheetSize = new Point();
-		//        return Attacking;
-		//    }
-		//}
-
-		//State Dead
-		//{
-		//    get
-		//    {
-		//        _walkingLeft = false;
-		//        _frameSize = new Point(57, 57);
-		//        _currentFrame = new Point(7, 2);
-		//        _sheetSize = new Point(1, 1);
-		//        return Dead;
-		//    }
-		//}
-
 		State _currentState;
 
 		private Enemy(SpriteBatch spriteBatch, ContentManager content)
@@ -99,6 +50,10 @@ namespace ChilledTreat.GameClasses
 			_spriteBatch = spriteBatch;
 			_position = Vector2.Zero;
 			_frameSize = new Point(41, 80);
+			
+			_currentFrame = new Point(0, 0);
+			_sheetSize = new Point(7, 1);
+
 			_texture = content.Load<Texture2D>("Images/enemy2");
 			_muzzleFlare = content.Load<Texture2D>("Images/usableMuzzleFlare");
 			_currentState = State.Dead;
@@ -113,6 +68,11 @@ namespace ChilledTreat.GameClasses
 			_position = position;
 		}
 
+		// TODO: THIS IS SHIT.
+		public static Point GetOriginTexture()
+		{
+			return new Point(41, 80);
+		}
 
 		public void Update()
 		{
@@ -151,16 +111,24 @@ namespace ChilledTreat.GameClasses
 				case State.WalkingLeft:
 					//        // Move right with _walkingLeft set to true so frames are flipped horizontally.
 					//        MoveLeft();
+					_position.X -= SpeedX;
+					if (_position.X < 0)
+					{
+						_position.X = 0;
+						_currentState = State.WalkingRight;
+					}
 					break;
 				case State.WalkingRight:
+
 					//        // Move right
-					//        MoveRight();
-					//        // Too far right
-					//        if (_position.X > 1280) // TODO: Give each Enemy a platform and check for end of that rectangle
-					//        {
-					//            _walkingLeft = true;
-					//            _position.X = 1280;
-					//        }
+
+					_position.X += SpeedX;
+					// Too far right
+					if (_position.X > 1280 - _texture.Width) // TODO: Give each Enemy a platform and check for end of that rectangle
+					{
+						_position.X = 1280 - _texture.Width;
+						_currentState = State.WalkingLeft;
+					}
 					break;
 				case State.Attacking:
 					//        // Move "towards" player
