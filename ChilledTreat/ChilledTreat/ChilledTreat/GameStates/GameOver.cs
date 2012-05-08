@@ -32,6 +32,7 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
+			SpriteBatch.DrawString(menuFont, "GAME OVER\nU DIED! LuL", new Vector2(200, 100), Color.White);
 			SpriteBatch.DrawString(menuFont, "Score: " + Convert.ToString(Player.Instance.Score), new Vector2(300, 300), Color.White);
 		}
 	}
