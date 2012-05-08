@@ -68,6 +68,7 @@ namespace ChilledTreat
 			_gameStates.Add(new Splash(SpriteBatch, Content));
 			_gameStates.Add(new Menu(SpriteBatch, Content));
 			_gameStates.Add(new Credits(SpriteBatch, Content));
+			_gameStates.Add(new Instructions(SpriteBatch, Content));
 			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
 			_gameStates.Add(new GameOver(SpriteBatch, Content));
 			
