@@ -73,8 +73,8 @@ namespace ChilledTreat.GameClasses
 			_gunReloadSound = content.Load<SoundEffect>("Sounds/ReloadSound");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
-			//_bullets = new Texture2D[10];
-			_bullets = new Texture2D[500];
+			_bullets = new Texture2D[10];
+			//_bullets = new Texture2D[500];
 			_ammo = _bullets.Length;
 
 			_bulletPositions = new Vector2[_bullets.Length];
@@ -218,7 +218,7 @@ namespace ChilledTreat.GameClasses
 			}
 
 			if (_currentTime - _startReloadTime <= _gunReloadSound.Duration.TotalMilliseconds) return;
-			_ammo = 10; // should be done in the loop vvvv  <-- (what?????)
+			_ammo = _bullets.Length; // should be done in the loop vvvv  <-- (what?????)
 
 			for (int i = 0; i < _bullets.Length; i++)
 			{
@@ -280,12 +280,12 @@ namespace ChilledTreat.GameClasses
 		public void ResetPlayer()
 		{
 			_health = 100;
-			//_ammo = 10;
+			_ammo = _bullets.Length;
+
 			Score = 0;
 			for (int i = 0; i < _bullets.Length; i++)
 			{
 				_bullets[i] = _bulletTexture;
-				++_ammo;
 			}
 		}
 	}
