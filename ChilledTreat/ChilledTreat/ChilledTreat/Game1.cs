@@ -3,6 +3,7 @@ using ChilledTreat.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ChilledTreat.GameClasses;
 
 namespace ChilledTreat
 {
@@ -68,7 +69,7 @@ namespace ChilledTreat
 			_gameStates.Add(new Menu(SpriteBatch, Content));
 			_gameStates.Add(new Credits(SpriteBatch, Content));
 			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
-			//_gameStates.Add(new GameOver(SpriteBatch, Content));
+			_gameStates.Add(new GameOver(SpriteBatch, Content));
 			
 
 			_activeGameState = _gameStates[0]; // TODO: Use static constants (GameStates.Splash);
@@ -141,6 +142,8 @@ namespace ChilledTreat
 				Instance._gameStates[GameState.InGame] = new InGame(Instance.SpriteBatch, Instance.Content);
 			}
 
+			Player.Instance.ResetPlayer();
+			
 			// Hvorfor funker ikke dette?
 			////Instance._gameStates[4] = new InGame(Instance.SpriteBatch, Instance.Content);
 
