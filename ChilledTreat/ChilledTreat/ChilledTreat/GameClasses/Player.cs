@@ -101,7 +101,7 @@ namespace ChilledTreat.GameClasses
 			if (_playerState == State.Dead)
 			{
 				EnemyHandler.Instance.Clear();
-				Game1.ChangeState(GameStates.GameState.Menu);
+				Game1.ChangeState(GameStates.GameState.GameOver);
 			}
 
 			if (_timesDrawnMuzzleFlare >= 5)
