@@ -148,8 +148,8 @@ namespace ChilledTreat.GameClasses
 		{
 			_damageInflicted = EnemyHandler.Random.Next(15, 20);
 			// TODO: Debug purposes
-			//Player.Instance.Damaged(_damageInflicted);
-			Player.Instance.Damaged(0);
+			Player.Instance.Damaged(_damageInflicted);
+			//Player.Instance.Damaged(0);
 		}
 
 		// Update health, check if dead

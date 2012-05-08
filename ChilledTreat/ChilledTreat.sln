@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChilledTreat", "ChilledTreat\ChilledTreat\ChilledTreat.csproj", "{888EEB5C-0DAC-404F-9687-8A7797ED7A85}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "ChilledTreatContent", "ChilledTreat\ChilledTreatContent\ChilledTreatContent.contentproj", "{7C649C0B-F6EE-4F45-88FC-63113373309C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChilledTreatContent", "ChilledTreat\ChilledTreatContent\ChilledTreatContent.contentproj", "{7C649C0B-F6EE-4F45-88FC-63113373309C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,8 +11,8 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{888EEB5C-0DAC-404F-9687-8A7797ED7A85}.Debug|x86.ActiveCfg = Debug|x86
-		{888EEB5C-0DAC-404F-9687-8A7797ED7A85}.Debug|x86.Build.0 = Debug|x86
+		{888EEB5C-0DAC-404F-9687-8A7797ED7A85}.Debug|x86.ActiveCfg = Release|x86
+		{888EEB5C-0DAC-404F-9687-8A7797ED7A85}.Debug|x86.Build.0 = Release|x86
 		{888EEB5C-0DAC-404F-9687-8A7797ED7A85}.Release|x86.ActiveCfg = Release|x86
 		{888EEB5C-0DAC-404F-9687-8A7797ED7A85}.Release|x86.Build.0 = Release|x86
 		{7C649C0B-F6EE-4F45-88FC-63113373309C}.Debug|x86.ActiveCfg = Debug|x86
