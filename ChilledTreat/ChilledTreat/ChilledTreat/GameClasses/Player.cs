@@ -136,7 +136,7 @@ namespace ChilledTreat.GameClasses
 				_playerState = State.Shooting;
 			}
 
-			_inCover = _input.IsCoverPressed();
+			_inCover = _input.IsCoverDown();
 
 			if (_input.IsKeyPressed(Keys.R) && _playerState == State.Alive && _ammo != _bullets.Length)
 			{
