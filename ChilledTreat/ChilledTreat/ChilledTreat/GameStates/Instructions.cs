@@ -8,24 +8,22 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly InputHandler _input = InputHandler.Instance;
-		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 
-		readonly SpriteFont _InstructionsFont;
-		readonly string[] _InstructionsContent;
+		readonly SpriteFont _instructionsFont;
+		readonly string[] _instructionsContent;
 		readonly Color _fontColor;
-		int _lineBreak = 0;
-		double _currentTime;
+		int _lineBreak;
 
 		public Instructions(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
 		{
 			// Credits content
-			_InstructionsFont = content.Load<SpriteFont>("Fonts/credInsFont");
+			_instructionsFont = content.Load<SpriteFont>("Fonts/credInsFont");
 			_fontColor = Color.Salmon;
-			_InstructionsContent = new[] { 
+			_instructionsContent = new[] { 
 				"Shoot Stan from Monkey Island with Mouse1",
- 				" ",
-				"Press space to take cover", 
+				" ",
+				"Hold space to take cover", 
 				"Useful to avoid taking damage while reloading", 
 				" ",
 				"This line of text is completely unnecessary" };
@@ -38,22 +36,19 @@ namespace ChilledTreat.GameStates
 			// Logic
 			if (_input.IsAbortPressed())
 			{
-				Game1.ChangeState(GameState.Menu);
+				Game1.ChangeState(Menu);
 			}
 
 			_lineBreak = 0;
-
-			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
-
 		}
 
 		public override void Draw()
 		{
 			// DRAW!!!! LåååL
-			foreach (string creditEntry in _InstructionsContent)
+			foreach (string creditEntry in _instructionsContent)
 			{
 				_lineBreak += 60;
-			 	SpriteBatch.DrawString(_InstructionsFont, creditEntry, new Vector2(40, _lineBreak), _fontColor);
+				SpriteBatch.DrawString(_instructionsFont, creditEntry, new Vector2(40, _lineBreak), _fontColor);
 			}
 		}
 	}
