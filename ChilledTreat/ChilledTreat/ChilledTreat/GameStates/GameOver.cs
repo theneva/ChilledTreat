@@ -1,4 +1,5 @@
 ﻿
+using System.Xml;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
@@ -12,6 +13,34 @@ namespace ChilledTreat.GameStates
 		SpriteFont menuFont;
 		Color fontColor;
 		InputHandler input = InputHandler.Instance;
+
+		public static void WriteHighScore()
+		{
+			XmlWriter writer = null;
+			try
+			{
+
+				// Create an XmlWriterSettings object with the correct options. 
+				XmlWriterSettings settings = new XmlWriterSettings {Indent = true, IndentChars = ("\t"), OmitXmlDeclaration = true};
+
+				// Create the XmlWriter object and write some content.
+				writer = XmlWriter.Create("data.xml", settings);
+				writer.WriteStartElement("book");
+				writer.WriteElementString("item", "tesing");
+				writer.WriteEndElement();
+
+				writer.Flush();
+
+			}
+			finally
+			{
+				if (writer != null)
+					writer.Close();
+			}
+			
+		}
+
+		
 
 
 		public GameOver(SpriteBatch spriteBatch, ContentManager content)

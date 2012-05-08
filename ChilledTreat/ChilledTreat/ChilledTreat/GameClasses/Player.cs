@@ -101,6 +101,7 @@ namespace ChilledTreat.GameClasses
 			if (_playerState == State.Dead)
 			{
 				EnemyHandler.Instance.Clear();
+				GameStates.GameOver.WriteHighScore();
 				Game1.ChangeState(GameStates.GameState.GameOver);
 			}
 
@@ -227,33 +228,8 @@ namespace ChilledTreat.GameClasses
 
 			_playerState = State.Alive;
 		}
-/*
-                 ______
-                /     /\
-               /     /##\
-              /     /####\
-             /     /######\
-            /     /########\
-           /     /##########\
-          /     /#####/\#####\
-         /     /#####/++\#####\
-        /     /#####/++++\#####\
-       /     /#####/\+++++\#####\
-      /     /#####/  \+++++\#####\
-     /     /#####/    \+++++\#####\
-    /     /#####/      \+++++\#####\
-   /     /#####/        \+++++\#####\
-  /     /#####/__________\+++++\#####\
- /                        \+++++\#####\
-/__________________________\+++++\####/
-\+++++++++++++++++++++++++++++++++\##/
- \+++++++++++++++++++++++++++++++++\/
-  ``````````````````````````````````
- 
- 
-	VEGARD WAS HERE 
- 
-*/		public void Damaged(int damage)
+	
+		public void Damaged(int damage)
 		{
 			if (_playerState != State.Reloading) _playerState = State.Damaged;
 			if (_inCover) damage /= 5;
