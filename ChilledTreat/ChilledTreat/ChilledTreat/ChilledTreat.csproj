@@ -123,6 +123,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="GameStates\Splash.cs" />
+    <Compile Include="Tools\Trapeze.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

@@ -90,7 +90,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_damageInflicted = EnemyHandler.Random.Next(15, 20);
 			// TODO: Debug purposes
-			//Player.Instance.Damaged(_damageInflicted);
+			Player.Instance.Damaged(_damageInflicted);
 			Player.Instance.Damaged(0);
 		}
 
@@ -130,7 +130,7 @@ namespace ChilledTreat.GameClasses
 				}
 			}
 
-			if (EnemyHandler.Random.Next(1000) == 0) // <- approximately every 8 seconds
+			if (EnemyHandler.Random.Next(1000) == 0)
 			{
 				Attack();
 				_drawMuzzleFlare = true;
@@ -157,7 +157,14 @@ namespace ChilledTreat.GameClasses
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+
+
+
+			
+
 		}
+
+
 
 		public void Draw()
 		{
@@ -170,10 +177,13 @@ namespace ChilledTreat.GameClasses
 			_spriteBatch.Draw(_muzzleFlare, position: new Vector2(_position.X - (_muzzleFlare.Width / 2f), y: _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), color: Color.White);
 
 			_timesDrawnMuzzleFlare++;
+
+			//_spriteBatch.Draw();
 		}
 
-
-
 		
+	
 	}
+
+	
 }
