@@ -1,10 +1,11 @@
-﻿
+﻿using System.Collections.Generic;
 using System.Xml;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using ChilledTreat.GameClasses;
 using System;
+
 namespace ChilledTreat.GameStates
 {
 	class GameOver : GameState
@@ -16,31 +17,53 @@ namespace ChilledTreat.GameStates
 
 		public static void WriteHighScore()
 		{
-			XmlWriter writer = null;
 			try
 			{
+				String[,] scoreArray = new String[5, 2];
+				
+				scoreArray[0, 0] = "Simen";
+				scoreArray[0, 1] = "50";
+				scoreArray[0, 0] = "Martin";
+				scoreArray[0, 1] = "-40";
+				scoreArray[0, 0] = "Vegard";
+				scoreArray[0, 1] = "10";
+				scoreArray[0, 0] = "Steinar";
+				scoreArray[0, 1] = "20";
+				scoreArray[0, 0] = "Pluto";
+				scoreArray[0, 1] = "30";
 
-				// Create an XmlWriterSettings object with the correct options. 
-				XmlWriterSettings settings = new XmlWriterSettings {Indent = true, IndentChars = ("\t"), OmitXmlDeclaration = true};
+				// Creates an XML file is not exist 
+				XmlTextWriter writer = new XmlTextWriter("C:\\temp\\xmltest.xml", null);
+				// Starts a new document 
+				writer.WriteStartDocument();
+				// Add elements to the file 
 
-				// Create the XmlWriter object and write some content.
-				writer = XmlWriter.Create("data.xml", settings);
-				writer.WriteStartElement("book");
-				writer.WriteElementString("item", "tesing");
-				writer.WriteEndElement();
+				writer.WriteProcessingInstruction("Instruction", "Person Record");
+				// Add elements to the file 
+				writer.WriteStartElement("p", "person", "urn:person"); 
+				for(int i = 0; i <= scoreArray.GetUpperBound(0); i++)
+				{
+					writer.WriteStartElement("Navn", "");
+					writer.WriteString(scoreArray[i, 0]);
+					writer.WriteEndElement();
+					writer.WriteStartElement("Score", "");
+					writer.WriteString(scoreArray[i, 1]);
+					writer.WriteEndElement();
+				}
+				// Ends the document 
+				writer.WriteEndDocument();
 
-				writer.Flush();
-
+				writer.Close();
 			}
-			finally
+			catch (Exception e)
 			{
-				if (writer != null)
-					writer.Close();
+				Console.WriteLine("Exception: {0}", e.ToString());
+
 			}
-			
+
 		}
 
-		
+
 
 
 		public GameOver(SpriteBatch spriteBatch, ContentManager content)
