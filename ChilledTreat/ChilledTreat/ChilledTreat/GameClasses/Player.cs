@@ -197,10 +197,6 @@ namespace ChilledTreat.GameClasses
 			else _playerState = State.Waiting;
 
 			if (_playerState != State.Reloading && _playerState != State.Waiting && _playerState != State.Dead) _playerState = State.Alive;
-
-			//TODO
-			//This is a test for whether or not the damage function works (and the drawing of the health indicator)
-			//Damaged(5);
 		}
 
 		private void Reload()
@@ -213,7 +209,7 @@ namespace ChilledTreat.GameClasses
 			}
 
 			if (_currentTime - _startReloadTime <= _gunReloadSound.Duration.TotalMilliseconds) return;
-			_ammo = 10; // should be done in the loop vvvv
+			_ammo = 10; // should be done in the loop vvvv  <-- (what?????)
 
 			for (int i = 0; i < _bullets.Length; i++)
 			{
