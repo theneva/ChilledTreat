@@ -31,7 +31,7 @@ namespace ChilledTreat.GameClasses
 
 		private WeaponHandler()
 		{
-			_weapons = new List<Weapon> { new Weapon("Gun", 100, 10, true) };
+			_weapons = new List<Weapon> { new Weapon("Gun", 100, 5, 10, true) };
 
 			_currentWeapon = _weapons.First();
 		}
@@ -99,7 +99,7 @@ namespace ChilledTreat.GameClasses
 
 		internal readonly String WeaponName;
 		internal int MaxAmmo, CurrentAmmo;
-		private int _timesDrawnMuzzleFlare;
+		private int _timesDrawnMuzzleFlare, _damage;
 		internal readonly double DelayBetweenShots;
 		internal bool PlayReloadSound;
 		internal readonly bool IsWeaponAutomatic;
@@ -118,19 +118,22 @@ namespace ChilledTreat.GameClasses
 		/// </summary>
 		/// <param name="weaponName">The name of the weapon, used for loading images and sounds, and finding the object later. Be VERY careful with spelling</param>
 		/// <param name="maxAmmo">Maximum ammo if this weapon</param>
+		/// <param name="damage">The default damage </param>
 		/// <param name="rateOfFire">The amount of bullets fireable per second</param>
 		/// <param name="automatic">Indicates whether or not the weapon is automatic</param>
-		internal Weapon(String weaponName, int maxAmmo, int rateOfFire, bool automatic)
+		internal Weapon(String weaponName, int maxAmmo, int damage, int rateOfFire, bool automatic)
 		{
 			_spriteBatch = Game1.Instance.SpriteBatch;
 			ContentManager content = Game1.Instance.Content;
 
+			WeaponName = weaponName;
 			_bullets = new Texture2D[maxAmmo];
 			MaxAmmo = maxAmmo;
-			CurrentAmmo = maxAmmo;
-			WeaponName = weaponName;
+			_damage = damage;
 			DelayBetweenShots = 1000f / rateOfFire;
 			IsWeaponAutomatic = automatic;
+
+			CurrentAmmo = maxAmmo;
 
 			_reticuleTexture = content.Load<Texture2D>(weaponName + "./Images/Reticule");
 			_cartridgeTexture = content.Load<Texture2D>(weaponName + "./Images/Cartridge");
@@ -227,7 +230,7 @@ namespace ChilledTreat.GameClasses
 			_shotSound.Play();
 			_drawMuzzleFlare = true;
 
-			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance.HitBox);
+			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance.HitBox, _damage);
 
 			//Set the array of textures to appear used when firing a shot
 			_bullets[--CurrentAmmo] = _usedCartridgeTexture;
