@@ -20,6 +20,7 @@ namespace ChilledTreat.GameStates
 		readonly InputHandler _input = InputHandler.Instance;
 		private List<Highscore> _highScoreList;
 		char[] charList = { 'A', 'A', 'A', 'A', 'A' };
+		int charListPos = 0;
 		string name;
 		
 
@@ -36,6 +37,19 @@ namespace ChilledTreat.GameStates
 
 		public override void Update()
 		{
+			if (_input.IsDownPressed())
+			{
+				if (charList[charListPos] > 'A') charList[charListPos]++;
+			}
+			else if (_input.IsUpPressed())
+			{
+				if (charList[charListPos] < 'Z') charList[charListPos]--;
+			}
+			if (_input.IsActionPressed())
+			{
+				charListPos++;
+				if (charListPos > charList.Length) {}
+			}
 			if (NewScoreToAdd)
 			{
 				_highScoreList.Add(new Highscore("Player", Player.Instance.Score));
