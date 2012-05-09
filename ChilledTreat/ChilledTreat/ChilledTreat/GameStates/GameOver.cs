@@ -21,7 +21,7 @@ namespace ChilledTreat.GameStates
 		private List<Highscore> _highScoreList;
 		char[] charList = { 'A', 'A', 'A', 'A', 'A' };
 		int charListPos = 0;
-		string name;
+		string name = "";
 		
 
 		public GameOver(SpriteBatch spriteBatch, ContentManager content)
@@ -39,20 +39,31 @@ namespace ChilledTreat.GameStates
 		{
 			if (_input.IsDownPressed())
 			{
-				if (charList[charListPos] > 'A') charList[charListPos]++;
+				if (charList[charListPos] < 'Z') charList[charListPos]++;
 			}
 			else if (_input.IsUpPressed())
 			{
-				if (charList[charListPos] < 'Z') charList[charListPos]--;
+				if (charList[charListPos] > 'A') charList[charListPos]--;
 			}
-			if (_input.IsActionPressed())
+			if (_input.IsActionPressed() && charListPos != charList.Length + 1)
 			{
 				charListPos++;
-				if (charListPos > charList.Length) {}
+				if (charListPos > charList.Length)
+				{
+					for (int i = 0; i < charList.Length; i++)
+					{
+						name += charList[i];
+					}
+					Console.WriteLine(name);
+				}
+				else
+				{
+					NewScoreToAdd = true;
+				}
 			}
 			if (NewScoreToAdd)
 			{
-				_highScoreList.Add(new Highscore("Player", Player.Instance.Score));
+				_highScoreList.Add(new Highscore(name, Player.Instance.Score));
 				_highScoreList = _highScoreList.OrderByDescending(x => x.Score).ThenBy(x => x.CurrentTime).ToList();
 
 				Highscore.SerializeToXml(_highScoreList);
@@ -70,15 +81,16 @@ namespace ChilledTreat.GameStates
 		{
 			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.Instance.GameScreenWidth / 2f, 100), Color.White);
 
+			SpriteBatch.DrawString(_menuFont, "Name: " + charList[0] + charList[1] + charList[2] + charList[3] + charList[4], new Vector2(10, 150), Color.White);
 
-
+			/*
 			foreach (Highscore hs in _highScoreList)
 			{
 				_shift++;
 				SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.Instance.GameScreenWidth / 3f - 25, 250 + (_shift * 50)), Color.White);
 				SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.Instance.GameScreenWidth / 3f, 250 + (_shift * 50)), Color.White);
 				SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.Instance.GameScreenWidth / 3f * 2f, 250 + (_shift * 50)), Color.White);
-			}
+			}*/
 		}
 	}
 }

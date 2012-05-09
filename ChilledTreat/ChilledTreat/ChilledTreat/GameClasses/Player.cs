@@ -64,7 +64,6 @@ namespace ChilledTreat.GameClasses
 			if (PlayerState == State.Dead)
 			{
 				EnemyHandler.Instance.Clear();
-				GameStates.GameOver.NewScoreToAdd = true;
 				Game1.ChangeState(GameStates.GameState.GameOver);
 			}
 
