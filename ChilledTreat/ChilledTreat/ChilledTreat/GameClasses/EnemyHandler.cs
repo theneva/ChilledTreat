@@ -30,27 +30,6 @@ namespace ChilledTreat.GameClasses
 			return _enemies.Count;
 		}
 
-		public void Update()
-		{
-
-
-			foreach (Enemy enemy in _enemies)
-			{
-				enemy.Update();
-			}
-		}
-
-		public void Draw()
-		{
-			foreach (Enemy enemy in _enemies)
-			{
-				enemy.Draw();
-			}
-
-			if (_enemies.Count > 0)
-				Console.WriteLine(_enemies[0].GetScale());
-		}
-
 		public void AddEnemy(SpriteBatch spriteBatch, ContentManager content, int health)
 		{
 			_enemies.Add(new Enemy(spriteBatch, content, health));
@@ -69,6 +48,7 @@ namespace ChilledTreat.GameClasses
 		// Letting the handler check if an enemy is hit, and damage that one enemy
 		public void FiredAt(Rectangle attackedArea)
 		{
+			// TODO: Remove this
 			//foreach (Enemy enemy in _enemies.Where(e => attackedArea.Intersects(e.GetRectangle())))
 			//{
 			//    enemy.TakeDamage(DefaultDamage);
@@ -78,6 +58,25 @@ namespace ChilledTreat.GameClasses
 			for (int i = GetNumberOfEnemies() - 1; i >= 0; i--)
 				if (_enemies[i].GetRectangle().Intersects(attackedArea))
 					_enemies[i].TakeDamage(DefaultDamage);
+		}
+
+		public void Update()
+		{
+			foreach (Enemy enemy in _enemies)
+			{
+				enemy.Update();
+			}
+		}
+
+		public void Draw()
+		{
+			foreach (Enemy enemy in _enemies)
+			{
+				enemy.Draw();
+			}
+
+			if (_enemies.Count > 0)
+				Console.WriteLine(_enemies[0].GetScale());
 		}
 	}
 }
