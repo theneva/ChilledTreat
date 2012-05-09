@@ -503,6 +503,14 @@ namespace ChilledTreat
 			return IsButtonDown(ShootButton);
 #endif
 		}
+		public bool IsSwitchWeaponPressed()
+		{
+#if WINDOWS
+			return IsKeyPressed(Keys.Tab);
+#elif XBOX
+			return IsButtonPressed(Buttons.Y);
+#endif
+		}
 		#endregion
 	}
 }

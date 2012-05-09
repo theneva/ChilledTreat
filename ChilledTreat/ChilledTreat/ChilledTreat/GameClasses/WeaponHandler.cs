@@ -31,7 +31,8 @@ namespace ChilledTreat.GameClasses
 
 		private WeaponHandler()
 		{
-			_weapons = new List<Weapon> { new Weapon("Gun", 100, 5, 10, true) };
+			_weapons = new List<Weapon> { new Weapon("Gun", 10, 10, 5, false), 
+			new Weapon("Rifle", 30, 5, 10, true) };
 
 			_currentWeapon = _weapons.First();
 		}
@@ -39,6 +40,13 @@ namespace ChilledTreat.GameClasses
 		public void Update()
 		{
 			CurrentTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
+
+			if(Input.IsSwitchWeaponPressed())
+			{
+				ChangeWeapon(_currentWeapon.WeaponName.Equals("Gun") ? "Rifle" : "Gun");
+
+				Console.WriteLine("Det funka");
+			}
 
 			ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading) PlayerState = Player.State.Alive;
@@ -100,6 +108,7 @@ namespace ChilledTreat.GameClasses
 		internal readonly String WeaponName;
 		internal int MaxAmmo, CurrentAmmo;
 		private int _timesDrawnMuzzleFlare, _damage;
+		private readonly int DefaultDamage;
 		internal readonly double DelayBetweenShots;
 		internal bool PlayReloadSound;
 		internal readonly bool IsWeaponAutomatic;
@@ -129,18 +138,18 @@ namespace ChilledTreat.GameClasses
 			WeaponName = weaponName;
 			_bullets = new Texture2D[maxAmmo];
 			MaxAmmo = maxAmmo;
-			_damage = damage;
+			DefaultDamage = damage;
 			DelayBetweenShots = 1000f / rateOfFire;
 			IsWeaponAutomatic = automatic;
 
 			CurrentAmmo = maxAmmo;
 
-			_reticuleTexture = content.Load<Texture2D>(weaponName + "./Images/Reticule");
-			_cartridgeTexture = content.Load<Texture2D>(weaponName + "./Images/Cartridge");
-			_usedCartridgeTexture = content.Load<Texture2D>(weaponName + "./Images/UsedCartridge");
-			_weaponTexture = content.Load<Texture2D>(weaponName + "./Images/WeaponTexture");
-			_shotSound = content.Load<SoundEffect>(weaponName + "./Sounds/Shot");
-			_reloadSound = content.Load<SoundEffect>(weaponName + "./Sounds/Reload");
+			_reticuleTexture = content.Load<Texture2D>("./Weapons/" + weaponName + "/Images/Reticule");
+			_cartridgeTexture = content.Load<Texture2D>("./Weapons/" + weaponName + "/Images/Cartridge");
+			_usedCartridgeTexture = content.Load<Texture2D>("./Weapons/" + weaponName + "/Images/UsedCartridge");
+			_weaponTexture = content.Load<Texture2D>("./Weapons/" + weaponName + "/Images/WeaponTexture");
+			_shotSound = content.Load<SoundEffect>("./Weapons/" + weaponName + "/Sounds/Shot");
+			_reloadSound = content.Load<SoundEffect>("./Weapons/" + weaponName + "/Sounds/Reload");
 
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 
@@ -229,6 +238,8 @@ namespace ChilledTreat.GameClasses
 			if (WeaponHandler.Instance.PlayerState != Player.State.Shooting) return;
 			_shotSound.Play();
 			_drawMuzzleFlare = true;
+
+			_damage = EnemyHandler.Random.Next((DefaultDamage / 2), DefaultDamage);
 
 			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance.HitBox, _damage);
 
