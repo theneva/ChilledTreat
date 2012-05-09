@@ -10,17 +10,16 @@ namespace ChilledTreat.GameClasses
 {
 	public class WeaponHandler
 	{
-		readonly List<Weapon> _weapons;
-		internal double _currentTime;
+		private readonly List<Weapon> _weapons;
+		internal double CurrentTime, StartReloadTime;
 		private double _startShootTime;
-		internal double _startReloadTime;
-		internal readonly InputHandler _input = InputHandler.Instance;
-		public Vector2 _reticulePosition;
-		internal Rectangle _hitBox;
+		internal readonly InputHandler Input = InputHandler.Instance;
+		internal Vector2 ReticulePosition;
+		internal Rectangle HitBox;
 
-		public Player.State _playerState = Player.Instance.PlayerState;
+		internal Player.State PlayerState = Player.Instance.PlayerState;
 
-		internal readonly FrameInfo _frameInfo = FrameInfo.Instance;
+		internal readonly FrameInfo FrameInfo = FrameInfo.Instance;
 
 		private Weapon _currentWeapon;
 
@@ -33,38 +32,38 @@ namespace ChilledTreat.GameClasses
 		private WeaponHandler()
 		{
 			_weapons = new List<Weapon> {new Weapon("Gun", 10)};
-			ChangeWeapon("Gun");
+			_currentWeapon = SetCurrentWeapon("Gun");
 		}
 
 		public void Update()
 		{
-			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
+			CurrentTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-			_reticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
-			if (_currentTime - _startShootTime > 200 && _playerState != Player.State.Reloading) _playerState = Player.State.Alive;
+			ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
+			if (CurrentTime - _startShootTime > 200 && PlayerState != Player.State.Reloading) PlayerState = Player.State.Alive;
 
-			if (_reticulePosition.Y < 0) _reticulePosition = new Vector2(_reticulePosition.X, 0);
-			else if (_reticulePosition.Y > Game1.Instance.GameScreenHeight) _reticulePosition = new Vector2(_reticulePosition.X, Game1.Instance.GameScreenHeight);
+			if (ReticulePosition.Y < 0) ReticulePosition = new Vector2(ReticulePosition.X, 0);
+			else if (ReticulePosition.Y > Game1.Instance.GameScreenHeight) ReticulePosition = new Vector2(ReticulePosition.X, Game1.Instance.GameScreenHeight);
 
-			if (_playerState == Player.State.Alive && _input.IsShootPressed() && !Player.Instance.InCover)
+			if (PlayerState == Player.State.Alive && Input.IsShootPressed() && !Player.Instance.InCover)
 			{
-				_startShootTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
+				_startShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-				_hitBox = new Rectangle(_input.MouseState.X - 20, _input.MouseState.Y - 20, 40, 40);
+				HitBox = new Rectangle(Input.MouseState.X - 20, Input.MouseState.Y - 20, 40, 40);
 
-				_playerState = Player.State.Shooting;
+				PlayerState = Player.State.Shooting;
 			}
 
-			if (_input.IsReloadPressed() && _playerState == Player.State.Alive && _currentWeapon._ammo != _currentWeapon._bullets.Length)
+			if (Input.IsReloadPressed() && PlayerState == Player.State.Alive && _currentWeapon.CurrentAmmo < _currentWeapon.MaxAmmo)
 			{
-				_playerState = Player.State.Reloading;
-				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
-				_currentWeapon._playReloadSound = true;
+				PlayerState = Player.State.Reloading;
+				StartReloadTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
+				_currentWeapon.PlayReloadSound = true;
 			}
 
-			if (_playerState == Player.State.Shooting) _currentWeapon.Shoot();
+			if (PlayerState == Player.State.Shooting) _currentWeapon.Shoot();
 
-			if (_playerState == Player.State.Reloading) _currentWeapon.Reload();
+			if (PlayerState == Player.State.Reloading) _currentWeapon.Reload();
 
 			_currentWeapon.Update();
 		}
@@ -72,16 +71,6 @@ namespace ChilledTreat.GameClasses
 		public void Draw()
 		{
 			_currentWeapon.Draw();
-		}
-
-		public void Reload()
-		{
-			_currentWeapon.Reload();
-		}
-
-		public void Shoot()
-		{
-			_currentWeapon.Shoot();
 		}
 
 		public void ChangeWeapon(String name)
@@ -98,7 +87,7 @@ namespace ChilledTreat.GameClasses
 		{
 			foreach (Weapon w in _weapons)
 			{
-				_currentWeapon.ResetWeapon();
+				w.ResetWeapon();
 			}
 		}
 	}
@@ -108,14 +97,17 @@ namespace ChilledTreat.GameClasses
 		private readonly SpriteBatch _spriteBatch;
 
 		internal readonly String WeaponName;
-		public int _ammo, _timesDrawnMuzzleFlare;
-		public bool _playReloadSound, _drawMuzzleFlare;
-		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture;
+		internal int MaxAmmo { get;private set; }
+		internal int CurrentAmmo;
+		private int _timesDrawnMuzzleFlare;
+		internal bool PlayReloadSound;
+		private bool _drawMuzzleFlare;
+		private readonly Texture2D _reticuleTexture, _cartridgeTexture, _usedCartridgeTexture, _weaponTexture;
 		private readonly Vector2 _halfReticuleTexture;
 		private Vector2 _vectorGunToMouse;
-		public readonly Texture2D[] _bullets;
+		private readonly Texture2D[] _bullets;
 		private readonly Vector2[] _bulletPositions;
-		private readonly SoundEffect _gunShotSound, _gunReloadSound;
+		private readonly SoundEffect _shotSound, _reloadSound;
 		private float _gunRotation;
 		private readonly Rectangle _gunPosition, _gunSource, _firedGunSource;
 
@@ -130,32 +122,30 @@ namespace ChilledTreat.GameClasses
 			ContentManager content = Game1.Instance.Content;
 
 			_bullets = new Texture2D[maxAmmo];
-			_ammo = maxAmmo;
+			MaxAmmo = maxAmmo;
+			CurrentAmmo = maxAmmo;
+			WeaponName = weaponName;
 
-			_reticuleTexture = content.Load<Texture2D>(weaponName + "./Images/usableReticule");
-			_bulletTexture = content.Load<Texture2D>(weaponName + "./Images/usableBullet");
-			_usedBulletTexture = content.Load<Texture2D>(weaponName + "./Images/usableUsedBullet");
-			_gunTexture = content.Load<Texture2D>(weaponName + "./Images/gunTest");
-			_reticuleTexture = content.Load<Texture2D>(weaponName + "./Images/usableReticule");
-			_gunShotSound = content.Load<SoundEffect>(weaponName + "./Sounds/GunFire");
-			_gunReloadSound = content.Load<SoundEffect>(weaponName + "./Sounds/ReloadSound");
-
+			_reticuleTexture = content.Load<Texture2D>(weaponName + "./Images/Reticule");
+			_cartridgeTexture = content.Load<Texture2D>(weaponName + "./Images/Cartridge");
+			_usedCartridgeTexture = content.Load<Texture2D>(weaponName + "./Images/UsedCartridge");
+			_weaponTexture = content.Load<Texture2D>(weaponName + "./Images/WeaponTexture");
+			_shotSound = content.Load<SoundEffect>(weaponName + "./Sounds/Shot");
+			_reloadSound = content.Load<SoundEffect>(weaponName + "./Sounds/Reload");
 
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
 
-			_bulletPositions = new Vector2[_bullets.Length];
-			_gunSource = new Rectangle(0, 0, _gunTexture.Width / 2, _gunTexture.Height);
-			_firedGunSource = new Rectangle(_gunTexture.Width / 2, 0, _gunTexture.Width / 2, _gunTexture.Height);
-			_gunPosition = new Rectangle(Game1.Instance.GameScreenWidth / 2, Game1.Instance.GameScreenHeight + 40, _gunTexture.Width / 2, _gunTexture.Height);
+			_bulletPositions = new Vector2[maxAmmo];
+			_gunSource = new Rectangle(0, 0, _weaponTexture.Width / 2, _weaponTexture.Height);
+			_firedGunSource = new Rectangle(_weaponTexture.Width / 2, 0, _weaponTexture.Width / 2, _weaponTexture.Height);
+			_gunPosition = new Rectangle(Game1.Instance.GameScreenWidth / 2, Game1.Instance.GameScreenHeight + 40, _weaponTexture.Width / 2, _weaponTexture.Height);
 
 			for (int i = 0; i < _bulletPositions.Length; i++)
 			{
-				_bulletPositions[i] = new Vector2(i * _bulletTexture.Width + 5, Game1.Instance.GameScreenHeight - _bulletTexture.Height);
+				_bulletPositions[i] = new Vector2(i * _cartridgeTexture.Width + 5, Game1.Instance.GameScreenHeight - _cartridgeTexture.Height);
 			}
 
-			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _bulletTexture;
-
-			WeaponName = weaponName;
+			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _cartridgeTexture;
 		}
 
 		internal void Update()
@@ -166,7 +156,7 @@ namespace ChilledTreat.GameClasses
 				_timesDrawnMuzzleFlare = 0;
 			}
 
-			_vectorGunToMouse = new Vector2((_gunPosition.X - WeaponHandler.Instance._input.MouseState.X), (_gunPosition.Y - WeaponHandler.Instance._input.MouseState.Y));
+			_vectorGunToMouse = new Vector2((_gunPosition.X - WeaponHandler.Instance.Input.MouseState.X), (_gunPosition.Y - WeaponHandler.Instance.Input.MouseState.Y));
 			
 			_gunRotation = (float)Math.Atan2(-_vectorGunToMouse.X, _vectorGunToMouse.Y);
 		}
@@ -175,19 +165,19 @@ namespace ChilledTreat.GameClasses
 		{
 			if (!Player.Instance.InCover)
 			{
-				_spriteBatch.Draw(_reticuleTexture, WeaponHandler.Instance._reticulePosition - _halfReticuleTexture, Color.White);
+				_spriteBatch.Draw(_reticuleTexture, WeaponHandler.Instance.ReticulePosition - _halfReticuleTexture, Color.White);
 
 				if (_drawMuzzleFlare)
 				{
-					_spriteBatch.Draw(_gunTexture, _gunPosition, _firedGunSource, Color.White, _gunRotation,
-								   new Vector2(_gunTexture.Width / 4f, _gunTexture.Height), SpriteEffects.None, 1f);
+					_spriteBatch.Draw(_weaponTexture, _gunPosition, _firedGunSource, Color.White, _gunRotation,
+								   new Vector2(_weaponTexture.Width / 4f, _weaponTexture.Height), SpriteEffects.None, 1f);
 
 					_timesDrawnMuzzleFlare++;
 				}
 				else
 				{
-					_spriteBatch.Draw(_gunTexture, _gunPosition, _gunSource, Color.White, _gunRotation,
-								  new Vector2(_gunTexture.Width / 4f, _gunTexture.Height), SpriteEffects.None, 1f);
+					_spriteBatch.Draw(_weaponTexture, _gunPosition, _gunSource, Color.White, _gunRotation,
+								  new Vector2(_weaponTexture.Width / 4f, _weaponTexture.Height), SpriteEffects.None, 1f);
 				}
 			}
 
@@ -203,22 +193,22 @@ namespace ChilledTreat.GameClasses
 		/// </summary>
 		internal void Reload()
 		{
-			if (_playReloadSound)
+			if (PlayReloadSound)
 			{
-				_gunReloadSound.Play();
+				_reloadSound.Play();
 
-				_playReloadSound = false;
+				PlayReloadSound = false;
 			}
 
-			if (WeaponHandler.Instance._currentTime - WeaponHandler.Instance._startReloadTime <= _gunReloadSound.Duration.TotalMilliseconds) return;
-			_ammo = _bullets.Length; // should be done in the loop vvvv  <-- (what?????)
+			if (WeaponHandler.Instance.CurrentTime - WeaponHandler.Instance.StartReloadTime <= _reloadSound.Duration.TotalMilliseconds) return;
+			CurrentAmmo = MaxAmmo; // should be done in the loop vvvv  <-- (what?????)
 
 			for (int i = 0; i < _bullets.Length; i++)
 			{
-				_bullets[i] = _bulletTexture;
+				_bullets[i] = _cartridgeTexture;
 			}
 
-			WeaponHandler.Instance._playerState = Player.State.Alive;
+			WeaponHandler.Instance.PlayerState = Player.State.Alive;
 		}
 
 		/// <summary>
@@ -227,35 +217,35 @@ namespace ChilledTreat.GameClasses
 		internal void Shoot()
 		{
 			//Just to make sure the player's not firing when (s)he's not supposed to
-			if (WeaponHandler.Instance._playerState != Player.State.Shooting) return;
-			_gunShotSound.Play();
+			if (WeaponHandler.Instance.PlayerState != Player.State.Shooting) return;
+			_shotSound.Play();
 			_drawMuzzleFlare = true;
 
-			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance._hitBox);
+			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance.HitBox);
 
 			//Set the array of textures to appear used when firing a shot
-			_bullets[--_ammo] = _usedBulletTexture;
+			_bullets[--CurrentAmmo] = _usedCartridgeTexture;
 
 			//If the weapon's out of ammo, and the player's not currently reloading
-			if (_ammo == 0 && WeaponHandler.Instance._playerState != Player.State.Reloading)
+			if (CurrentAmmo == 0 && WeaponHandler.Instance.PlayerState != Player.State.Reloading)
 			{
-				WeaponHandler.Instance._playerState = Player.State.Reloading;
+				WeaponHandler.Instance.PlayerState = Player.State.Reloading;
 
-				WeaponHandler.Instance._startReloadTime = WeaponHandler.Instance._frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
-				_playReloadSound = true;
+				WeaponHandler.Instance.StartReloadTime = WeaponHandler.Instance.FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
+				PlayReloadSound = true;
 			}
-			else WeaponHandler.Instance._playerState = Player.State.Waiting;
+			else WeaponHandler.Instance.PlayerState = Player.State.Waiting;
 
-			if (WeaponHandler.Instance._playerState != Player.State.Reloading && WeaponHandler.Instance._playerState != Player.State.Waiting && WeaponHandler.Instance._playerState != Player.State.Dead) WeaponHandler.Instance._playerState = Player.State.Alive;
+			if (WeaponHandler.Instance.PlayerState != Player.State.Reloading && WeaponHandler.Instance.PlayerState != Player.State.Waiting && WeaponHandler.Instance.PlayerState != Player.State.Dead) WeaponHandler.Instance.PlayerState = Player.State.Alive;
 		}
 
 		internal void ResetWeapon()
 		{
-			_ammo = _bullets.Length;
+			CurrentAmmo = _bullets.Length;
 
 			for (int i = 0; i < _bullets.Length; i++)
 			{
-				_bullets[i] = _bulletTexture;
+				_bullets[i] = _cartridgeTexture;
 			}
 		}
 	}
