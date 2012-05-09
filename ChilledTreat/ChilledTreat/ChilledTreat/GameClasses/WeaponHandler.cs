@@ -44,8 +44,6 @@ namespace ChilledTreat.GameClasses
 			if(Input.IsSwitchWeaponPressed())
 			{
 				ChangeWeapon(_currentWeapon.WeaponName.Equals("Gun") ? "Rifle" : "Gun");
-
-				Console.WriteLine("Det funka");
 			}
 
 			ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
