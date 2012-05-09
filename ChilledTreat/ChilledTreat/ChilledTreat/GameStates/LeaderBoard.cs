@@ -40,9 +40,9 @@ namespace ChilledTreat.GameStates
 			{
 				Game1.ChangeState(GameState.Menu);
 			}
-			if (_input.IsDownPressed()) scrolling++;
+			if (_input.IsDownPressed() && scrolling < _highScoreList.Count - _highScoreList.Count) scrolling++;
 
-			else if (_input.IsUpPressed()) scrolling--;
+			else if (_input.IsUpPressed() && scrolling > -_highScoreList.Count + 11) scrolling--;
 		}
 
 		public override void Draw()
@@ -50,9 +50,9 @@ namespace ChilledTreat.GameStates
 			foreach (Highscore hs in _highScoreList)
 			{
 				_shift++;
-				SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.Instance.GameScreenWidth / 3f - 35, 250 + (_shift * 50) + (scrolling * 50)), Color.White);
-				SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.Instance.GameScreenWidth / 3f, 250 + (_shift * 50) + (scrolling * 50)), Color.White);
-				SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.Instance.GameScreenWidth / 3f * 2f, 250 + (_shift * 50) + (scrolling * 50)), Color.White);
+				SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.Instance.GameScreenWidth / 3f - 35, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
+				SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.Instance.GameScreenWidth / 3f, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
+				SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.Instance.GameScreenWidth / 3f * 2f, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
 			}
 			SpriteBatch.Draw(lbTexture, new Rectangle(0, 0, 1280, 150), Color.YellowGreen);
 			SpriteBatch.DrawString(_menuFont, "Leaderboard", new Vector2(Game1.Instance.GameScreenWidth / 3f - 100, 50), Color.White);
