@@ -41,7 +41,7 @@ namespace ChilledTreat.GameStates
 		{
 			if (NewScoreToAdd)
 			{
-				_highScoreList.Add(new Highscore("Simen", Player.Instance.Score));
+				_highScoreList.Add(new Highscore("Player", Player.Instance.Score));
 				_highScoreList = _highScoreList.OrderByDescending(x => x.Score).ThenBy(x => x.CurrentTime).ToList();
 
 				Highscore.SerializeToXml(_highScoreList);
