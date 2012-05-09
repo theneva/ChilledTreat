@@ -51,13 +51,15 @@ namespace ChilledTreat.GameClasses
 		private Enemy(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_spriteBatch = spriteBatch;
-			_position = Vector2.Zero;
 			_frameSize = new Point(41, 80);
+
+			_texture = content.Load<Texture2D>("Images/enemy2");
+			_position = new Vector2(_random.Next(192) + 538 - _texture.Width * _scale,
+				Game1.Instance.Window.ClientBounds.Height - (510 + _texture.Height));
 
 			_currentFrame = new Point(0, 0);
 			_sheetSize = new Point(7, 1);
 
-			_texture = content.Load<Texture2D>("Images/enemy2");
 			_muzzleFlare = content.Load<Texture2D>("Images/usableMuzzleFlare");
 			_currentState = State.Attacking;
 			_drawMuzzleFlare = false;
@@ -69,8 +71,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_health = hp;
 			//_position = position;
-			_position = new Vector2(_random.Next(Game1.Instance.Window.ClientBounds.Width - _texture.Width) + _texture.Width,
-				Game1.Instance.Window.ClientBounds.Height - _random.Next(510));
+
 
 			// TODO: Generate a scale based on y (currently 2f)
 		}
@@ -83,7 +84,7 @@ namespace ChilledTreat.GameClasses
 
 		public Rectangle GetRectangle()
 		{
-			return new Rectangle((int)_position.X, (int)_position.Y, (int) (_scale * _frameSize.X), (int) (_scale * _frameSize.Y));
+			return new Rectangle((int)_position.X, (int)_position.Y, (int)(_scale * _frameSize.X), (int)(_scale * _frameSize.Y));
 		}
 
 		void Attack()
@@ -160,7 +161,7 @@ namespace ChilledTreat.GameClasses
 
 
 
-			
+
 
 		}
 
@@ -181,9 +182,9 @@ namespace ChilledTreat.GameClasses
 			//_spriteBatch.Draw();
 		}
 
-		
-	
+
+
 	}
 
-	
+
 }
