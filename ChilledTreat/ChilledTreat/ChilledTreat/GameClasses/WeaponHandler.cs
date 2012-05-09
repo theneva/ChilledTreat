@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -10,7 +9,8 @@ namespace ChilledTreat.GameClasses
 {
 	public class WeaponHandler
 	{
-		private readonly List<Weapon> _weapons;
+		private readonly Weapon[] _weapons;
+		private int _currentWeaponIndex;
 		internal double CurrentTime, StartReloadTime;
 		private double _startShootTime;
 		internal readonly InputHandler Input = InputHandler.Instance;
@@ -31,20 +31,17 @@ namespace ChilledTreat.GameClasses
 
 		private WeaponHandler()
 		{
-			_weapons = new List<Weapon> { new Weapon("Gun", 10, 10, 5, false), 
+			_weapons = new [] { new Weapon("Gun", 10, 10, 5, false), 
 			new Weapon("Rifle", 30, 5, 10, true) };
 
-			_currentWeapon = _weapons.First();
+			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
 
 		public void Update()
 		{
 			CurrentTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-			if(Input.IsSwitchWeaponPressed())
-			{
-				ChangeWeapon(_currentWeapon.WeaponName.Equals("Gun") ? "Rifle" : "Gun");
-			}
+			if(Input.IsSwitchWeaponPressed()) ChangeWeapon();
 
 			ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading) PlayerState = Player.State.Alive;
@@ -80,9 +77,11 @@ namespace ChilledTreat.GameClasses
 			_currentWeapon.Draw();
 		}
 
-		public void ChangeWeapon(String name)
+		public void ChangeWeapon()
 		{
-			_currentWeapon = SetCurrentWeapon(name);
+			if (_currentWeaponIndex + 1 == _weapons.Length) _currentWeaponIndex = 0;
+			else _currentWeaponIndex++;
+			_currentWeapon = SetCurrentWeapon(_weapons[_currentWeaponIndex].WeaponName);
 		}
 
 		private Weapon SetCurrentWeapon(String name)
@@ -106,7 +105,7 @@ namespace ChilledTreat.GameClasses
 		internal readonly String WeaponName;
 		internal int MaxAmmo, CurrentAmmo;
 		private int _timesDrawnMuzzleFlare, _damage;
-		private readonly int DefaultDamage;
+		private readonly int _defaultDamage;
 		internal readonly double DelayBetweenShots;
 		internal bool PlayReloadSound;
 		internal readonly bool IsWeaponAutomatic;
@@ -136,7 +135,7 @@ namespace ChilledTreat.GameClasses
 			WeaponName = weaponName;
 			_bullets = new Texture2D[maxAmmo];
 			MaxAmmo = maxAmmo;
-			DefaultDamage = damage;
+			_defaultDamage = damage;
 			DelayBetweenShots = 1000f / rateOfFire;
 			IsWeaponAutomatic = automatic;
 
@@ -237,7 +236,7 @@ namespace ChilledTreat.GameClasses
 			_shotSound.Play();
 			_drawMuzzleFlare = true;
 
-			_damage = EnemyHandler.Random.Next((DefaultDamage / 2), DefaultDamage);
+			_damage = EnemyHandler.Random.Next((_defaultDamage / 2), _defaultDamage);
 
 			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance.HitBox, _damage);
 
