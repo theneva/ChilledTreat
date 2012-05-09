@@ -41,6 +41,7 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
+  
   <ItemGroup>
     <Compile Include="Fonts\credInsFont.spritefont">
       <Name>credInsFont</Name>
