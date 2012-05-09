@@ -56,8 +56,6 @@ namespace ChilledTreat.GameClasses
 				_playerState = Player.State.Shooting;
 			}
 
-
-
 			if (_input.IsReloadPressed() && _playerState == Player.State.Alive && _currentWeapon._ammo != _currentWeapon._bullets.Length)
 			{
 				_playerState = Player.State.Reloading;
@@ -106,7 +104,6 @@ namespace ChilledTreat.GameClasses
 	{
 		private readonly SpriteBatch _spriteBatch;
 
-		internal Player.State _playerState = WeaponHandler.Instance._playerState;
 		internal readonly String WeaponName;
 		public int _ammo, _timesDrawnMuzzleFlare;
 		public bool _playReloadSound, _drawMuzzleFlare;
@@ -135,13 +132,13 @@ namespace ChilledTreat.GameClasses
 			_playReloadSound = false;
 			_drawMuzzleFlare = false;
 
-			_reticuleTexture = content.Load<Texture2D>(weaponName + "/Images/usableReticule");
-			_bulletTexture = content.Load<Texture2D>(weaponName + "/Images/usableBullet");
-			_usedBulletTexture = content.Load<Texture2D>(weaponName + "/Images/usableUsedBullet");
-			_gunTexture = content.Load<Texture2D>(weaponName + "/Images/gunTest");
-			_reticuleTexture = content.Load<Texture2D>(weaponName + "/");
-			_gunShotSound = content.Load<SoundEffect>(weaponName + "/Sounds/GunFire");
-			_gunReloadSound = content.Load<SoundEffect>(weaponName + "/Sounds/ReloadSound");
+			_reticuleTexture = content.Load<Texture2D>(weaponName + "./Images/usableReticule");
+			_bulletTexture = content.Load<Texture2D>(weaponName + "./Images/usableBullet");
+			_usedBulletTexture = content.Load<Texture2D>(weaponName + "./Images/usableUsedBullet");
+			_gunTexture = content.Load<Texture2D>(weaponName + "./Images/gunTest");
+			_reticuleTexture = content.Load<Texture2D>(weaponName + "./Images/usableReticule");
+			_gunShotSound = content.Load<SoundEffect>(weaponName + "./Sounds/GunFire");
+			_gunReloadSound = content.Load<SoundEffect>(weaponName + "./Sounds/ReloadSound");
 
 
 			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
@@ -218,7 +215,7 @@ namespace ChilledTreat.GameClasses
 				_bullets[i] = _bulletTexture;
 			}
 
-			_playerState = Player.State.Alive;
+			WeaponHandler.Instance._playerState = Player.State.Alive;
 		}
 
 		/// <summary>
@@ -227,7 +224,7 @@ namespace ChilledTreat.GameClasses
 		internal void Shoot()
 		{
 			//Just to make sure the player's not firing when (s)he's not supposed to
-			if (_playerState != Player.State.Alive) return;
+			if (WeaponHandler.Instance._playerState != Player.State.Alive) return;
 			_gunShotSound.Play();
 			_drawMuzzleFlare = true;
 			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance._hitBox);
@@ -236,16 +233,16 @@ namespace ChilledTreat.GameClasses
 			_bullets[--_ammo] = _usedBulletTexture;
 
 			//If the weapon's out of ammo, and the player's not currently reloading
-			if (_ammo == 0 && _playerState != Player.State.Reloading)
+			if (_ammo == 0 && WeaponHandler.Instance._playerState != Player.State.Reloading)
 			{
-				_playerState = Player.State.Reloading;
+				WeaponHandler.Instance._playerState = Player.State.Reloading;
 
 				WeaponHandler.Instance._startReloadTime = WeaponHandler.Instance._frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 				_playReloadSound = true;
 			}
-			else _playerState = Player.State.Waiting;
+			else WeaponHandler.Instance._playerState = Player.State.Waiting;
 
-			if (_playerState != Player.State.Reloading && _playerState != Player.State.Waiting && _playerState != Player.State.Dead) _playerState = Player.State.Alive;
+			if (WeaponHandler.Instance._playerState != Player.State.Reloading && WeaponHandler.Instance._playerState != Player.State.Waiting && WeaponHandler.Instance._playerState != Player.State.Dead) WeaponHandler.Instance._playerState = Player.State.Alive;
 		}
 
 		internal void ResetWeapon()
