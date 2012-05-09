@@ -31,6 +31,7 @@ namespace ChilledTreat.GameStates
 		public override void Update()
 		{
 			_shift = 0;
+			
 			if (_input.IsAbortPressed())
 			{
 				Game1.ChangeState(GameState.Menu);
@@ -42,12 +43,21 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
+
+			SpriteBatch.DrawString(_menuFont, "Leaderboard", new Vector2(Game1.Instance.GameScreenWidth / 3f - 100, 50), Color.White);
 			foreach (Highscore hs in _highScoreList)
 			{
+<<<<<<< HEAD
 				_shift++;
 				SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.Instance.GameScreenWidth / 3f - 35, 250 + (_shift * 50) + (scrolling * 50)), Color.White);
 				SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.Instance.GameScreenWidth / 3f, 250 + (_shift * 50) + (scrolling * 50)), Color.White);
 				SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.Instance.GameScreenWidth / 3f * 2f, 250 + (_shift * 50) + (scrolling * 50)), Color.White);
+=======
+				_shift++;	
+				SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.Instance.GameScreenWidth / 3f - 25, 150 + (_shift * 50)), Color.White);
+				SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.Instance.GameScreenWidth / 3f, 150 + (_shift * 50)), Color.White);
+				SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.Instance.GameScreenWidth / 3f * 2f, 150 + (_shift * 50)), Color.White);
+>>>>>>> origin/master
 			}
 		}
 	}
