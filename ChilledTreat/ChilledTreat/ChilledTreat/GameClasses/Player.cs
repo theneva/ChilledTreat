@@ -60,10 +60,10 @@ namespace ChilledTreat.GameClasses
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 			_diedSound = content.Load<SoundEffect>("Sounds/poor-baby");
 
-			_injuredSounds = new[] {content.Load<SoundEffect>("Sounds/goddamnit"),
+			_injuredSounds = new[] { content.Load<SoundEffect>("Sounds/goddamnit"),
 				content.Load<SoundEffect>("Sounds/how-dare-you"),
 				content.Load<SoundEffect>("Sounds/im-in-trouble"),
-				content.Load<SoundEffect>("Sounds/uh")};
+				content.Load<SoundEffect>("Sounds/uh") };
 
 			_widthOfHeart = _healthTexture.Width / 3;
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
@@ -99,7 +99,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			if(InCover)
+			if (InCover)
 			{
 				_spriteBatch.Draw(_coverTexture,
 					new Vector2((Game1.Instance.GameScreenWidth - _coverTexture.Width) / 2f, Game1.Instance.GameScreenHeight - _coverTexture.Height),
@@ -114,7 +114,7 @@ namespace ChilledTreat.GameClasses
 
 			if (_drawRedHaze) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, (Game1.Instance.GameScreenWidth / _damagedTexture.Width), SpriteEffects.None, layerDepth: 0);
 		}
-	
+
 		/// <summary>
 		/// How much the player is damaged
 		/// </summary>
@@ -124,13 +124,15 @@ namespace ChilledTreat.GameClasses
 			if (PlayerState != State.Reloading) PlayerState = State.Damaged;
 			if (InCover) damage /= 5;
 
-			_injuredSounds[GameClasses.EnemyHandler.Random.Next(_injuredSounds.Length)].Play();
+			//Play a random sound when injured
+			_injuredSounds[EnemyHandler.Random.Next(_injuredSounds.Length)].Play();
 
 			_drawRedHaze = true;
+
 			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 
-				// TODO: Debug purposes
-				Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
+			// TODO: Debug purposes
+			Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
 
 			_health -= damage;
 
@@ -179,7 +181,7 @@ namespace ChilledTreat.GameClasses
 		{
 			Score++;
 		}
-		
+
 		/// <summary>
 		/// Reset the player's score, health and state
 		/// Since the player is a singleton, the constructor is only called once. Because of that, we use this method
