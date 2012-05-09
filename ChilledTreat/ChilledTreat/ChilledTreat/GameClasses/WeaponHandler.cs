@@ -31,16 +31,9 @@ namespace ChilledTreat.GameClasses
 
 		private WeaponHandler()
 		{
-			try
-			{
-				_weapons = new List<Weapon> { new Weapon("Gun", 10) };
-			}
-			catch (ContentLoadException ex)
-			{
-				Game1.Instance.Exit();
-			}
+			_weapons = new List<Weapon> { new Weapon("Gun", 100, 10, true) };
 
-			_currentWeapon = SetCurrentWeapon("Gun");
+			_currentWeapon = _weapons.First();
 		}
 
 		public void Update()
@@ -48,12 +41,12 @@ namespace ChilledTreat.GameClasses
 			CurrentTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
 			ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
-			if (CurrentTime - _startShootTime > 200 && PlayerState != Player.State.Reloading) PlayerState = Player.State.Alive;
+			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading) PlayerState = Player.State.Alive;
 
 			if (ReticulePosition.Y < 0) ReticulePosition = new Vector2(ReticulePosition.X, 0);
 			else if (ReticulePosition.Y > Game1.Instance.GameScreenHeight) ReticulePosition = new Vector2(ReticulePosition.X, Game1.Instance.GameScreenHeight);
 
-			if (PlayerState == Player.State.Alive && Input.IsShootPressed() && !Player.Instance.InCover)
+			if (PlayerState == Player.State.Alive && (Input.IsShootPressed() && !_currentWeapon.IsWeaponAutomatic || Input.IsShootDown() && _currentWeapon.IsWeaponAutomatic) && !Player.Instance.InCover)
 			{
 				_startShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
@@ -105,10 +98,11 @@ namespace ChilledTreat.GameClasses
 		private readonly SpriteBatch _spriteBatch;
 
 		internal readonly String WeaponName;
-		internal int MaxAmmo { get;private set; }
-		internal int CurrentAmmo;
+		internal int MaxAmmo, CurrentAmmo;
 		private int _timesDrawnMuzzleFlare;
+		internal readonly double DelayBetweenShots;
 		internal bool PlayReloadSound;
+		internal readonly bool IsWeaponAutomatic;
 		private bool _drawMuzzleFlare;
 		private readonly Texture2D _reticuleTexture, _cartridgeTexture, _usedCartridgeTexture, _weaponTexture;
 		private readonly Vector2 _halfReticuleTexture;
@@ -122,9 +116,11 @@ namespace ChilledTreat.GameClasses
 		/// <summary>
 		/// Create a weapon
 		/// </summary>
-		/// <param name="weaponName">The name of the weapon, used for loading images and sounds, and finding the object later</param>
+		/// <param name="weaponName">The name of the weapon, used for loading images and sounds, and finding the object later. Be VERY careful with spelling</param>
 		/// <param name="maxAmmo">Maximum ammo if this weapon</param>
-		internal Weapon(String weaponName, int maxAmmo)
+		/// <param name="rateOfFire">The amount of bullets fireable per second</param>
+		/// <param name="automatic">Indicates whether or not the weapon is automatic</param>
+		internal Weapon(String weaponName, int maxAmmo, int rateOfFire, bool automatic)
 		{
 			_spriteBatch = Game1.Instance.SpriteBatch;
 			ContentManager content = Game1.Instance.Content;
@@ -133,6 +129,8 @@ namespace ChilledTreat.GameClasses
 			MaxAmmo = maxAmmo;
 			CurrentAmmo = maxAmmo;
 			WeaponName = weaponName;
+			DelayBetweenShots = 1000f / rateOfFire;
+			IsWeaponAutomatic = automatic;
 
 			_reticuleTexture = content.Load<Texture2D>(weaponName + "./Images/Reticule");
 			_cartridgeTexture = content.Load<Texture2D>(weaponName + "./Images/Cartridge");
@@ -209,7 +207,7 @@ namespace ChilledTreat.GameClasses
 			}
 
 			if (WeaponHandler.Instance.CurrentTime - WeaponHandler.Instance.StartReloadTime <= _reloadSound.Duration.TotalMilliseconds) return;
-			CurrentAmmo = MaxAmmo; // should be done in the loop vvvv  <-- (what?????)
+			CurrentAmmo = MaxAmmo;
 
 			for (int i = 0; i < _bullets.Length; i++)
 			{
