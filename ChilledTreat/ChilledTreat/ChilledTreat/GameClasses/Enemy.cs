@@ -54,8 +54,9 @@ namespace ChilledTreat.GameClasses
 			_frameSize = new Point(41, 80);
 
 			_texture = content.Load<Texture2D>("Images/enemy2");
-			_position = new Vector2(_random.Next(192) + 538 - _texture.Width * _scale,
-				Game1.Instance.Window.ClientBounds.Height - (510 + _texture.Height));
+			_position = new Vector2(538  + _random.Next(192) + _scale * _texture.Width,
+				// TODO: Get enemies to spawn at correct height
+				Game1.Instance.Window.ClientBounds.Height - 510 - _texture.Height * _scale);
 
 			_currentFrame = new Point(0, 0);
 			_sheetSize = new Point(7, 1);
@@ -91,7 +92,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_damageInflicted = EnemyHandler.Random.Next(15, 20);
 			// TODO: Debug purposes
-			Player.Instance.Damaged(_damageInflicted);
+			//Player.Instance.Damaged(_damageInflicted);
 			Player.Instance.Damaged(0);
 		}
 
@@ -158,11 +159,6 @@ namespace ChilledTreat.GameClasses
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-
-
-
-
-
 		}
 
 
