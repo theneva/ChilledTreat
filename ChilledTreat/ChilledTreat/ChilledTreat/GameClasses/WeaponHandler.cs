@@ -33,6 +33,7 @@ namespace ChilledTreat.GameClasses
 		private WeaponHandler()
 		{
 			_weapons = new List<Weapon> {new Weapon("Gun", 10)};
+			ChangeWeapon("Gun");
 		}
 
 		public void Update()
