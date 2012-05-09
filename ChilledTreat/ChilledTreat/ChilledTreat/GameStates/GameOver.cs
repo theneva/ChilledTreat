@@ -79,7 +79,7 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
-			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 2f, 100), Color.White);
+			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.Instance.GameScreenWidth / 2f, 100), Color.White);
 
 			SpriteBatch.DrawString(_menuFont, "Name: " + charList[0] + charList[1] + charList[2] + charList[3] + charList[4], new Vector2(10, 150), Color.White);
 

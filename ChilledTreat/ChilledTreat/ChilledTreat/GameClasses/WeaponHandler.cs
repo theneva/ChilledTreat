@@ -44,7 +44,7 @@ namespace ChilledTreat.GameClasses
 			if (_currentTime - _startShootTime > 200 && _playerState != Player.State.Reloading) _playerState = Player.State.Alive;
 
 			if (_reticulePosition.Y < 0) _reticulePosition = new Vector2(_reticulePosition.X, 0);
-			else if (_reticulePosition.Y > Game1.GameScreenHeight) _reticulePosition = new Vector2(_reticulePosition.X, Game1.GameScreenHeight);
+			else if (_reticulePosition.Y > Game1.Instance.GameScreenHeight) _reticulePosition = new Vector2(_reticulePosition.X, Game1.Instance.GameScreenHeight);
 
 			if (_playerState == Player.State.Alive && _input.IsShootPressed() && !Player.Instance.InCover)
 			{
@@ -146,11 +146,11 @@ namespace ChilledTreat.GameClasses
 			_bulletPositions = new Vector2[_bullets.Length];
 			_gunSource = new Rectangle(0, 0, _gunTexture.Width / 2, _gunTexture.Height);
 			_firedGunSource = new Rectangle(_gunTexture.Width / 2, 0, _gunTexture.Width / 2, _gunTexture.Height);
-			_gunPosition = new Rectangle(Game1.GameScreenWidth / 2, Game1.GameScreenHeight + 40, _gunTexture.Width / 2, _gunTexture.Height);
+			_gunPosition = new Rectangle(Game1.Instance.GameScreenWidth / 2, Game1.Instance.GameScreenHeight + 40, _gunTexture.Width / 2, _gunTexture.Height);
 
 			for (int i = 0; i < _bulletPositions.Length; i++)
 			{
-				_bulletPositions[i] = new Vector2(i * _bulletTexture.Width + 5, Game1.GameScreenHeight - _bulletTexture.Height);
+				_bulletPositions[i] = new Vector2(i * _bulletTexture.Width + 5, Game1.Instance.GameScreenHeight - _bulletTexture.Height);
 			}
 
 			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _bulletTexture;
