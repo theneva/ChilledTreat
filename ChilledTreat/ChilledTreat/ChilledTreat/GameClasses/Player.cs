@@ -166,7 +166,6 @@ namespace ChilledTreat.GameClasses
 		{
 			_health = 100;
 			Score = 0;
-			Player.Instance.PlayerState = State.Alive;
 
 			WeaponHandler.Instance.ResetWeapons();
 		}

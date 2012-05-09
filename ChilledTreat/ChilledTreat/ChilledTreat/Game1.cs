@@ -119,7 +119,7 @@ namespace ChilledTreat
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(Color.Teal);
+			GraphicsDevice.Clear(Color.YellowGreen);
 			
 			SpriteBatch.Begin();
 
