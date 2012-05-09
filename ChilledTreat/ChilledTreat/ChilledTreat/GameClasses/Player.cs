@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,6 +14,8 @@ namespace ChilledTreat.GameClasses
 		private readonly SpriteBatch _spriteBatch;
 		private readonly InputHandler _input = InputHandler.Instance;
 
+		private readonly SoundEffect[] _injuredSounds;
+		private readonly SoundEffect _diedSound;
 		private int _health, _healthIn10, _heartsDrawShift;
 		private double _currentTime, _timeAtDamaged;
 		private readonly int _widthOfHeart;
@@ -55,6 +58,12 @@ namespace ChilledTreat.GameClasses
 			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
 			_damagedTexture = content.Load<Texture2D>("Images/damagedTint");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
+			_diedSound = content.Load<SoundEffect>("Sounds/poor-baby");
+
+			_injuredSounds = new[] {content.Load<SoundEffect>("Sounds/goddamnit"),
+				content.Load<SoundEffect>("Sounds/how-dare-you"),
+				content.Load<SoundEffect>("Sounds/im-in-trouble"),
+				content.Load<SoundEffect>("Sounds/uh")};
 
 			_widthOfHeart = _healthTexture.Width / 3;
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
@@ -69,6 +78,7 @@ namespace ChilledTreat.GameClasses
 			if (PlayerState == State.Dead)
 			{
 				EnemyHandler.Instance.Clear();
+				_diedSound.Play();
 				Game1.ChangeState(GameStates.GameState.GameOver);
 			}
 
@@ -113,6 +123,8 @@ namespace ChilledTreat.GameClasses
 		{
 			if (PlayerState != State.Reloading) PlayerState = State.Damaged;
 			if (InCover) damage /= 5;
+
+			_injuredSounds[GameClasses.EnemyHandler.Random.Next(_injuredSounds.Length)].Play();
 
 			_drawRedHaze = true;
 			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;

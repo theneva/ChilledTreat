@@ -33,7 +33,7 @@ namespace ChilledTreat.GameClasses
 		{
 			try
 			{
-				_weapons = new List<Weapon> { new Weapon("Gn", 10) };
+				_weapons = new List<Weapon> { new Weapon("Gun", 10) };
 			}
 			catch (ContentLoadException ex)
 			{
