@@ -6,12 +6,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ChilledTreat.GameClasses
 {
+	/// <summary>
+	/// This class represents the player, and is used as a singleton. To access it, write GameClasses.Player.Instance
+	/// </summary>
 	class Player
 	{
 		private readonly InputHandler _input = InputHandler.Instance;
 		private readonly SpriteBatch _spriteBatch;
 
-		private int _health, _healthIn10, _ammo, _heartsDrawShift, _timesDrawnMuzzleFlare, _totalScore;
+		private int _health, _healthIn10, _ammo, _heartsDrawShift, _timesDrawnMuzzleFlare;
 		private readonly int _widthOfHeart;
 		private double _currentTime, _startShootTime, _startReloadTime;
 		private bool _playReloadSound, _drawMuzzleFlare, _inCover;
@@ -36,11 +39,7 @@ namespace ChilledTreat.GameClasses
 			Dead
 		}
 
-		public int Score
-		{
-			get { return _totalScore; }
-			private set { _totalScore = value; }
-		}
+		public int Score { get; private set; }
 
 		State _playerState;
 		static Player _instance;
@@ -57,7 +56,7 @@ namespace ChilledTreat.GameClasses
 
 			_health = 100;
 			_timesDrawnMuzzleFlare = 0;
-			_totalScore = 0;
+			Score = 0;
 			_bullets = new Texture2D[2000];
 			_ammo = _bullets.Length;
 			_playReloadSound = false;
@@ -187,16 +186,21 @@ namespace ChilledTreat.GameClasses
 			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
 		}
 
+		/// <summary>
+		/// Shoot the current weapon
+		/// </summary>
 		private void Shoot()
 		{
-
+			//Just to make sure the player's not firing when (s)he's not supposed to
+			if (_playerState != State.Alive) return;
 			_gunShotSound.Play();
 			_drawMuzzleFlare = true;
 			EnemyHandler.Instance.FiredAt(_hitBox);
-			//if (_ammo > 0)
+
+			//Set the array of textures to appear used when firing a shot
 			_bullets[--_ammo] = _usedBulletTexture;
 
-
+			//If the weapon's out of ammo, and the player's not currently reloading
 			if (_ammo == 0 && _playerState != State.Reloading)
 			{
 				_playerState = State.Reloading;
@@ -209,6 +213,10 @@ namespace ChilledTreat.GameClasses
 			if (_playerState != State.Reloading && _playerState != State.Waiting && _playerState != State.Dead) _playerState = State.Alive;
 		}
 
+		/// <summary>
+		/// Reload the current weapon
+		/// It adds a timer before reverting the player state to Alive, to allowing the firing of the weapon again
+		/// </summary>
 		private void Reload()
 		{
 			if (_playReloadSound)
@@ -229,6 +237,10 @@ namespace ChilledTreat.GameClasses
 			_playerState = State.Alive;
 		}
 	
+		/// <summary>
+		/// How much the player is damaged
+		/// </summary>
+		/// <param name="damage">The amount of damage recieved</param>
 		public void Damaged(int damage)
 		{
 			if (_playerState != State.Reloading) _playerState = State.Damaged;
@@ -246,7 +258,10 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		//This method determines how many hearts are drawn on the screen (according to how much health is left), and draws them on the screen
+		/// <summary>
+		/// Draw the correct amount of hearts (health-indicator) on the screen.
+		/// It's cleaner having the logic behind it in it's own method
+		/// </summary>
 		private void DrawHealth()
 		{
 			for (int i = 0; i < _healthIn10 / 2; i++)
@@ -257,7 +272,7 @@ namespace ChilledTreat.GameClasses
 				_heartsDrawShift++;
 			}
 
-			//Always draw 5 hearts. If the int division ends up removing the fraction
+			//Always draw 5 hearts. If the int division ends up removing the fraction (meaning we lose 0.5 hearts), draw a half-heart
 			if (_healthIn10 % 2 != 0)
 			{
 				_spriteBatch.Draw(_healthTexture,
@@ -275,14 +290,18 @@ namespace ChilledTreat.GameClasses
 			}
 		}
 
-		//If an enemy is killed, add 1 tot the score
+		/// <summary>
+		/// Adds 1 to the player score
+		/// </summary>
 		public void SuccesfullKill()
 		{
 			Score++;
 		}
-
-		//This method resets the player's score, health, ammo and ammoindicator.
-		//Since the player is a singleton, the constructor is only called once. Because of that, we use this method
+		
+		/// <summary>
+		/// Reset the player's score, health, ammo and ammoindicator.
+		/// Since the player is a singleton, the constructor is only called once. Because of that, we use this method
+		/// </summary>
 		public void ResetPlayer()
 		{
 			_health = 100;
