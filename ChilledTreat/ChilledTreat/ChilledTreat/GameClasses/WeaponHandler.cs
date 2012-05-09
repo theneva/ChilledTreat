@@ -31,7 +31,15 @@ namespace ChilledTreat.GameClasses
 
 		private WeaponHandler()
 		{
-			_weapons = new List<Weapon> {new Weapon("Gun", 10)};
+			try
+			{
+				_weapons = new List<Weapon> { new Weapon("Gn", 10) };
+			}
+			catch (ContentLoadException ex)
+			{
+				Game1.Instance.Exit();
+			}
+
 			_currentWeapon = SetCurrentWeapon("Gun");
 		}
 
