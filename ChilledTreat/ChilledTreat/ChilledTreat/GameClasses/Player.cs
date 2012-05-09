@@ -74,10 +74,6 @@ namespace ChilledTreat.GameClasses
 
 			InCover = _input.IsCoverDown();
 
-			if (PlayerState == State.Shooting) WeaponHandler.Instance.Shoot();
-
-			if (PlayerState == State.Reloading) WeaponHandler.Instance.Reload();
-
 			WeaponHandler.Instance.Update();
 		}
 
@@ -159,13 +155,15 @@ namespace ChilledTreat.GameClasses
 		}
 		
 		/// <summary>
-		/// Reset the player's score, health, ammo and ammoindicator.
+		/// Reset the player's score, health and state
 		/// Since the player is a singleton, the constructor is only called once. Because of that, we use this method
 		/// </summary>
 		public void ResetPlayer()
 		{
 			_health = 100;
 			Score = 0;
+
+			PlayerState = State.Alive;
 
 			WeaponHandler.Instance.ResetWeapons();
 		}
