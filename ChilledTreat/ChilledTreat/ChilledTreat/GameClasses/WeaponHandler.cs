@@ -46,15 +46,15 @@ namespace ChilledTreat.GameClasses
 			if (_reticulePosition.Y < 0) _reticulePosition = new Vector2(_reticulePosition.X, 0);
 			else if (_reticulePosition.Y > Game1.Instance.GameScreenHeight) _reticulePosition = new Vector2(_reticulePosition.X, Game1.Instance.GameScreenHeight);
 
-
-
-			if (_playerState == Player.State.Alive && _input.IsShootPressed() && Player.Instance.InCover)
+			if (_playerState == Player.State.Alive && _input.IsShootPressed() && !Player.Instance.InCover)
 			{
 				_startShootTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
 				_hitBox = new Rectangle(_input.MouseState.X - 20, _input.MouseState.Y - 20, 40, 40);
 
 				_playerState = Player.State.Shooting;
+
+				Console.WriteLine("hallo");
 			}
 
 			if (_input.IsReloadPressed() && _playerState == Player.State.Alive && _currentWeapon._ammo != _currentWeapon._bullets.Length)
@@ -63,6 +63,8 @@ namespace ChilledTreat.GameClasses
 				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 				_currentWeapon._playReloadSound = true;
 			}
+
+			if (_playerState == Player.State.Shooting) _currentWeapon.Shoot();
 
 			_currentWeapon.Update();
 		}
@@ -225,7 +227,7 @@ namespace ChilledTreat.GameClasses
 		internal void Shoot()
 		{
 			//Just to make sure the player's not firing when (s)he's not supposed to
-			if (WeaponHandler.Instance._playerState != Player.State.Alive) return;
+			if (WeaponHandler.Instance._playerState == Player.State.Alive) return;
 			_gunShotSound.Play();
 			_drawMuzzleFlare = true;
 			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance._hitBox);
