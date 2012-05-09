@@ -53,8 +53,6 @@ namespace ChilledTreat.GameClasses
 				_hitBox = new Rectangle(_input.MouseState.X - 20, _input.MouseState.Y - 20, 40, 40);
 
 				_playerState = Player.State.Shooting;
-
-				Console.WriteLine("hallo");
 			}
 
 			if (_input.IsReloadPressed() && _playerState == Player.State.Alive && _currentWeapon._ammo != _currentWeapon._bullets.Length)
@@ -65,6 +63,8 @@ namespace ChilledTreat.GameClasses
 			}
 
 			if (_playerState == Player.State.Shooting) _currentWeapon.Shoot();
+
+			if (_playerState == Player.State.Reloading) _currentWeapon.Reload();
 
 			_currentWeapon.Update();
 		}
