@@ -18,8 +18,8 @@ namespace ChilledTreat
 		public GraphicsDeviceManager Graphics;
 		public SpriteBatch SpriteBatch;
 
-		public int GameScreenWidth = 1280;
-		public int GameScreenHeight = 720;
+		public const int GameScreenWidth = 1280;
+		public const int GameScreenHeight = 720;
 
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;

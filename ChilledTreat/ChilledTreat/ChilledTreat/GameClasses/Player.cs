@@ -14,8 +14,10 @@ namespace ChilledTreat.GameClasses
 		private readonly InputHandler _input = InputHandler.Instance;
 
 		private int _health, _healthIn10, _heartsDrawShift;
+		private double _currentTime, _timeAtDamaged;
 		private readonly int _widthOfHeart;
-		private readonly Texture2D _healthTexture, _coverTexture;
+		private bool _drawRedHaze;
+		private readonly Texture2D _healthTexture, _coverTexture, _damagedTexture;
 		private readonly Rectangle _fullHealthSource, _halfHealthSource, _emptyHealthSource;
 		readonly SpriteFont _scoreFont;
 
@@ -51,6 +53,7 @@ namespace ChilledTreat.GameClasses
 			//Load all textures fonts
 			_healthTexture = content.Load<Texture2D>("Images/normalUsableHeart");
 			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
+			_damagedTexture = content.Load<Texture2D>("Images/damagedTint");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 
 			_widthOfHeart = _healthTexture.Width / 3;
@@ -62,10 +65,16 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
+			_currentTime = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 			if (PlayerState == State.Dead)
 			{
 				EnemyHandler.Instance.Clear();
 				Game1.ChangeState(GameStates.GameState.GameOver);
+			}
+
+			if (_drawRedHaze && _currentTime - _timeAtDamaged > 200)
+			{
+				_drawRedHaze = false;
 			}
 
 			//
@@ -83,15 +92,17 @@ namespace ChilledTreat.GameClasses
 			if(InCover)
 			{
 				_spriteBatch.Draw(_coverTexture,
-					new Vector2((Game1.Instance.GameScreenWidth - _coverTexture.Width) / 2f, Game1.Instance.GameScreenHeight - _coverTexture.Height),
+					new Vector2((Game1.GameScreenWidth - _coverTexture.Width) / 2f, Game1.GameScreenHeight - _coverTexture.Height),
 					Color.White);
 			}
 
 			DrawHealth();
 
-			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.Instance.GameScreenWidth - 100, 20), Color.Black);
+			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.GameScreenWidth - 100, 20), Color.Black);
 
 			WeaponHandler.Instance.Draw();
+
+			if(_drawRedHaze) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, (Game1.GameScreenWidth / _damagedTexture.Width), effects: SpriteEffects.None, layerDepth: 0);
 		}
 	
 		/// <summary>
@@ -103,6 +114,8 @@ namespace ChilledTreat.GameClasses
 			if (PlayerState != State.Reloading) PlayerState = State.Damaged;
 			if (InCover) damage /= 5;
 
+			_drawRedHaze = true;
+			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 
 				// TODO: Debug purposes
 				Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
@@ -124,7 +137,7 @@ namespace ChilledTreat.GameClasses
 			for (int i = 0; i < _healthIn10 / 2; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
-					new Vector2((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift, Game1.Instance.GameScreenHeight - 50),
+					new Vector2((Game1.GameScreenWidth - 300) + 60 * _heartsDrawShift, Game1.GameScreenHeight - 50),
 					_fullHealthSource, Color.White);
 				_heartsDrawShift++;
 			}
@@ -133,15 +146,15 @@ namespace ChilledTreat.GameClasses
 			if (_healthIn10 % 2 != 0)
 			{
 				_spriteBatch.Draw(_healthTexture,
-								  new Vector2((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift,
-											  Game1.Instance.GameScreenHeight - 50), _halfHealthSource, Color.White);
+								  new Vector2((Game1.GameScreenWidth - 300) + 60 * _heartsDrawShift,
+											  Game1.GameScreenHeight - 50), _halfHealthSource, Color.White);
 				_heartsDrawShift++;
 			}
 
 			for (int i = _healthIn10 / 2; i < 5; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
-					new Vector2((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift, Game1.Instance.GameScreenHeight - 50),
+					new Vector2((Game1.GameScreenWidth - 300) + 60 * _heartsDrawShift, Game1.GameScreenHeight - 50),
 					_emptyHealthSource, Color.White);
 				_heartsDrawShift++;
 			}
