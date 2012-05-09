@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,10 +15,19 @@ namespace ChilledTreat.GameClasses
 
 		private int _health, _healthIn10, _heartsDrawShift;
 		private readonly int _widthOfHeart;
-		public bool InCover { get; private set; }
 		private readonly Texture2D _healthTexture, _coverTexture;
 		private readonly Rectangle _fullHealthSource, _halfHealthSource, _emptyHealthSource;
 		readonly SpriteFont _scoreFont;
+
+		public bool InCover { get; private set; }
+
+		public int Score { get; private set; }
+
+		static Player _instance;
+		public static Player Instance
+		{
+			get { return _instance ?? (_instance = new Player(Game1.Instance.SpriteBatch, Game1.Instance.Content)); }
+		}
 
 		public enum State
 		{
@@ -31,14 +39,7 @@ namespace ChilledTreat.GameClasses
 			Dead
 		}
 
-		public int Score { get; private set; }
-
 		public State PlayerState;
-		static Player _instance;
-		public static Player Instance
-		{
-			get { return _instance ?? (_instance = new Player(Game1.Instance.SpriteBatch, Game1.Instance.Content)); }
-		}
 
 		private Player(SpriteBatch spriteBatch, ContentManager content)
 		{
@@ -67,6 +68,7 @@ namespace ChilledTreat.GameClasses
 				Game1.ChangeState(GameStates.GameState.GameOver);
 			}
 
+			//
 			_healthIn10 = _health / 10;
 			//The shift to the side, so that the hearts are not drawn on top of each other
 			_heartsDrawShift = 0;
@@ -87,7 +89,7 @@ namespace ChilledTreat.GameClasses
 
 			DrawHealth();
 
-			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
+			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.Instance.GameScreenWidth - 100, 20), Color.Black);
 
 			WeaponHandler.Instance.Draw();
 		}

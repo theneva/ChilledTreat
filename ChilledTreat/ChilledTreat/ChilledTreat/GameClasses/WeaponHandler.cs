@@ -227,9 +227,10 @@ namespace ChilledTreat.GameClasses
 		internal void Shoot()
 		{
 			//Just to make sure the player's not firing when (s)he's not supposed to
-			if (WeaponHandler.Instance._playerState == Player.State.Alive) return;
+			if (WeaponHandler.Instance._playerState != Player.State.Shooting) return;
 			_gunShotSound.Play();
 			_drawMuzzleFlare = true;
+
 			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance._hitBox);
 
 			//Set the array of textures to appear used when firing a shot
