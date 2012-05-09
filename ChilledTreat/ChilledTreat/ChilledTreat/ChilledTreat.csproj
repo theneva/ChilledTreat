@@ -114,9 +114,11 @@
     <Compile Include="GameClasses\Enemy.cs" />
     <Compile Include="GameStates\GameOver.cs" />
     <Compile Include="GameStates\Instructions.cs" />
+    <Compile Include="GameStates\LeaderBoard.cs" />
     <Compile Include="GameStates\PauseMenu.cs" />
     <Compile Include="GameStates\GameStates.cs" />
     <Compile Include="GameStates\InGame.cs" />
+    <Compile Include="HighScore.cs" />
     <Compile Include="InputHandler.cs" />
     <Compile Include="GameStates\Menu.cs" />
     <Compile Include="GameClasses\Player.cs" />

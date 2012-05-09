@@ -71,6 +71,7 @@ namespace ChilledTreat
 			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
 			_gameStates.Add(new GameOver(SpriteBatch, Content));
 			_gameStates.Add(new Instructions(SpriteBatch, Content));
+			_gameStates.Add(new LeaderBoard(SpriteBatch, Content));
 			
 
 			_activeGameState = _gameStates[0]; // TODO: Use static constants (GameStates.Splash);
@@ -134,7 +135,7 @@ namespace ChilledTreat
 		// ---- Den lager nytt InGame object når du starter på ny
 		public static void NewGame()
 		{
-			if (Instance._gameStates.Count < 7)
+			if (Instance._gameStates.Count < GameState.InGame + 1)
 			{
 				Instance._gameStates.Add(new InGame(Instance.SpriteBatch, Instance.Content));
 			}

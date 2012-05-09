@@ -1,61 +1,42 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
+using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
-using ChilledTreat.GameClasses;
-using System;
 
 namespace ChilledTreat.GameStates
 {
-	class GameOver : GameState
+	class LeaderBoard : GameState
 	{
-		// FIELDS
 		readonly SpriteFont _menuFont, _scoreFont;
-		public static bool NewScoreToAdd { private get; set; }
 		private int _shift;
 		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
 		private List<Highscore> _highScoreList;
 
-		
-
-		public GameOver(SpriteBatch spriteBatch, ContentManager content)
+		public LeaderBoard(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
 		{
-			// LOAD CONTENT
+			_highScoreList = Highscore.CreateHighScore();
 			_menuFont = content.Load<SpriteFont>("Fonts/menuFont");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 			_fontColor = Color.RoyalBlue;
-			//_highScoreList = CreateHighScore();
-			_highScoreList = Highscore.CreateHighScore();
+
 		}
 
 		public override void Update()
 		{
-			if (NewScoreToAdd)
-			{
-				_highScoreList.Add(new Highscore("Player", Player.Instance.Score));
-				_highScoreList = _highScoreList.OrderByDescending(x => x.Score).ThenBy(x => x.CurrentTime).ToList();
-
-				Highscore.SerializeToXml(_highScoreList);
-
-				NewScoreToAdd = false;
-			}
 			_shift = 0;
 			if (_input.IsAbortPressed())
 			{
-				Game1.ChangeState(Menu);
+				Game1.ChangeState(GameState.Menu);
 			}
 		}
 
 		public override void Draw()
 		{
-			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.Instance.GameScreenWidth / 2f, 100), Color.White);
-
-
 			foreach (Highscore hs in _highScoreList)
 			{
 				_shift++;

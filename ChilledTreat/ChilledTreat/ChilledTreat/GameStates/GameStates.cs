@@ -9,8 +9,8 @@ namespace ChilledTreat.GameStates
 		protected ContentManager Content;
 
 		protected static int Splash = 0;
-		protected internal static int Menu = 1, InGame = 6, GameOver = 4;
-		protected static int Credits = 2, PauseMenu = 3, Instructions = 5;
+		protected internal static int Menu = 1, InGame = 7, GameOver = 4;
+		protected static int Credits = 2, PauseMenu = 3, Instructions = 5, LeaderBoard = 6;
 /*
              .u+m.z"!!::~~~~!~"+!
           .*~~~*"~~~~~~~~~~~~~~~~~?L.

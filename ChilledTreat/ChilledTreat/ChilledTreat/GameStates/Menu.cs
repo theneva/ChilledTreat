@@ -20,7 +20,7 @@ namespace ChilledTreat.GameStates
 			// Menu content
 			_menuFont = Content.Load<SpriteFont>("Fonts/menuFont");
 			_fontColor = Color.Honeydew;
-			string[] strings = {"New Game", "Instructions", "Credits", "EXIT"};
+			string[] strings = {"New Game", "Instructions", "Leaderboard", "Credits", "EXIT"};
 			_menuItems = strings;
 			_menuPos = 0;
 			_selectedItem = new float[_menuItems.Length];
@@ -73,6 +73,10 @@ namespace ChilledTreat.GameStates
 				else if (_menuItems[_menuPos].Contains("Credits"))
 				{
 					Game1.ChangeState(GameState.Credits);
+				}
+				else if (_menuItems[_menuPos].Contains("Leaderboard"))
+				{
+					Game1.ChangeState(GameState.LeaderBoard);
 				}
 			}
 		}
