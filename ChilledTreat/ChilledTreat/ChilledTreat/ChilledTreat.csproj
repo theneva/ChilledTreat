@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameClasses\EnemyHandler.cs" />
+    <Compile Include="GameStates\LeaderBoard.cs" />
     <Compile Include="GameClasses\WeaponHandler.cs" />
     <Compile Include="GameStates\Credits.cs" />
     <Compile Include="FrameInfo.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="GameStates\PauseMenu.cs" />
     <Compile Include="GameStates\GameStates.cs" />
     <Compile Include="GameStates\InGame.cs" />
+    <Compile Include="HighScore.cs" />
     <Compile Include="InputHandler.cs" />
     <Compile Include="GameStates\Menu.cs" />
     <Compile Include="GameClasses\Player.cs" />
