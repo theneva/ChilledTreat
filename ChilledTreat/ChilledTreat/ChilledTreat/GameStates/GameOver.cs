@@ -19,7 +19,8 @@ namespace ChilledTreat.GameStates
 		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
 		private List<Highscore> _highScoreList;
-
+		char[] charList = { 'A', 'A', 'A', 'A', 'A' };
+		string name;
 		
 
 		public GameOver(SpriteBatch spriteBatch, ContentManager content)
@@ -54,6 +55,7 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.Instance.GameScreenWidth / 2f, 100), Color.White);
+
 
 
 			foreach (Highscore hs in _highScoreList)

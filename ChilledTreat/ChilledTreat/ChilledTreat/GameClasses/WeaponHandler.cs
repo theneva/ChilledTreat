@@ -14,7 +14,7 @@ namespace ChilledTreat.GameClasses
 		internal double _currentTime;
 		private double _startShootTime;
 		internal double _startReloadTime;
-		private readonly InputHandler _input = InputHandler.Instance;
+		internal readonly InputHandler _input = InputHandler.Instance;
 		public Vector2 _reticulePosition;
 		internal Rectangle _hitBox;
 
@@ -129,11 +129,8 @@ namespace ChilledTreat.GameClasses
 			_spriteBatch = Game1.Instance.SpriteBatch;
 			ContentManager content = Game1.Instance.Content;
 
-			_timesDrawnMuzzleFlare = 0;
 			_bullets = new Texture2D[maxAmmo];
 			_ammo = maxAmmo;
-			_playReloadSound = false;
-			_drawMuzzleFlare = false;
 
 			_reticuleTexture = content.Load<Texture2D>(weaponName + "./Images/usableReticule");
 			_bulletTexture = content.Load<Texture2D>(weaponName + "./Images/usableBullet");
@@ -169,6 +166,9 @@ namespace ChilledTreat.GameClasses
 				_timesDrawnMuzzleFlare = 0;
 			}
 
+			_vectorGunToMouse = new Vector2((_gunPosition.X - WeaponHandler.Instance._input.MouseState.X), (_gunPosition.Y - WeaponHandler.Instance._input.MouseState.Y));
+			
+			_gunRotation = (float)Math.Atan2(-_vectorGunToMouse.X, _vectorGunToMouse.Y);
 		}
 
 		internal void Draw()
