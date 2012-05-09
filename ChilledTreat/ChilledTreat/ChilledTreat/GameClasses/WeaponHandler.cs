@@ -53,7 +53,8 @@ namespace ChilledTreat.GameClasses
 			{
 				_startShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-				HitBox = new Rectangle(Input.MouseState.X - 20, Input.MouseState.Y - 20, 40, 40);
+				if(_currentWeapon.IsWeaponAutomatic) HitBox = new Rectangle(Input.MouseState.X - 40, Input.MouseState.Y - 40, 80, 80);
+				else HitBox = new Rectangle(Input.MouseState.X - 10, Input.MouseState.Y - 10, 20, 20);
 
 				PlayerState = Player.State.Shooting;
 			}
