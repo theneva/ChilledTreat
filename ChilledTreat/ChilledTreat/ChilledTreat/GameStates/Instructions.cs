@@ -19,7 +19,7 @@ namespace ChilledTreat.GameStates
 		{
 			// Credits content
 			_instructionsFont = content.Load<SpriteFont>("Fonts/credInsFont");
-			_fontColor = Color.Salmon;
+			_fontColor = Color.MintCream;
 			_instructionsContent = new[] { 
 				"Shoot Stan from Monkey Island with Mouse1",
 				" ",
