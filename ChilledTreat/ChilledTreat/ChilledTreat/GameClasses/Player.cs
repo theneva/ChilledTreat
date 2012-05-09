@@ -48,7 +48,7 @@ namespace ChilledTreat.GameClasses
 			_health = 100;
 			Score = 0;
 
-			//Load all textures, sounds and fonts
+			//Load all textures fonts
 			_healthTexture = content.Load<Texture2D>("Images/normalUsableHeart");
 			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
