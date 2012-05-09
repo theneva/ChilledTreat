@@ -9,27 +9,19 @@ namespace ChilledTreat.GameClasses
 	/// <summary>
 	/// This class represents the player, and is used as a singleton. To access it, write GameClasses.Player.Instance
 	/// </summary>
-	class Player
+	public class Player
 	{
-		private readonly InputHandler _input = InputHandler.Instance;
 		private readonly SpriteBatch _spriteBatch;
+		private readonly InputHandler _input = InputHandler.Instance;
 
-		private int _health, _healthIn10, _ammo, _heartsDrawShift, _timesDrawnMuzzleFlare;
+		private int _health, _healthIn10, _heartsDrawShift;
 		private readonly int _widthOfHeart;
-		private double _currentTime, _startShootTime, _startReloadTime;
-		private bool _playReloadSound, _drawMuzzleFlare, _inCover;
-		private readonly Texture2D _reticuleTexture, _bulletTexture, _usedBulletTexture, _gunTexture, _healthTexture, _coverTexture;
-		private readonly Vector2 _halfReticuleTexture;
-		private Vector2 _vectorGunToMouse, _reticulePosition;
-		private readonly Texture2D[] _bullets;
-		private readonly Vector2[] _bulletPositions;
-		private readonly SoundEffect _gunShotSound, _gunReloadSound;
-		private float _gunRotation;
-		private readonly Rectangle _gunPosition, _gunSource, _firedGunSource, _fullHealthSource, _halfHealthSource, _emptyHealthSource;
-		private Rectangle _hitBox;
+		public bool InCover { get; private set; }
+		private readonly Texture2D _healthTexture, _coverTexture;
+		private readonly Rectangle _fullHealthSource, _halfHealthSource, _emptyHealthSource;
 		readonly SpriteFont _scoreFont;
 
-		enum State
+		public enum State
 		{
 			Alive,
 			Shooting,
@@ -41,200 +33,68 @@ namespace ChilledTreat.GameClasses
 
 		public int Score { get; private set; }
 
-		State _playerState;
+		public State PlayerState;
 		static Player _instance;
 		public static Player Instance
 		{
 			get { return _instance ?? (_instance = new Player(Game1.Instance.SpriteBatch, Game1.Instance.Content)); }
 		}
 
-		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
-
 		private Player(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_spriteBatch = spriteBatch;
 
 			_health = 100;
-			_timesDrawnMuzzleFlare = 0;
 			Score = 0;
-			_bullets = new Texture2D[2000];
-			_ammo = _bullets.Length;
-			_playReloadSound = false;
-			_drawMuzzleFlare = false;
 
 			//Load all textures, sounds and fonts
-			_reticuleTexture = content.Load<Texture2D>("Images/usableReticule");
-			_bulletTexture = content.Load<Texture2D>("Images/usableBullet");
-			_usedBulletTexture = content.Load<Texture2D>("Images/usableUsedBullet");
-			_gunTexture = content.Load<Texture2D>("Images/gunTest");
 			_healthTexture = content.Load<Texture2D>("Images/normalUsableHeart");
 			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
-			_gunShotSound = content.Load<SoundEffect>("Sounds/GunFire");
-			_gunReloadSound = content.Load<SoundEffect>("Sounds/ReloadSound");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 
-			//Set a vector at the center of the reticule, so it's drawn around the mousepointer
-			_halfReticuleTexture = new Vector2(_reticuleTexture.Width / 2f, _reticuleTexture.Height / 2f);
-
-			_bulletPositions = new Vector2[_bullets.Length];
-			_gunSource = new Rectangle(0, 0, 80, 130);
-			_firedGunSource = new Rectangle(80, 0, 80, 130);
-			_gunPosition = new Rectangle(Game1.Instance.GameScreenWidth / 2, Game1.Instance.GameScreenHeight + 40, _gunTexture.Width / 2, _gunTexture.Height);
 			_widthOfHeart = _healthTexture.Width / 3;
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
 			_halfHealthSource = new Rectangle(_widthOfHeart, 0, _widthOfHeart, _healthTexture.Height);
 			_emptyHealthSource = new Rectangle(_widthOfHeart * 2, 0, _widthOfHeart, _healthTexture.Height);
-			_playerState = State.Alive;
-			_hitBox = new Rectangle();
-
-			for (int i = 0; i < _bulletPositions.Length; i++)
-			{
-				_bulletPositions[i] = new Vector2(i * _bulletTexture.Width + 5, Game1.Instance.GameScreenHeight - _bulletTexture.Height);
-			}
-
-			for (int i = 0; i < _bullets.Length; i++) _bullets[i] = _bulletTexture;
+			PlayerState = State.Alive;
 		}
 
 		public void Update()
 		{
-			if (_playerState == State.Dead)
+			if (PlayerState == State.Dead)
 			{
 				EnemyHandler.Instance.Clear();
 				GameStates.GameOver.NewScoreToAdd = true;
 				Game1.ChangeState(GameStates.GameState.GameOver);
 			}
 
-			if (_timesDrawnMuzzleFlare >= 5)
-			{
-				_drawMuzzleFlare = false;
-				_timesDrawnMuzzleFlare = 0;
-			}
-
 			_healthIn10 = _health / 10;
 			//The shift to the side, so that the hearts are not drawn on top of each other
 			_heartsDrawShift = 0;
 
-			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
-			_reticulePosition = new Vector2(_input.MouseState.X, _input.MouseState.Y);
-			if (_currentTime - _startShootTime > 200 && _playerState != State.Reloading) _playerState = State.Alive;
+			InCover = _input.IsCoverDown();
 
-			_vectorGunToMouse = new Vector2((_gunPosition.X - _input.MouseState.X), (_gunPosition.Y - _input.MouseState.Y));
-			_gunRotation = (float)Math.Atan2(-_vectorGunToMouse.X, _vectorGunToMouse.Y);
+			if (PlayerState == State.Shooting) WeaponHandler.Instance.Shoot();
 
-			if (_reticulePosition.X < 0) _reticulePosition = new Vector2(0, _reticulePosition.Y);
-			else if (_reticulePosition.X > Game1.Instance.GameScreenWidth) _reticulePosition = new Vector2(Game1.Instance.GameScreenWidth, _reticulePosition.Y);
+			if (PlayerState == State.Reloading) WeaponHandler.Instance.Reload();
 
-			if (_reticulePosition.Y < 0) _reticulePosition = new Vector2(_reticulePosition.X, 0);
-			else if (_reticulePosition.Y > Game1.Instance.GameScreenHeight) _reticulePosition = new Vector2(_reticulePosition.X, Game1.Instance.GameScreenHeight);
-
-			if (_playerState == State.Alive && _input.IsShootPressed() && !_inCover)
-			{
-				_startShootTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
-
-				_hitBox = new Rectangle(_input.MouseState.X - 20, _input.MouseState.Y - 20, 40, 40);
-
-				_playerState = State.Shooting;
-			}
-
-			_inCover = _input.IsCoverDown();
-
-			if (_input.IsReloadPressed() && _playerState == State.Alive && _ammo != _bullets.Length)
-			{
-				_playerState = State.Reloading;
-				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
-				_playReloadSound = true;
-			}
-
-			if (_playerState == State.Shooting) Shoot();
-
-			if (_playerState == State.Reloading) Reload();
+			WeaponHandler.Instance.Update();
 		}
 
 		public void Draw()
 		{
-			if (!_inCover)
-			{
-				_spriteBatch.Draw(_reticuleTexture, _reticulePosition - _halfReticuleTexture, Color.White);
-
-				if (_drawMuzzleFlare)
-				{
-					_spriteBatch.Draw(_gunTexture, _gunPosition, _firedGunSource, Color.White, _gunRotation,
-								   new Vector2(_gunTexture.Width / 4f, _gunTexture.Height), SpriteEffects.None, 1f);
-
-					_timesDrawnMuzzleFlare++;
-				}
-				else
-				{
-					_spriteBatch.Draw(_gunTexture, _gunPosition, _gunSource, Color.White, _gunRotation,
-								  new Vector2(_gunTexture.Width / 4f, _gunTexture.Height), SpriteEffects.None, 1f);
-				}
-			}
-			else
+			if(InCover)
 			{
 				_spriteBatch.Draw(_coverTexture,
 					new Vector2((Game1.Instance.GameScreenWidth - _coverTexture.Width) / 2f, Game1.Instance.GameScreenHeight - _coverTexture.Height),
 					Color.White);
 			}
 
-			for (int i = 0; i < _bullets.Length; i++)
-			{
-				_spriteBatch.Draw(_bullets[i], _bulletPositions[i], Color.White);
-			}
-
 			DrawHealth();
 
 			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
-		}
 
-		/// <summary>
-		/// Shoot the current weapon
-		/// </summary>
-		private void Shoot()
-		{
-			//Just to make sure the player's not firing when (s)he's not supposed to
-			if (_playerState != State.Alive) return;
-			_gunShotSound.Play();
-			_drawMuzzleFlare = true;
-			EnemyHandler.Instance.FiredAt(_hitBox);
-
-			//Set the array of textures to appear used when firing a shot
-			_bullets[--_ammo] = _usedBulletTexture;
-
-			//If the weapon's out of ammo, and the player's not currently reloading
-			if (_ammo == 0 && _playerState != State.Reloading)
-			{
-				_playerState = State.Reloading;
-
-				_startReloadTime = _frameInfo.GameTime.TotalGameTime.TotalMilliseconds;
-				_playReloadSound = true;
-			}
-			else _playerState = State.Waiting;
-
-			if (_playerState != State.Reloading && _playerState != State.Waiting && _playerState != State.Dead) _playerState = State.Alive;
-		}
-
-		/// <summary>
-		/// Reload the current weapon
-		/// It adds a timer before reverting the player state to Alive, to allowing the firing of the weapon again
-		/// </summary>
-		private void Reload()
-		{
-			if (_playReloadSound)
-			{
-				_gunReloadSound.Play();
-
-				_playReloadSound = false;
-			}
-
-			if (_currentTime - _startReloadTime <= _gunReloadSound.Duration.TotalMilliseconds) return;
-			_ammo = _bullets.Length; // should be done in the loop vvvv  <-- (what?????)
-
-			for (int i = 0; i < _bullets.Length; i++)
-			{
-				_bullets[i] = _bulletTexture;
-			}
-
-			_playerState = State.Alive;
+			WeaponHandler.Instance.Draw();
 		}
 	
 		/// <summary>
@@ -243,8 +103,8 @@ namespace ChilledTreat.GameClasses
 		/// <param name="damage">The amount of damage recieved</param>
 		public void Damaged(int damage)
 		{
-			if (_playerState != State.Reloading) _playerState = State.Damaged;
-			if (_inCover) damage /= 5;
+			if (PlayerState != State.Reloading) PlayerState = State.Damaged;
+			if (InCover) damage /= 5;
 
 
 				// TODO: Debug purposes
@@ -254,7 +114,7 @@ namespace ChilledTreat.GameClasses
 
 			if (_health <= 0)
 			{
-				_playerState = State.Dead;
+				PlayerState = State.Dead;
 			}
 		}
 
@@ -305,13 +165,9 @@ namespace ChilledTreat.GameClasses
 		public void ResetPlayer()
 		{
 			_health = 100;
-			_ammo = _bullets.Length;
-
 			Score = 0;
-			for (int i = 0; i < _bullets.Length; i++)
-			{
-				_bullets[i] = _bulletTexture;
-			}
+
+			WeaponHandler.Instance.ResetWeapons();
 		}
 	}
 }
