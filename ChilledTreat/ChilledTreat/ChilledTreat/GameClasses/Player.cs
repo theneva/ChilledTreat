@@ -112,7 +112,7 @@ namespace ChilledTreat.GameClasses
 
 			WeaponHandler.Instance.Draw();
 
-			if (_drawRedHaze) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, (Game1.Instance.GameScreenWidth / _damagedTexture.Width), SpriteEffects.None, layerDepth: 0);
+			if (_drawRedHaze) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, ((float)Game1.Instance.GameScreenWidth / _damagedTexture.Width), SpriteEffects.None, layerDepth: 0);
 		}
 
 		/// <summary>

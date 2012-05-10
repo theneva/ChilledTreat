@@ -7,9 +7,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ChilledTreat.GameClasses
 {
+	/// <summary>
+	/// A class for handling the weapons in the game
+	/// </summary>
 	public class WeaponHandler
 	{
 		private readonly Weapon[] _weapons;
+		private Weapon _currentWeapon;
 		private int _currentWeaponIndex;
 		internal double CurrentTime, StartReloadTime;
 		private double _startShootTime;
@@ -21,9 +25,7 @@ namespace ChilledTreat.GameClasses
 
 		internal readonly FrameInfo FrameInfo = FrameInfo.Instance;
 
-		private Weapon _currentWeapon;
-
-		static WeaponHandler _instance;
+		private static WeaponHandler _instance;
 		public static WeaponHandler Instance
 		{
 			get { return _instance ?? (_instance = new WeaponHandler()); }
@@ -53,8 +55,7 @@ namespace ChilledTreat.GameClasses
 			{
 				_startShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-				if(_currentWeapon.IsWeaponAutomatic) HitBox = new Rectangle(Input.MouseState.X - 40, Input.MouseState.Y - 40, 80, 80);
-				else HitBox = new Rectangle(Input.MouseState.X - 10, Input.MouseState.Y - 10, 20, 20);
+				HitBox = _currentWeapon.IsWeaponAutomatic ? new Rectangle(Input.MouseState.X - 40, Input.MouseState.Y - 40, 80, 80) : new Rectangle(Input.MouseState.X - 10, Input.MouseState.Y - 10, 20, 20);
 
 				PlayerState = Player.State.Shooting;
 			}
@@ -78,7 +79,7 @@ namespace ChilledTreat.GameClasses
 			_currentWeapon.Draw();
 		}
 
-		public void ChangeWeapon()
+		private void ChangeWeapon()
 		{
 			if (_currentWeaponIndex + 1 == _weapons.Length) _currentWeaponIndex = 0;
 			else _currentWeaponIndex++;

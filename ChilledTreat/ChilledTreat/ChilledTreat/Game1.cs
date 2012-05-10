@@ -18,8 +18,9 @@ namespace ChilledTreat
 		public GraphicsDeviceManager Graphics;
 		public SpriteBatch SpriteBatch;
 
-		public int GameScreenWidth = 1280;
-		public int GameScreenHeight = 720;
+		// It has to be 16:9 for the scale to work as it should
+		public int GameScreenWidth = 1024;
+		public int GameScreenHeight = 576;
 
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;
