@@ -59,10 +59,10 @@ namespace ChilledTreat.GameClasses
 #if WINDOWS
             ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
 #elif !WINDOWS_PHONE
-            if (Input.ThumbStickLeft().X > 0.4) ReticulePosition.X += 5;
-            if (Input.ThumbStickLeft().Y > 0.4) ReticulePosition.Y += 5;
-            if (Input.ThumbStickLeft().X < -0.4) ReticulePosition.X -= 5;
-            if (Input.ThumbStickLeft().Y < -0.4) ReticulePosition.Y -= 5;
+            if (Input.ThumbStickLeft().X > 0.2) ReticulePosition.X += 6;
+            if (Input.ThumbStickLeft().Y > 0.2) ReticulePosition.Y -= 6;
+            if (Input.ThumbStickLeft().X < -0.2) ReticulePosition.X -= 6;
+            if (Input.ThumbStickLeft().Y < -0.2) ReticulePosition.Y += 6;
 #endif
             
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading)

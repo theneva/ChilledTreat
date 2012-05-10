@@ -89,25 +89,27 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
-			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f, 100), Color.White);
+			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f - 70, 100), Color.White);
 #if WINDOWS
-            SpriteBatch.DrawString(_nameFont, "Name: ", new Vector2(70, 250), Color.White);
-			charPos = 250;
-			for (int i = 0; i < charList.Length; i++)
-			{
-				if (i != charListPos) SpriteBatch.DrawString(_nameFont, "" + charList[i], new Vector2(charPos, 250), Color.White);
-				else SpriteBatch.DrawString(_nameFont, "" + charList[charListPos], new Vector2(charPos, 240), Color.White);
-				charPos += 50;
-			}
-			
+            if (typing)
+            {
+                SpriteBatch.DrawString(_nameFont, "Name: ", new Vector2(400, 250), Color.White);
+			    charPos = 570;
+			    for (int i = 0; i < charList.Length; i++)
+			    {
+			    	if (i != charListPos) SpriteBatch.DrawString(_nameFont, "" + charList[i], new Vector2(charPos, 250), Color.White);
+			    	else SpriteBatch.DrawString(_nameFont, "" + charList[charListPos], new Vector2(charPos, 240), Color.White);
+			    	charPos += 50;
+			    }
+            }
 			foreach (var hs in _highScoreList)
 			{
 				_shift++;
 				SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.GameScreenWidth / 3f - 25, 300 + (_shift * 50)), Color.White);
 				SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.GameScreenWidth / 3f, 300 + (_shift * 50)), Color.White);
 				SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.GameScreenWidth / 3f * 2f, 300 + (_shift * 50)), Color.White);
-			}
-		}
+		    }
 #endif
+		}
 	}
 }
