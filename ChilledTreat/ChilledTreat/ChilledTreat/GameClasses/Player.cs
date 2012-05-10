@@ -139,7 +139,7 @@ namespace ChilledTreat.GameClasses
 			// TODO: Debug purposes
 			Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
 
-			//_health -= damage;
+			_health -= damage;
 
 			if (_health <= 0)
 			{
@@ -156,7 +156,7 @@ namespace ChilledTreat.GameClasses
 			for (int i = 0; i < _healthIn10 / 2; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
-					new Vector2(Game1.GameScreenWidth - (_widthOfHeart * 5 + (_widthOfHeart + 10 * _heartsDrawShift)), Game1.GameScreenHeight - _healthTexture.Height),
+					new Vector2(Game1.GameScreenWidth - ((_widthOfHeart + 4) * 5 * Game1.GameScale) + ((_widthOfHeart + 5) * _heartsDrawShift * Game1.GameScale), Game1.GameScreenHeight - _healthTexture.Height * Game1.GameScale),
 					_fullHealthSource, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 				_heartsDrawShift++;
 			}
@@ -165,7 +165,7 @@ namespace ChilledTreat.GameClasses
 			if (_healthIn10 % 2 != 0)
 			{
 				_spriteBatch.Draw(_healthTexture,
-					new Vector2(Game1.GameScreenWidth - _widthOfHeart * 5 +  10 * _heartsDrawShift, Game1.GameScreenHeight - _healthTexture.Height),
+					new Vector2(Game1.GameScreenWidth - ((_widthOfHeart + 4) * 5 * Game1.GameScale) + ((_widthOfHeart + 5) * _heartsDrawShift * Game1.GameScale), Game1.GameScreenHeight - _healthTexture.Height * Game1.GameScale),
 					_halfHealthSource, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 				_heartsDrawShift++;
 			}
@@ -173,7 +173,7 @@ namespace ChilledTreat.GameClasses
 			for (int i = _healthIn10 / 2; i < 5; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
-					new Vector2(Game1.GameScreenWidth - _widthOfHeart * 5 + 10 * _heartsDrawShift, Game1.GameScreenHeight - _healthTexture.Height),
+					new Vector2(Game1.GameScreenWidth - ((_widthOfHeart + 4) * 5 * Game1.GameScale) + ((_widthOfHeart + 5) * _heartsDrawShift * Game1.GameScale), Game1.GameScreenHeight - _healthTexture.Height * Game1.GameScale),
 					_emptyHealthSource, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 				_heartsDrawShift++;
 			}

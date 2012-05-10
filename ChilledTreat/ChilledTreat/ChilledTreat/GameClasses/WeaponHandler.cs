@@ -40,12 +40,12 @@ namespace ChilledTreat.GameClasses
 		private WeaponHandler()
 		{
 			_weapons = new[]
-			           	{
-			           		new Weapon("Pistol", 10, 100, 5, false, false),
-			           		new Weapon("Rifle", 30, 50, 10, true, false)
-			           	};
+						{
+							new Weapon("Pistol", 10, 100, 5, false, false),
+							new Weapon("Rifle", 30, 50, 10, true, false)
+						};
 #if !WINDOWS_PHONE
-            ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
+			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
 #endif
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
@@ -57,14 +57,14 @@ namespace ChilledTreat.GameClasses
 			if (Input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading)
 				ChangeWeapon();
 #if WINDOWS
-            ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
+			ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
 #elif !WINDOWS_PHONE
-            if (Input.ThumbStickLeft().X > 0.2) ReticulePosition.X += 6;
-            if (Input.ThumbStickLeft().Y > 0.2) ReticulePosition.Y -= 6;
-            if (Input.ThumbStickLeft().X < -0.2) ReticulePosition.X -= 6;
-            if (Input.ThumbStickLeft().Y < -0.2) ReticulePosition.Y += 6;
+			if (Input.ThumbStickLeft().X > 0.2) ReticulePosition.X += 6;
+			if (Input.ThumbStickLeft().Y > 0.2) ReticulePosition.Y -= 6;
+			if (Input.ThumbStickLeft().X < -0.2) ReticulePosition.X -= 6;
+			if (Input.ThumbStickLeft().Y < -0.2) ReticulePosition.Y += 6;
 #endif
-            
+			
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading)
 				PlayerState = Player.State.Alive;
 
@@ -74,24 +74,24 @@ namespace ChilledTreat.GameClasses
 				ReticulePosition = new Vector2(ReticulePosition.X, Game1.GameScreenHeight);
 
 			if (PlayerState == Player.State.Alive &&
-			    (Input.IsShootPressed() && !_currentWeapon.IsWeaponAutomatic ||
-			     Input.IsShootDown() && _currentWeapon.IsWeaponAutomatic) && !Player.Instance.InCover)
+				(Input.IsShootPressed() && !_currentWeapon.IsWeaponAutomatic ||
+				 Input.IsShootDown() && _currentWeapon.IsWeaponAutomatic) && !Player.Instance.InCover)
 			{
 				_startShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 #if WINDOWS
 				HitBox = _currentWeapon.IsWeaponAutomatic
-				         	? new Rectangle(Input.MouseState.X - 40, Input.MouseState.Y - 40, 80, 80)
-				         	: new Rectangle(Input.MouseState.X - 10, Input.MouseState.Y - 10, 20, 20);
+							? new Rectangle(Input.MouseState.X - 40, Input.MouseState.Y - 40, 80, 80)
+							: new Rectangle(Input.MouseState.X - 10, Input.MouseState.Y - 10, 20, 20);
 #elif !WINDOWS_PHONE
-                HitBox = _currentWeapon.IsWeaponAutomatic
-                    ? new Rectangle((int)ReticulePosition.X - 40, (int)ReticulePosition.Y - 40, 80, 80)
-                    : new Rectangle((int)ReticulePosition.X - 10, (int)ReticulePosition.Y - 10, 20, 20);
+				HitBox = _currentWeapon.IsWeaponAutomatic
+					? new Rectangle((int)ReticulePosition.X - 40, (int)ReticulePosition.Y - 40, 80, 80)
+					: new Rectangle((int)ReticulePosition.X - 10, (int)ReticulePosition.Y - 10, 20, 20);
 #endif
 				PlayerState = Player.State.Shooting;
 			}
 
 			if (Input.IsReloadPressed() && PlayerState == Player.State.Alive &&
-			    _currentWeapon.CurrentAmmo < _currentWeapon.MaxAmmo)
+				_currentWeapon.CurrentAmmo < _currentWeapon.MaxAmmo)
 			{
 				PlayerState = Player.State.Reloading;
 				StartReloadTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
@@ -197,7 +197,7 @@ namespace ChilledTreat.GameClasses
 
 			//Fill the positions-array for the cartridges, so I can iterate over it, placing them where they should be on the screen
 			for (int i = 0; i < _cartridgePositions.Length; i++)
-				_cartridgePositions[i] = new Vector2(i*_cartridgeTexture.Width, Game1.GameScreenHeight - _cartridgeTexture.Height * Game1.GameScale);
+				_cartridgePositions[i] = new Vector2(i*_cartridgeTexture.Width * Game1.GameScale, Game1.GameScreenHeight - _cartridgeTexture.Height * Game1.GameScale);
 
 			//Fill the texture-array for the cartridges, so the correct textures are drawn in the loop in Draw
 			for (int i = 0; i < _cartridges.Length; i++) 
@@ -213,11 +213,11 @@ namespace ChilledTreat.GameClasses
 			}
 #if WINDOWS
 			_vectorGunToMouse = new Vector2((_weaponPosition.X - WeaponHandler.Instance.Input.MouseState.X),
-			                                (_weaponPosition.Y - WeaponHandler.Instance.Input.MouseState.Y));
+											(_weaponPosition.Y - WeaponHandler.Instance.Input.MouseState.Y));
 
 #elif !WINDOWS_PHONE
-            _vectorGunToMouse = new Vector2((_weaponPosition.X - WeaponHandler.Instance.ReticulePosition.X),
-                                            (_weaponPosition.Y - WeaponHandler.Instance.ReticulePosition.Y));
+			_vectorGunToMouse = new Vector2((_weaponPosition.X - WeaponHandler.Instance.ReticulePosition.X),
+											(_weaponPosition.Y - WeaponHandler.Instance.ReticulePosition.Y));
 #endif
 
 			_gunRotation = (float) Math.Atan2(-_vectorGunToMouse.X, _vectorGunToMouse.Y);
@@ -227,12 +227,12 @@ namespace ChilledTreat.GameClasses
 		{
 			if (!Player.Instance.InCover)
 			{
-				_spriteBatch.Draw(_reticuleTexture, WeaponHandler.Instance.ReticulePosition - _halfReticuleTexture, Color.White);
+				_spriteBatch.Draw(_reticuleTexture, WeaponHandler.Instance.ReticulePosition - _halfReticuleTexture, _reticuleTexture.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 
 				if (_drawMuzzleFlare)
 				{
 					_spriteBatch.Draw(_weaponTexture, _weaponPosition, _firedWeaponDrawSource, Color.White, _gunRotation,
-					                  new Vector2(_weaponTexture.Width/4f, _weaponTexture.Height), Game1.GameScale, SpriteEffects.None, 0);
+									  new Vector2(_weaponTexture.Width/4f, _weaponTexture.Height), Game1.GameScale, SpriteEffects.None, 0);
 
 					_timesDrawnMuzzleFlare++;
 				}
