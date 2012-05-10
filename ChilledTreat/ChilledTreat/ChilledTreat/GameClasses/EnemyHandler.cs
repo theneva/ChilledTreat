@@ -57,7 +57,10 @@ namespace ChilledTreat.GameClasses
 			// Hackish as fuck but it works
 			for (int i = GetNumberOfEnemies() - 1; i >= 0; i--)
 				if (_enemies[i].GetRectangle().Intersects(attackedArea))
+				{
 					_enemies[i].TakeDamage(damage);
+					break;
+				}
 		}
 
 		public void Update()
