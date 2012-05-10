@@ -11,11 +11,12 @@ namespace ChilledTreat.GameStates
 		readonly string[] _creditsContent;
 		readonly string[] _creditsContentSources;
 		private int _shift;
+		private bool _startAnew = true;
 		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		private int scrolling = 0;
-		private double _startCreditsTimer;
+		private double _startCreditsTimer, _currentTime;
 
 		public Credits(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
@@ -68,12 +69,21 @@ namespace ChilledTreat.GameStates
 			// Logic
 			_shift = 0;
 
+			if (_startAnew)
+			{
+				_startCreditsTimer = _frameInfo.GameTime.TotalGameTime.TotalSeconds;
+
+				_startAnew = false;
+			}
+
 			if (_input.IsAbortPressed())
 			{
-				Game1.ChangeState(GameState.Menu);
+				Game1.ChangeState(Menu);
+				_startAnew = true;
 				scrolling = 0;
 			}
 			scrolling--;
+			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalSeconds - _startCreditsTimer;
 		}
 
 		public override void Draw()
@@ -82,7 +92,7 @@ namespace ChilledTreat.GameStates
 			foreach (string creditEntry in _creditsContent)
 			{
 				_shift++;
-				SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) + scrolling), Color.White);
+				SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 				//	SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) + (scrolling)), Color.White, 0f, new Vector2(Game1.GameScreenWidth / 2, 720), 1f, SpriteEffects.None, 0);
 			}
 			if (_frameInfo.GameTime.TotalGameTime.TotalSeconds >= 5)
