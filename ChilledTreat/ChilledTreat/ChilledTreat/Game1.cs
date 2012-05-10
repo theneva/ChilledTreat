@@ -15,11 +15,12 @@ namespace ChilledTreat
 		public static Game1 Instance;
 
 		// public for å kunne brukes andre steder
-		public GraphicsDeviceManager Graphics;
+		public readonly GraphicsDeviceManager Graphics;
 		public SpriteBatch SpriteBatch;
 
-		public int GameScreenWidth = 1280;
-		public int GameScreenHeight = 720;
+		// It has to be 16:9, or very close, for the scale to work as it should
+		public const int GameScreenWidth = 1280; //Game1.Instance.GraphicsDevice.DisplayMode.Width;
+		public const int GameScreenHeight = 720; //Game1.Instance.GraphicsDevice.DisplayMode.Height;
 
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;
@@ -72,7 +73,6 @@ namespace ChilledTreat
 			_gameStates.Add(new GameOver(SpriteBatch, Content));
 			_gameStates.Add(new Instructions(SpriteBatch, Content));
 			_gameStates.Add(new LeaderBoard(SpriteBatch, Content));
-			
 
 			_activeGameState = _gameStates[0]; // TODO: Use static constants (GameStates.Splash);
 		}

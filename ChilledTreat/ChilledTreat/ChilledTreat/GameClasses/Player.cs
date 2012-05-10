@@ -11,15 +11,32 @@ namespace ChilledTreat.GameClasses
 	/// </summary>
 	public class Player
 	{
+		#region Fields
+
 		private readonly SpriteBatch _spriteBatch;
 		private readonly InputHandler _input = InputHandler.Instance;
 
+		private const int MaxHealth = 100, MinimumScore = 0;
+
+		private readonly SoundEffect[] _injuredSounds;
+		private readonly SoundEffect _diedSound;
 		private int _health, _healthIn10, _heartsDrawShift;
+		private double _currentTime, _timeAtDamaged;
 		private readonly int _widthOfHeart;
-		public bool InCover { get; private set; }
-		private readonly Texture2D _healthTexture, _coverTexture;
+		private bool _drawRedHaze;
+		private readonly Texture2D _healthTexture, _coverTexture, _damagedTexture;
 		private readonly Rectangle _fullHealthSource, _halfHealthSource, _emptyHealthSource;
 		readonly SpriteFont _scoreFont;
+
+		public bool InCover { get; private set; }
+
+		public int Score { get; private set; }
+
+		static Player _instance;
+		public static Player Instance
+		{
+			get { return _instance ?? (_instance = new Player(Game1.Instance.SpriteBatch, Game1.Instance.Content)); }
+		}
 
 		public enum State
 		{
@@ -31,26 +48,28 @@ namespace ChilledTreat.GameClasses
 			Dead
 		}
 
-		public int Score { get; private set; }
-
 		public State PlayerState;
-		static Player _instance;
-		public static Player Instance
-		{
-			get { return _instance ?? (_instance = new Player(Game1.Instance.SpriteBatch, Game1.Instance.Content)); }
-		}
+
+		#endregion
 
 		private Player(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_spriteBatch = spriteBatch;
 
-			_health = 100;
-			Score = 0;
+			_health = MaxHealth;
+			Score = MinimumScore;
 
-			//Load all textures, sounds and fonts
+			//Load all textures fonts
 			_healthTexture = content.Load<Texture2D>("Images/normalUsableHeart");
 			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
+			_damagedTexture = content.Load<Texture2D>("Images/damagedTint");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
+			_diedSound = content.Load<SoundEffect>("Sounds/poor-baby");
+
+			_injuredSounds = new[] { content.Load<SoundEffect>("Sounds/goddamnit"),
+				content.Load<SoundEffect>("Sounds/how-dare-you"),
+				content.Load<SoundEffect>("Sounds/im-in-trouble"),
+				content.Load<SoundEffect>("Sounds/uh") };
 
 			_widthOfHeart = _healthTexture.Width / 3;
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
@@ -61,13 +80,20 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
+			_currentTime = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 			if (PlayerState == State.Dead)
 			{
 				EnemyHandler.Instance.Clear();
-				GameStates.GameOver.NewScoreToAdd = true;
+				_diedSound.Play();
 				Game1.ChangeState(GameStates.GameState.GameOver);
 			}
 
+			if (_drawRedHaze && _currentTime - _timeAtDamaged > 200)
+			{
+				_drawRedHaze = false;
+			}
+
+			//
 			_healthIn10 = _health / 10;
 			//The shift to the side, so that the hearts are not drawn on top of each other
 			_heartsDrawShift = 0;
@@ -79,20 +105,22 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			if(InCover)
+			if (InCover)
 			{
 				_spriteBatch.Draw(_coverTexture,
-					new Vector2((Game1.Instance.GameScreenWidth - _coverTexture.Width) / 2f, Game1.Instance.GameScreenHeight - _coverTexture.Height),
+					new Vector2((Game1.GameScreenWidth - _coverTexture.Width) / 2f, Game1.GameScreenHeight - _coverTexture.Height),
 					Color.White);
 			}
 
 			DrawHealth();
 
-			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.Instance.GameScreenWidth - 20, 20), Color.Black);
+			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.GameScreenWidth - 100, 20), Color.Black);
 
 			WeaponHandler.Instance.Draw();
+
+			if (_drawRedHaze) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, ((float)Game1.GameScreenWidth / _damagedTexture.Width), SpriteEffects.None, layerDepth: 0);
 		}
-	
+
 		/// <summary>
 		/// How much the player is damaged
 		/// </summary>
@@ -102,9 +130,15 @@ namespace ChilledTreat.GameClasses
 			if (PlayerState != State.Reloading) PlayerState = State.Damaged;
 			if (InCover) damage /= 5;
 
+			//Play a random sound when injured
+			_injuredSounds[EnemyHandler.Random.Next(_injuredSounds.Length)].Play();
 
-				// TODO: Debug purposes
-				Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
+			_drawRedHaze = true;
+
+			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
+
+			// TODO: Debug purposes
+			Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
 
 			_health -= damage;
 
@@ -123,7 +157,7 @@ namespace ChilledTreat.GameClasses
 			for (int i = 0; i < _healthIn10 / 2; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
-					new Vector2((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift, Game1.Instance.GameScreenHeight - 50),
+					new Vector2((Game1.GameScreenWidth - 300) + 60 * _heartsDrawShift, Game1.GameScreenHeight - 50),
 					_fullHealthSource, Color.White);
 				_heartsDrawShift++;
 			}
@@ -132,15 +166,15 @@ namespace ChilledTreat.GameClasses
 			if (_healthIn10 % 2 != 0)
 			{
 				_spriteBatch.Draw(_healthTexture,
-								  new Vector2((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift,
-											  Game1.Instance.GameScreenHeight - 50), _halfHealthSource, Color.White);
+								  new Vector2((Game1.GameScreenWidth - 300) + 60 * _heartsDrawShift,
+											  Game1.GameScreenHeight - 50), _halfHealthSource, Color.White);
 				_heartsDrawShift++;
 			}
 
 			for (int i = _healthIn10 / 2; i < 5; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
-					new Vector2((Game1.Instance.GameScreenWidth - 300) + 60 * _heartsDrawShift, Game1.Instance.GameScreenHeight - 50),
+					new Vector2((Game1.GameScreenWidth - 300) + 60 * _heartsDrawShift, Game1.GameScreenHeight - 50),
 					_emptyHealthSource, Color.White);
 				_heartsDrawShift++;
 			}
@@ -153,15 +187,15 @@ namespace ChilledTreat.GameClasses
 		{
 			Score++;
 		}
-		
+
 		/// <summary>
 		/// Reset the player's score, health and state
 		/// Since the player is a singleton, the constructor is only called once. Because of that, we use this method
 		/// </summary>
 		public void ResetPlayer()
 		{
-			_health = 100;
-			Score = 0;
+			_health = MaxHealth;
+			Score = MinimumScore;
 
 			PlayerState = State.Alive;
 

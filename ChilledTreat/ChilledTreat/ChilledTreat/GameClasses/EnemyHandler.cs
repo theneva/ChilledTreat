@@ -46,7 +46,7 @@ namespace ChilledTreat.GameClasses
 		}
 
 		// Letting the handler check if an enemy is hit, and damage that one enemy
-		public void FiredAt(Rectangle attackedArea)
+		public void FiredAt(Rectangle attackedArea, int damage)
 		{
 			// TODO: Remove this
 			//foreach (Enemy enemy in _enemies.Where(e => attackedArea.Intersects(e.GetRectangle())))
@@ -57,7 +57,11 @@ namespace ChilledTreat.GameClasses
 			// Hackish as fuck but it works
 			for (int i = GetNumberOfEnemies() - 1; i >= 0; i--)
 				if (_enemies[i].GetRectangle().Intersects(attackedArea))
-					_enemies[i].TakeDamage(DefaultDamage);
+				{
+					_enemies[i].TakeDamage(damage);
+
+					if(!WeaponHandler.Instance.Splash) break;
+				}
 		}
 
 		public void Update()
