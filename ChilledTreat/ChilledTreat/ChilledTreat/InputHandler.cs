@@ -194,7 +194,7 @@ namespace ChilledTreat
 		public MouseState PreviouseMouseState { get; private set; }
 #endif
 
-#if !WINDOWSPHONE
+#if !WINDOWS_PHONE
 		public GamePadState GamePadState { get; private set; }
 		public GamePadState PreviousGamePadState { get; private set; }
 
@@ -222,7 +222,7 @@ namespace ChilledTreat
 			KeyboardState = Keyboard.GetState();
 #endif
 
-#if !WINDOWSPHONE
+#if !WINDOWS_PHONE
 			PreviousGamePadState = GamePadState;
 			GamePadState = GamePad.GetState(PlayerIndex);
 #endif
@@ -255,7 +255,7 @@ namespace ChilledTreat
 		#endregion
 
 		#region GamePad
-#if !WINDOWSPHONE
+#if !WINDOWS_PHONE
 		public bool IsButtonUp(Buttons button)
 		{
 			return GamePadState.IsButtonUp(button);

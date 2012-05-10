@@ -99,6 +99,11 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
+    <Compile Include="Fonts\nameFont.spritefont">
+      <Name>nameFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
     <None Include="HighScore.xml">
       <Name>HighScore</Name>
       <Importer>XmlImporter</Importer>

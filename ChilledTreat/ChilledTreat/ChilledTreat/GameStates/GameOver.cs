@@ -11,15 +11,18 @@ namespace ChilledTreat.GameStates
 	class GameOver : GameState
 	{
 		// FIELDS
-		readonly SpriteFont _menuFont, _scoreFont;
+		readonly SpriteFont _menuFont, _scoreFont, _nameFont;
 		public static bool NewScoreToAdd { private get; set; }
 		private int _shift;
 		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
 		private List<Highscore> _highScoreList;
-		char[] charList = { 'A', 'A', 'A', 'A', 'A' };
+		char[] charList;
 		int charListPos = 0;
 		string name = "";
+		int charPos;
+		bool typing = true;
+		bool writeFile = true;
 		
 
 		public GameOver(SpriteBatch spriteBatch, ContentManager content)
@@ -28,69 +31,69 @@ namespace ChilledTreat.GameStates
 			// LOAD CONTENT
 			_menuFont = content.Load<SpriteFont>("Fonts/menuFont");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
-			_fontColor = Color.RoyalBlue;
+			_nameFont = content.Load<SpriteFont>("Fonts/nameFont");
+
+			charList = new char[6];
+			for (int i = 0; i < charList.Length; i++) charList[i] = 'A';
+			
+
+				_fontColor = Color.RoyalBlue;
 			//_highScoreList = CreateHighScore();
 			_highScoreList = Highscore.CreateHighScore();
 		}
 
 		public override void Update()
 		{
-//			if (charListPos < charList.Length)
-//			{
-		if (_input.IsDownPressed())
-		{
-			if (charList[charListPos] < 'Z') charList[charListPos]++;
-		}
-		else if (_input.IsUpPressed())
-		{
-			if (charList[charListPos] > 'A') charList[charListPos]--;
-		}
-		if (_input.IsActionPressed() && charListPos != charList.Length)
-		{
-			charListPos++;
-		}
-//		}
-//			else
-//			{
-				if (charListPos > charList.Length)
-				{
-					for (int i = 0; i < charList.Length; i++)
-					{
-						name += charList[i];
-					}
-					Console.WriteLine(name);
-//				}
+			if (typing)
+			{
+				if (_input.IsDownPressed() && (charList[charListPos] < 'Z')) charList[charListPos]++;
+				else if (_input.IsUpPressed() && (charList[charListPos] > 'A')) charList[charListPos]--;
+				else if (_input.IsActionPressed()) charListPos++;
+				if (charListPos == charList.Length) typing = false;
+			}
+			else if (writeFile)
+			{
+				for (int i = 0; i < charList.Length; i++)
+					name += charList[i];
+				Console.WriteLine(name);
+				writeFile = false;
+				NewScoreToAdd = true;
 			}
 			if (NewScoreToAdd)
 			{
 				_highScoreList.Add(new Highscore(name, Player.Instance.Score));
 				_highScoreList = _highScoreList.OrderByDescending(x => x.Score).ThenBy(x => x.CurrentTime).ToList();
-
 				Highscore.SerializeToXml(_highScoreList);
-
 				NewScoreToAdd = false;
 			}
 			_shift = 0;
 			if (_input.IsAbortPressed())
-			{
 				Game1.ChangeState(Menu);
-			}
 		}
 
 		public override void Draw()
 		{
-			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 2f, 100), Color.White);
+			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f, 100), Color.White);
 
-			SpriteBatch.DrawString(_menuFont, "Name: " + charList[0] + charList[1] + charList[2] + charList[3] + charList[4], new Vector2(10, 150), Color.White);
 
-			/*
+			SpriteBatch.DrawString(_nameFont, "Name: ", new Vector2(70, 250), Color.White);
+			
+			charPos = 250;
+
+			foreach (char c in charList)
+			{
+				SpriteBatch.DrawString(_nameFont, "" + c, new Vector2(charPos, 250), Color.White);
+				charPos += 50;
+			}
+			
+			
 			foreach (Highscore hs in _highScoreList)
 			{
 				_shift++;
-				SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.Instance.GameScreenWidth / 3f - 25, 250 + (_shift * 50)), Color.White);
-				SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.Instance.GameScreenWidth / 3f, 250 + (_shift * 50)), Color.White);
-				SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.Instance.GameScreenWidth / 3f * 2f, 250 + (_shift * 50)), Color.White);
-			}*/
+				SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.GameScreenWidth / 3f - 25, 300 + (_shift * 50)), Color.White);
+				SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.GameScreenWidth / 3f, 300 + (_shift * 50)), Color.White);
+				SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.GameScreenWidth / 3f * 2f, 300 + (_shift * 50)), Color.White);
+			}
 		}
 	}
 }
