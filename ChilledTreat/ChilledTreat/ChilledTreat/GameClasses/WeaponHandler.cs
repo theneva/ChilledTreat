@@ -227,8 +227,6 @@ namespace ChilledTreat.GameClasses
 		/// </summary>
 		internal void Shoot()
 		{
-			//Just to make sure the player's not firing when (s)he's not supposed to
-			if (WeaponHandler.Instance.PlayerState != Player.State.Shooting) return;
 			_shotSound.Play();
 			_drawMuzzleFlare = true;
 
