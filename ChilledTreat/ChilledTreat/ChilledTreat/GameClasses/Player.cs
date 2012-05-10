@@ -107,13 +107,13 @@ namespace ChilledTreat.GameClasses
 			if (InCover)
 			{
 				_spriteBatch.Draw(_coverTexture,
-					new Vector2((Game1.GameScreenWidth - _coverTexture.Width) / 2f, Game1.GameScreenHeight - _coverTexture.Height),
+					new Vector2((Game1.GameScreenWidth - _coverTexture.Width * Game1.GameScale) / 2f, Game1.GameScreenHeight - _coverTexture.Height * Game1.GameScale),
 					_coverTexture.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 			}
 
 			DrawHealth();
 
-			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.GameScreenWidth - 100, 20), Color.Black, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
+			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.GameScreenWidth - 100 * Game1.GameScale, 20 * Game1.GameScale), Color.Black, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 
 			WeaponHandler.Instance.Draw();
 
