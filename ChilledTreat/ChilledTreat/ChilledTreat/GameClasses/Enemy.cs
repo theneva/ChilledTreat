@@ -76,10 +76,12 @@ namespace ChilledTreat.GameClasses
 
 		void Attack()
 		{
-			_damageInflicted = EnemyHandler.Random.Next(15, 20);
+#if WINDOWS
+            _damageInflicted = EnemyHandler.Random.Next(15, 20);
 			// TODO: Debug purposes
 			Player.Instance.Damaged(_damageInflicted);
 			Player.Instance.Damaged(0);
+#endif
 		}
 
 		// Update health, check if dead
@@ -146,13 +148,20 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			_spriteBatch.Draw(_texture, _position,
+/*			_spriteBatch.Draw(_texture, _position,
 			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
-			Color.White, 0, origin: Vector2.Zero, scale: Scale, effects: SpriteEffects.None, layerDepth: 0);
+			Color.White, 0, origin: Vector2.Zero, scale: Scale, effects: SpriteEffects.None, layerDepth: 0); */
+
+            _spriteBatch.Draw(_texture, _position,
+            new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
+            Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
+
 
 			if (!_drawMuzzleFlare) return;
 
-			_spriteBatch.Draw(_muzzleFlare, position: new Vector2(_position.X - (_muzzleFlare.Width / 2f), y: _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), color: Color.White);
+		//	_spriteBatch.Draw(_muzzleFlare, position: new Vector2(_position.X - (_muzzleFlare.Width / 2f), y: _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), color: Color.White);
+
+            _spriteBatch.Draw(_muzzleFlare, new Vector2(_position.X - (_muzzleFlare.Width / 2f), _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), Color.White);
 
 			_timesDrawnMuzzleFlare++;
 

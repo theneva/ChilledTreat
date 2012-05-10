@@ -66,6 +66,7 @@ namespace ChilledTreat
 			_gameStates.Add(new GameOver(SpriteBatch, Content));
 			_gameStates.Add(new Instructions(SpriteBatch, Content));
 			_gameStates.Add(new LeaderBoard(SpriteBatch, Content));
+           
 
 			_activeGameState = _gameStates[0]; // TODO: Use static constants (GameStates.Splash);
 		}
