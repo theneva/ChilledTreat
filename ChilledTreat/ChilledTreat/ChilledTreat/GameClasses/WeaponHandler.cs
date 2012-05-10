@@ -83,12 +83,7 @@ namespace ChilledTreat.GameClasses
 		{
 			if (_currentWeaponIndex + 1 == _weapons.Length) _currentWeaponIndex = 0;
 			else _currentWeaponIndex++;
-			_currentWeapon = SetCurrentWeapon(_weapons[_currentWeaponIndex].WeaponName);
-		}
-
-		private Weapon SetCurrentWeapon(String name)
-		{
-			return _weapons.FirstOrDefault(w => w.WeaponName.Equals(name));
+			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
 
 		public void ResetWeapons()
