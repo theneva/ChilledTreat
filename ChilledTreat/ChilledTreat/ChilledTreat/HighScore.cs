@@ -8,7 +8,8 @@ namespace ChilledTreat
 {
 	public class Highscore
 	{
-		public string Name { get; set; }
+#if WINDOWS
+        public string Name { get; set; }
 		public int Score { get; set; }
 		public DateTime CurrentTime { get; set; }
 
@@ -30,7 +31,7 @@ namespace ChilledTreat
 
 		public Highscore() { }
 
-		static public void SerializeToXml(List<Highscore> highscores)
+	    static public void SerializeToXml(List<Highscore> highscores)
 		{
 			XmlSerializer serializer = new XmlSerializer(typeof(List<Highscore>));
 			TextWriter textWriter = new StreamWriter(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
@@ -49,5 +50,6 @@ namespace ChilledTreat
 
 			return scores;
 		}
+#endif
 	}
 }

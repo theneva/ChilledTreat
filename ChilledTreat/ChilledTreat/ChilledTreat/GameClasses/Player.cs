@@ -13,10 +13,10 @@ namespace ChilledTreat.GameClasses
 	{
 		#region Fields
 
+		private const int MaxHealth = 100;
+
 		private readonly SpriteBatch _spriteBatch;
 		private readonly InputHandler _input = InputHandler.Instance;
-
-		private const int MaxHealth = 100, MinimumScore = 0;
 
 		private readonly SoundEffect[] _injuredSounds;
 		private readonly SoundEffect _diedSound;
@@ -57,7 +57,6 @@ namespace ChilledTreat.GameClasses
 			_spriteBatch = spriteBatch;
 
 			_health = MaxHealth;
-			Score = MinimumScore;
 
 			//Load all textures fonts
 			_healthTexture = content.Load<Texture2D>("Images/normalUsableHeart");
@@ -109,16 +108,16 @@ namespace ChilledTreat.GameClasses
 			{
 				_spriteBatch.Draw(_coverTexture,
 					new Vector2((Game1.GameScreenWidth - _coverTexture.Width) / 2f, Game1.GameScreenHeight - _coverTexture.Height),
-					Color.White);
+					_coverTexture.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 			}
 
 			DrawHealth();
 
-			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.GameScreenWidth - 100, 20), Color.Black);
+			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.GameScreenWidth - 100, 20), Color.Black, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 
 			WeaponHandler.Instance.Draw();
 
-			if (_drawRedHaze) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, ((float)Game1.GameScreenWidth / _damagedTexture.Width), SpriteEffects.None, layerDepth: 0);
+			if (_drawRedHaze) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 		}
 
 		/// <summary>
@@ -158,7 +157,7 @@ namespace ChilledTreat.GameClasses
 			{
 				_spriteBatch.Draw(_healthTexture,
 					new Vector2((Game1.GameScreenWidth - 300) + 60 * _heartsDrawShift, Game1.GameScreenHeight - 50),
-					_fullHealthSource, Color.White);
+					_fullHealthSource, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 				_heartsDrawShift++;
 			}
 
@@ -167,7 +166,7 @@ namespace ChilledTreat.GameClasses
 			{
 				_spriteBatch.Draw(_healthTexture,
 								  new Vector2((Game1.GameScreenWidth - 300) + 60 * _heartsDrawShift,
-											  Game1.GameScreenHeight - 50), _halfHealthSource, Color.White);
+											  Game1.GameScreenHeight - 50), _halfHealthSource, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 				_heartsDrawShift++;
 			}
 
@@ -175,7 +174,7 @@ namespace ChilledTreat.GameClasses
 			{
 				_spriteBatch.Draw(_healthTexture,
 					new Vector2((Game1.GameScreenWidth - 300) + 60 * _heartsDrawShift, Game1.GameScreenHeight - 50),
-					_emptyHealthSource, Color.White);
+					_emptyHealthSource, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 				_heartsDrawShift++;
 			}
 		}
@@ -195,7 +194,7 @@ namespace ChilledTreat.GameClasses
 		public void ResetPlayer()
 		{
 			_health = MaxHealth;
-			Score = MinimumScore;
+			Score = 0;
 
 			PlayerState = State.Alive;
 

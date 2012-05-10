@@ -69,7 +69,9 @@ namespace ChilledTreat.GameStates
 				}
 				else if (_menuItems[_menuPos].Contains("Instructions"))
 				{
-					Game1.ChangeState(GameState.Instructions);
+#if WINDOWS
+                    Game1.ChangeState(GameState.Instructions);
+#endif
 				}
 				else if (_menuItems[_menuPos].Contains("Credits"))
 				{
