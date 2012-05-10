@@ -85,7 +85,7 @@ namespace ChilledTreat.GameClasses
 
 		void Attack()
 		{
-			_damageInflicted = InGame.Random.Next();
+			_damageInflicted = InGame.Random.Next(_damage);
 
 			Player.Instance.Damaged(_damageInflicted);
 		}
@@ -162,8 +162,6 @@ namespace ChilledTreat.GameClasses
 			_currentFrameOrigin = _frameSize.Y;
 			_frameSize = new Point(78, 60);
 			_sheetSize = new Point(3, 1);
-
-
 		}
 
 		public void Draw()
