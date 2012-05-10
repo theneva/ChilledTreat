@@ -24,15 +24,7 @@ namespace ChilledTreat.GameClasses
 		int _timeSinceLastFrame;
 		private const int MillisecondsPerFrame = 100;
 
-		public float _scale;
-
-		public float GetScale()
-		{
-			return _scale;
-		}
-
-		//private SpriteEffects _walkingLeft = false; pr�ver med bool f�rst
-
+		public float Scale { get; private set; }
 
 		int _health = 20;
 
@@ -40,13 +32,7 @@ namespace ChilledTreat.GameClasses
 		Point _currentFrame;
 		private Point _sheetSize;
 
-		enum State
-		{
-			Attacking,
-			Dead
-		}
-
-		State _currentState;
+		private bool _alive = true;
 
 		private Enemy(SpriteBatch spriteBatch, ContentManager content)
 		{
@@ -54,15 +40,18 @@ namespace ChilledTreat.GameClasses
 			_frameSize = new Point(41, 80);
 
 			_texture = content.Load<Texture2D>("Images/enemy2");
-			_position = new Vector2(538  + _random.Next(192) + _scale * _texture.Width,
+
+			// TODO: Redundant
+			Scale = 0.008f * (_position.Y);
+
+			_position = new Vector2(538 + _random.Next(192) - _texture.Width * Scale,
 				// TODO: Get enemies to spawn at correct height
-				Game1.Instance.Window.ClientBounds.Height - 510 - _texture.Height * _scale);
+				Game1.Instance.Window.ClientBounds.Height - 480 /*- _texture.Height * _scale*/);
 
 			_currentFrame = new Point(0, 0);
 			_sheetSize = new Point(7, 1);
 
 			_muzzleFlare = content.Load<Texture2D>("Images/usableMuzzleFlare");
-			_currentState = State.Attacking;
 			_drawMuzzleFlare = false;
 			_timesDrawnMuzzleFlare = 0;
 		}
@@ -72,9 +61,6 @@ namespace ChilledTreat.GameClasses
 		{
 			_health = hp;
 			//_position = position;
-
-
-			// TODO: Generate a scale based on y (currently 2f)
 		}
 
 		// TODO: THIS IS SHIT.
@@ -85,7 +71,7 @@ namespace ChilledTreat.GameClasses
 
 		public Rectangle GetRectangle()
 		{
-			return new Rectangle((int)_position.X, (int)_position.Y, (int)(_scale * _frameSize.X), (int)(_scale * _frameSize.Y));
+			return new Rectangle((int)_position.X, (int)_position.Y, (int)(Scale * _frameSize.X), (int)(Scale * _frameSize.Y));
 		}
 
 		void Attack()
@@ -104,7 +90,8 @@ namespace ChilledTreat.GameClasses
 
 			if (_health > 0) return;
 
-			_currentState = State.Dead;
+			_alive = false;
+
 			// TODO: find a better solution
 			EnemyHandler.Instance.Remove(this);
 			Player.Instance.SuccesfullKill();
@@ -146,18 +133,12 @@ namespace ChilledTreat.GameClasses
 
 
 			// Movement based on state
-			switch (_currentState)
+			if (_alive)
 			{
-				case State.Attacking:
-					_position.Y += _speed.Y;
-					_scale = 0.008f * (_position.Y);
-					if (_position.Y > Game1.Instance.Window.ClientBounds.Height - 300)
-						_position.Y = Game1.Instance.Window.ClientBounds.Height - 300;
-					break;
-				case State.Dead:
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
+				_position.Y += _speed.Y;
+				Scale = 0.008f * (_position.Y);
+				if (_position.Y > Game1.Instance.Window.ClientBounds.Height - 300)
+					_position.Y = Game1.Instance.Window.ClientBounds.Height - 300;
 			}
 		}
 
@@ -167,7 +148,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_spriteBatch.Draw(_texture, _position,
 			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
-			Color.White, 0, origin: Vector2.Zero, scale: _scale, effects: SpriteEffects.None, layerDepth: 0);
+			Color.White, 0, origin: Vector2.Zero, scale: Scale, effects: SpriteEffects.None, layerDepth: 0);
 
 			if (!_drawMuzzleFlare) return;
 

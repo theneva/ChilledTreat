@@ -22,6 +22,8 @@ namespace ChilledTreat
 		public const int GameScreenWidth = 1280; //Game1.Instance.GraphicsDevice.DisplayMode.Width;
 		public const int GameScreenHeight = 720; //Game1.Instance.GraphicsDevice.DisplayMode.Height;
 
+		public const float GameScale = (GameScreenWidth/1280f + GameScreenHeight/720f)/2f;
+
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;
 
@@ -29,15 +31,6 @@ namespace ChilledTreat
 		GameState _activeGameState;
 
 		GameState _nextState;
-
-
-		public static void ChangeState(int index)
-		{
-			if (index < Instance._gameStates.Count)
-			{
-				Instance._nextState = Instance._gameStates[index];
-			}
-		}
 
 		public Game1()
 		{
@@ -130,6 +123,13 @@ namespace ChilledTreat
 			base.Draw(gameTime);
 		}
 
+		public static void ChangeState(int index)
+		{
+			if (index < Instance._gameStates.Count)
+			{
+				Instance._nextState = Instance._gameStates[index];
+			}
+		}
 
 		// Kun InGame gamestatet som skal ha en metode som dette
 		// ---- Den lager nytt InGame object når du starter på ny

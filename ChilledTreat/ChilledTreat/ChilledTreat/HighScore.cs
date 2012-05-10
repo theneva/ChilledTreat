@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.IO;
+using Microsoft.Xna.Framework.Storage;
 
 namespace ChilledTreat
 {
@@ -39,9 +40,9 @@ namespace ChilledTreat
 
 		public static List<Highscore> DeserializeFromXml()
 		{
-			XmlSerializer deserializer = new XmlSerializer(typeof(List<Highscore>));
+			var deserializer = new XmlSerializer(typeof(List<Highscore>));
 			TextReader textReader = new StreamReader(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
-			List<Highscore> scores = (List<Highscore>)deserializer.Deserialize(textReader);
+			var scores = (List<Highscore>)deserializer.Deserialize(textReader);
 			textReader.Close();
 
 			return scores;
