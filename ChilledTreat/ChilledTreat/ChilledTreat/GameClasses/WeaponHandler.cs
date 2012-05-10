@@ -179,8 +179,8 @@ namespace ChilledTreat.GameClasses
 			_weaponDrawSource = new Rectangle(0, 0, _weaponTexture.Width/2, _weaponTexture.Height);
 			_firedWeaponDrawSource = new Rectangle(_weaponTexture.Width/2, 0, _weaponTexture.Width/2, _weaponTexture.Height);
 
-			//Set the weapon 40 pixels underneath the game-window, so that, when you rotate the weapon, you can't see the bottom of it
-			_weaponPosition = new Rectangle(Game1.GameScreenWidth/2, Game1.GameScreenHeight + 40, _weaponTexture.Width/2,
+			//Set the weapon 30 pixels underneath the game-window, so that, when you rotate the weapon, you can't see the bottom of it
+			_weaponPosition = new Rectangle(Game1.GameScreenWidth/2, Game1.GameScreenHeight + 30, _weaponTexture.Width/2,
 			                                _weaponTexture.Height);
 
 			//Fill the positions-array for the cartridges, so I can iterate over it, placing them where they should be on the screen
