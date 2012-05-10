@@ -49,7 +49,7 @@ namespace ChilledTreat.GameClasses
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading) PlayerState = Player.State.Alive;
 
 			if (ReticulePosition.Y < 0) ReticulePosition = new Vector2(ReticulePosition.X, 0);
-			else if (ReticulePosition.Y > Game1.Instance.GameScreenHeight) ReticulePosition = new Vector2(ReticulePosition.X, Game1.Instance.GameScreenHeight);
+			else if (ReticulePosition.Y > Game1.GameScreenHeight) ReticulePosition = new Vector2(ReticulePosition.X, Game1.GameScreenHeight);
 
 			if (PlayerState == Player.State.Alive && (Input.IsShootPressed() && !_currentWeapon.IsWeaponAutomatic || Input.IsShootDown() && _currentWeapon.IsWeaponAutomatic) && !Player.Instance.InCover)
 			{
@@ -157,10 +157,10 @@ namespace ChilledTreat.GameClasses
 			_cartridgePositions = new Vector2[maxAmmo];
 			_weaponDrawSource = new Rectangle(0, 0, _weaponTexture.Width / 2, _weaponTexture.Height);
 			_firedWeaponDrawSource = new Rectangle(_weaponTexture.Width / 2, 0, _weaponTexture.Width / 2, _weaponTexture.Height);
-			_weaponPosition = new Rectangle(Game1.Instance.GameScreenWidth / 2, Game1.Instance.GameScreenHeight + 40, _weaponTexture.Width / 2, _weaponTexture.Height);
+			_weaponPosition = new Rectangle(Game1.GameScreenWidth / 2, Game1.GameScreenHeight + 40, _weaponTexture.Width / 2, _weaponTexture.Height);
 
 			//Fill the positions-array for the cartridges, so I can iterate over it, placing them where they should be on the screen
-			for (int i = 0; i < _cartridgePositions.Length; i++) _cartridgePositions[i] = new Vector2(i * _cartridgeTexture.Width + 5, Game1.Instance.GameScreenHeight - _cartridgeTexture.Height);
+			for (int i = 0; i < _cartridgePositions.Length; i++) _cartridgePositions[i] = new Vector2(i * _cartridgeTexture.Width + 5, Game1.GameScreenHeight - _cartridgeTexture.Height);
 
 			//Fill the texture-array for the cartridges, so the correct textures are drawn in the loop in Draw
 			for (int i = 0; i < _cartridges.Length; i++) _cartridges[i] = _cartridgeTexture;

@@ -15,12 +15,12 @@ namespace ChilledTreat
 		public static Game1 Instance;
 
 		// public for å kunne brukes andre steder
-		public GraphicsDeviceManager Graphics;
+		public readonly GraphicsDeviceManager Graphics;
 		public SpriteBatch SpriteBatch;
 
-		// It has to be 16:9 for the scale to work as it should
-		public int GameScreenWidth = 1024;
-		public int GameScreenHeight = 576;
+		// It has to be 16:9, or very close, for the scale to work as it should
+		public const int GameScreenWidth = 1920;
+		public const int GameScreenHeight = 1080;
 
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		readonly InputHandler _inputHandler = InputHandler.Instance;
