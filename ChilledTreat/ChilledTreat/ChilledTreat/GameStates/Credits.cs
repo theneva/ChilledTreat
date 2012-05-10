@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Media;
 
 namespace ChilledTreat.GameStates
 {
@@ -17,10 +18,16 @@ namespace ChilledTreat.GameStates
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		private double _startCreditsTimer, _currentTime;
 
+		Song creditMusic;
+		bool songstart = false;
+
 		public Credits(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
 		{
 			// Credits content
+			creditMusic = Content.Load<Song>("Music/creditMusic");
+			MediaPlayer.IsRepeating = true;
+
 			_creditsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
 			_creditsFontSources = content.Load<SpriteFont>("Fonts/urlFont");
 			_fontColor = Color.Salmon;
@@ -79,8 +86,15 @@ namespace ChilledTreat.GameStates
 			{
 				Game1.ChangeState(Menu);
 				_startAnew = true;
+				MediaPlayer.Stop();
 			}
 			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalSeconds - _startCreditsTimer;
+
+			if (!songstart)
+			{
+				MediaPlayer.Play(creditMusic);
+				songstart = true;
+			}  
 		}
 
 		public override void Draw()
