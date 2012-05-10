@@ -9,7 +9,7 @@ namespace ChilledTreat.GameStates
 	class InGame : GameState
 	{
 		// Fields
-		private readonly Random _random = new Random();
+		public static readonly Random Random = new Random();
 		private readonly Texture2D _background;
 
 		// Constructor

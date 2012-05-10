@@ -1,4 +1,5 @@
 using System;
+using ChilledTreat.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -8,8 +9,8 @@ namespace ChilledTreat.GameClasses
 	class Enemy
 	{
 
-		private bool _alive = true;
-		private int _health;
+		public bool Alive { get; protected set; }
+		private int _health, _damage;
 		Vector2 _position = new Vector2(20, 40);
 		readonly Texture2D _texture, _muzzleFlare;
 
@@ -34,7 +35,7 @@ namespace ChilledTreat.GameClasses
 		private Point _frameSize;
 		Point _currentFrame;
 		private Point _sheetSize;
-
+		private int _currentFrameOrigin;
 
 
 
@@ -52,12 +53,19 @@ namespace ChilledTreat.GameClasses
 
 		public Enemy(int health, int damage)
 		{
+			Alive = true;
 			_health = health;
+			_damage = damage;
 
-			_texture = Game1.Instance.Content.Load<Texture2D>("Images/enemy2");
+			_texture = Game1.Instance.Content.Load<Texture2D>("Images/enemy2 - Copy");
+			_currentFrame = new Point(0, 0);
+			_frameSize = new Point(39, 58);
+			_sheetSize = new Point(7, 1);
+
+
 			// TODO: Redundant
 			Scale = 0.008f * (_position.Y);
-			_frameSize = new Point(41, 80);
+
 
 			_muzzleFlare = Game1.Instance.Content.Load<Texture2D>("Images/usableMuzzleFlare");
 			_drawMuzzleFlare = false;
@@ -65,10 +73,9 @@ namespace ChilledTreat.GameClasses
 
 			_position = new Vector2(538 + _random.Next(192) - _texture.Width * Scale,
 				// TODO: Get enemies to spawn at correct height
-				Game1.Instance.Window.ClientBounds.Height - 480 /*- _texture.Height * _scale*/);
+				Game1.GameScreenHeight - 480 /*- _texture.Height * _scale*/);
 
-			_currentFrame = new Point(0, 0);
-			_sheetSize = new Point(7, 1);
+
 		}
 
 		public Rectangle GetRectangle()
@@ -78,33 +85,23 @@ namespace ChilledTreat.GameClasses
 
 		void Attack()
 		{
-			_damageInflicted = EnemyHandler.Random.Next(15, 20);
-			// TODO: Debug purposes
+			_damageInflicted = InGame.Random.Next();
+
 			Player.Instance.Damaged(_damageInflicted);
-			Player.Instance.Damaged(0);
 		}
 
 		// Update health, check if dead
 		public void TakeDamage(int inflictedDamage)
 		{
 			_health -= inflictedDamage;
+			if (_health <= 0)
+				Die();
+
+			// TODO: Debug
 			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
-
-			if (_health > 0) return;
-
-			Die();
 		}
 
-		/// <summary>
-		/// Attributes the player for the kill, plays through the spritesheet,
-		/// before removing the enemy from the list
-		/// </summary>
-		void Die()
-		{
-			_alive = false;
-			Player.Instance.SuccesfullKill();
-			EnemyHandler.Instance.Remove(this);
-		}
+
 
 		public void Update()
 		{
@@ -116,14 +113,22 @@ namespace ChilledTreat.GameClasses
 
 				if (++_currentFrame.X >= _sheetSize.X)
 				{
+					if (!Alive)
+					{
+						EnemyHandler.Instance.Remove(this);
+						return;
+					}
 					_currentFrame.X = 0;
 					++_currentFrame.Y;
 					if (_currentFrame.Y >= _sheetSize.Y)
-						_currentFrame.Y = 0;
+						_currentFrame.Y = _currentFrameOrigin;
 				}
 			}
 
-			if (EnemyHandler.Random.Next(1000) == 0 && _position.Y > Game1.Instance.Window.ClientBounds.Height - 400)
+
+			if (!Alive) return;
+
+			if (EnemyHandler.Random.Next(1000) == 0 && _position.Y > Game1.GameScreenHeight - 400)
 			{
 				Attack();
 				_drawMuzzleFlare = true;
@@ -137,21 +142,34 @@ namespace ChilledTreat.GameClasses
 
 
 			// Movement based on life
-			if (!_alive) return;
-			
 			_position.Y += _speed.Y;
+
 			Scale = 0.008f * (_position.Y);
-			if (_position.Y > Game1.Instance.Window.ClientBounds.Height - 300)
-				_position.Y = Game1.Instance.Window.ClientBounds.Height - 300;
+
+			if (_position.Y > Game1.GameScreenHeight - 300)
+				_position.Y = Game1.GameScreenHeight - 300;
 		}
 
+		/// <summary>
+		/// Attributes the player for the kill, plays through the spritesheet,
+		/// before removing the enemy from the list
+		/// </summary>
+		void Die()
+		{
+			Alive = false;
+			Player.Instance.SuccesfullKill();
+			_currentFrame = new Point(0, 1);
+			_currentFrameOrigin = _frameSize.Y;
+			_frameSize = new Point(78, 60);
+			_sheetSize = new Point(3, 1);
 
+
+		}
 
 		public void Draw()
 		{
 			Game1.Instance.SpriteBatch.Draw(_texture, _position,
-			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
-					Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
+			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y), Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
 
 
 			#region MuzzleFlare
@@ -162,10 +180,5 @@ namespace ChilledTreat.GameClasses
 			_timesDrawnMuzzleFlare++;
 			#endregion
 		}
-
-
-
 	}
-
-
 }

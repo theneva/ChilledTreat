@@ -14,7 +14,7 @@ namespace ChilledTreat.GameClasses
 
 
 
-		private float _timeSinceLastAdd, _enemiesPerSecond = 2.5f;
+		private float _timeSinceLastAdd, _enemiesPerSecond = 1f;
 
 		private int _timeSinceLastIntervalIncrease;
 		private const int AddEnemyInterval = 5000; // milliseconds
@@ -93,7 +93,8 @@ namespace ChilledTreat.GameClasses
 			for (int i = GetNumberOfEnemies() - 1; i >= 0; i--)
 				if (_enemies[i].GetRectangle().Intersects(attackedArea))
 				{
-					_enemies[i].TakeDamage(inflictedDamage);
+					if (_enemies[i].Alive)
+						_enemies[i].TakeDamage(inflictedDamage);
 
 					if(!WeaponHandler.Instance.Splash) break;
 				}
@@ -121,9 +122,9 @@ namespace ChilledTreat.GameClasses
 				AddEnemy();
 			}
 
-			foreach (Enemy enemy in _enemies)
+			for (int i = _enemies.Count - 1; i >= 0; i--)
 			{
-				enemy.Update();
+				_enemies[i].Update();
 			}
 		}
 
