@@ -60,10 +60,7 @@ namespace ChilledTreat.GameClasses
 				{
 					_enemies[i].TakeDamage(damage);
 
-					// TODO: set an if for whether or not the weapon has splash damage
-					// if(!WeaponHandler.Instance.CurrentWeaponsHasSplash)
-					// Or something. Isn't created yet
-					break;
+					if(!WeaponHandler.Instance.Splash) break;
 				}
 		}
 

@@ -20,6 +20,10 @@ namespace ChilledTreat.GameClasses
 		internal readonly InputHandler Input = InputHandler.Instance;
 		internal Vector2 ReticulePosition;
 		internal Rectangle HitBox;
+		public bool Splash
+		{
+			get { return _currentWeapon.Splash; }
+		}
 
 		internal Player.State PlayerState = Player.Instance.PlayerState;
 
@@ -33,8 +37,8 @@ namespace ChilledTreat.GameClasses
 
 		private WeaponHandler()
 		{
-			_weapons = new [] { new Weapon("Gun", 10, 10, 5, false), 
-			new Weapon("Rifle", 30, 5, 10, true) };
+			_weapons = new[] { new Weapon("Gun", 10, 100, 5, false, true), 
+			new Weapon("Rifle", 30, 50, 10, true, false) };
 
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
@@ -98,15 +102,15 @@ namespace ChilledTreat.GameClasses
 
 	internal class Weapon
 	{
+		#region Fields
 		private readonly SpriteBatch _spriteBatch;
-
-		internal readonly String WeaponName;
-		internal int MaxAmmo, CurrentAmmo;
+		internal int CurrentAmmo;
+		internal readonly int MaxAmmo;
 		private int _timesDrawnMuzzleFlare, _damage;
 		private readonly int _defaultDamage;
 		internal readonly double DelayBetweenShots;
 		internal bool PlayReloadSound;
-		internal readonly bool IsWeaponAutomatic;
+		internal readonly bool IsWeaponAutomatic, Splash;
 		private bool _drawMuzzleFlare;
 		private readonly Texture2D _reticuleTexture, _cartridgeTexture, _usedCartridgeTexture, _weaponTexture;
 		private readonly Vector2 _halfReticuleTexture;
@@ -116,6 +120,7 @@ namespace ChilledTreat.GameClasses
 		private readonly SoundEffect _shotSound, _reloadSound;
 		private float _gunRotation;
 		private readonly Rectangle _weaponPosition, _weaponDrawSource, _firedWeaponDrawSource;
+		#endregion
 
 		/// <summary>
 		/// Create a weapon
@@ -125,18 +130,19 @@ namespace ChilledTreat.GameClasses
 		/// <param name="damage">The default damage </param>
 		/// <param name="rateOfFire">The amount of bullets fireable per second</param>
 		/// <param name="automatic">Indicates whether or not the weapon is automatic</param>
-		internal Weapon(String weaponName, int maxAmmo, int damage, int rateOfFire, bool automatic)
+		/// <param name="splash">Indicates whether ot not the weapon delas splashdamage </param>
+		internal Weapon(String weaponName, int maxAmmo, int damage, int rateOfFire, bool automatic, bool splash)
 		{
 			//To avoid an excess of parameters, get these directly
 			_spriteBatch = Game1.Instance.SpriteBatch;
 			ContentManager content = Game1.Instance.Content;
 
 			//Set the variables of the instance in accordance with the parameters
-			WeaponName = weaponName;
 			MaxAmmo = maxAmmo;
 			_defaultDamage = damage;
 			DelayBetweenShots = 1000f / rateOfFire;
 			IsWeaponAutomatic = automatic;
+			Splash = splash;
 
 			CurrentAmmo = maxAmmo;
 
