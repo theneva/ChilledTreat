@@ -43,7 +43,7 @@ namespace ChilledTreat.GameClasses
 		{
 			CurrentTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-			if(Input.IsSwitchWeaponPressed()) ChangeWeapon();
+			if(Input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading) ChangeWeapon();
 
 			ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading) PlayerState = Player.State.Alive;
@@ -93,6 +93,7 @@ namespace ChilledTreat.GameClasses
 
 		public void ResetWeapons()
 		{
+			_currentWeapon = _weapons.First();
 			foreach (Weapon w in _weapons)
 			{
 				w.ResetWeapon();
