@@ -49,18 +49,15 @@ namespace ChilledTreat.GameStates
 				if (_input.IsDownPressed())
 				{
 					charList[charListPos]++;
-					if (charList[charListPos] < 'A') charList[charListPos] = 'Z';
+					if (charList[charListPos] > 'Z') charList[charListPos] = 'A';
 				}
 				else if (_input.IsUpPressed())
 				{
 					charList[charListPos]--;
-					 if (charList[charListPos] > 'Z') charList[charListPos] = 'A';
+					 if (charList[charListPos] < 'A') charList[charListPos] = 'Z';
 				}
-				else if (_input.IsRightPressed())
-				{
-					charListPos++;
-				}
-				else if (_input.IsLeftPressed()) charListPos--;
+				else if (_input.IsRightPressed() && charListPos != charList.Length - 1) charListPos++;
+				else if (_input.IsLeftPressed() && charListPos != 0) charListPos--;
 				if (_input.IsActionPressed()) typing = false;
 			}
 			else if (writeFile)
@@ -88,11 +85,13 @@ namespace ChilledTreat.GameStates
 			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f, 100), Color.White);
 			SpriteBatch.DrawString(_nameFont, "Name: ", new Vector2(70, 250), Color.White);
 			charPos = 250;
-			foreach (char c in charList)
+			for (int i = 0; i < charList.Length; i++)
 			{
-				SpriteBatch.DrawString(_nameFont, "" + c, new Vector2(charPos, 250), Color.White);
+				if (i != charListPos) SpriteBatch.DrawString(_nameFont, "" + charList[i], new Vector2(charPos, 250), Color.White);
+				else SpriteBatch.DrawString(_nameFont, "" + charList[charListPos], new Vector2(charPos, 240), Color.White);
 				charPos += 50;
 			}
+			
 			foreach (var hs in _highScoreList)
 			{
 				_shift++;

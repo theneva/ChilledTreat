@@ -54,7 +54,7 @@ namespace ChilledTreat.GameClasses
 
 			if (Input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading)
 				ChangeWeapon();
-
+            
 			ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading)
 				PlayerState = Player.State.Alive;
