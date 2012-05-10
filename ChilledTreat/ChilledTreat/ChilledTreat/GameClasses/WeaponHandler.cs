@@ -41,7 +41,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_weapons = new[]
 			           	{
-			           		new Weapon("Gun", 10, 100, 5, false, false),
+			           		new Weapon("Pistol", 10, 100, 5, false, false),
 			           		new Weapon("Rifle", 30, 50, 10, true, false)
 			           	};
 
@@ -185,8 +185,7 @@ namespace ChilledTreat.GameClasses
 
 			//Fill the positions-array for the cartridges, so I can iterate over it, placing them where they should be on the screen
 			for (int i = 0; i < _cartridgePositions.Length; i++)
-				_cartridgePositions[i] = new Vector2(i*_cartridgeTexture.Width + 5,
-				                                     Game1.GameScreenHeight - _cartridgeTexture.Height);
+				_cartridgePositions[i] = new Vector2(i*_cartridgeTexture.Width + 5, Game1.GameScreenHeight - _cartridgeTexture.Height);
 
 			//Fill the texture-array for the cartridges, so the correct textures are drawn in the loop in Draw
 			for (int i = 0; i < _cartridges.Length; i++) 
