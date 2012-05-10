@@ -8,7 +8,6 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly InputHandler _input = InputHandler.Instance;
-
 		readonly SpriteFont _instructionsFont;
 		readonly string[] _instructionsContent;
 		readonly Color _fontColor;
@@ -16,24 +15,45 @@ namespace ChilledTreat.GameStates
 
 		public Instructions(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
+#if WINDOWS
 		{
 			// Credits content
 			_instructionsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
-			_fontColor = Color.Salmon;
+			_fontColor = Color.White;
 			_instructionsContent = new[] { 
-				"Shoot Stan from Monkey Island with Mouse1",
+				"Mouse1 - Shoot!",
 				" ",
-				"Hold space to take cover", 
-				"Useful to avoid taking damage while reloading", 
+				"Space - Take cover!",
+				" ", 
+				"R - Reload!",
+				" ", 
+				"Tab - Change Weapon!",
 				" ",
-				"This line of text is completely unnecessary" };
+				"This line of text is completely unnecessary"
+			};
+#endif
+
+#if XBOX
+			{
+			// Credits content
+			_instructionsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
+			_fontColor = Color.White;
+			_instructionsContent = new[] { 
+				"Right or left bumper - Shoot!",
+				" ",
+				"Right or left trigger - Take cover!",
+				" ", 
+				"X - Reload!",
+				" ", 
+				"Y - Change Weapon!",
+				" ",
+				"This line of text is completely unnecessary"
+			};
+#endif
 		}
 
-		// Methods
-		/*
-
- 
-								   8888  8888888
+// Methods
+/*								   8888  8888888
 						   888888888888888888888888
 						8888:::8888888888888888888888888
 					  8888::::::8888888888888888888888888888
@@ -192,11 +212,7 @@ namespace ChilledTreat.GameStates
 										   MM::::m:MM
 											MM::::MM
 											 MM::MM
-											  MMMM
-
- 
- 
-		 */
+											  MMMM				 */
 		public override void Update()
 		{
 			// Logic
