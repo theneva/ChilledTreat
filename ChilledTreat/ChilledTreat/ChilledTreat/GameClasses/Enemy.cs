@@ -148,9 +148,9 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-/*			_spriteBatch.Draw(_texture, _position,
+			_spriteBatch.Draw(_texture, _position,
 			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
-			Color.White, 0, origin: Vector2.Zero, scale: Scale, effects: SpriteEffects.None, layerDepth: 0); */
+			Color.White, 0, origin: Vector2.Zero, scale: Scale, effects: SpriteEffects.None, layerDepth: 0); 
 
             _spriteBatch.Draw(_texture, _position,
             new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
@@ -159,9 +159,9 @@ namespace ChilledTreat.GameClasses
 
 			if (!_drawMuzzleFlare) return;
 
-		//	_spriteBatch.Draw(_muzzleFlare, position: new Vector2(_position.X - (_muzzleFlare.Width / 2f), y: _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), color: Color.White);
+			_spriteBatch.Draw(_muzzleFlare, position: new Vector2(_position.X - (_muzzleFlare.Width / 2f), y: _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), color: Color.White);
 
-            _spriteBatch.Draw(_muzzleFlare, new Vector2(_position.X - (_muzzleFlare.Width / 2f), _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), Color.White);
+        // XBOX :::    _spriteBatch.Draw(_muzzleFlare, new Vector2(_position.X - (_muzzleFlare.Width / 2f), _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), Color.White);
 
 			_timesDrawnMuzzleFlare++;
 

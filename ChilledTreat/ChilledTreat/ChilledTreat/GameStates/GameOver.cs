@@ -89,17 +89,19 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
-			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f, 100), Color.White);
+			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f - 70, 100), Color.White);
 #if WINDOWS
-            SpriteBatch.DrawString(_nameFont, "Name: ", new Vector2(70, 250), Color.White);
-			charPos = 250;
-			for (int i = 0; i < charList.Length; i++)
-			{
-				if (i != charListPos) SpriteBatch.DrawString(_nameFont, "" + charList[i], new Vector2(charPos, 250), Color.White);
-				else SpriteBatch.DrawString(_nameFont, "" + charList[charListPos], new Vector2(charPos, 240), Color.White);
-				charPos += 50;
-			}
-			
+            if (typing)
+            {
+                SpriteBatch.DrawString(_nameFont, "Name: ", new Vector2(400, 250), Color.White);
+			    charPos = 570;
+			    for (int i = 0; i < charList.Length; i++)
+			    {
+			    	if (i != charListPos) SpriteBatch.DrawString(_nameFont, "" + charList[i], new Vector2(charPos, 250), Color.White);
+			    	else SpriteBatch.DrawString(_nameFont, "" + charList[charListPos], new Vector2(charPos, 240), Color.White);
+			    	charPos += 50;
+			    }
+            }
 			foreach (var hs in _highScoreList)
 			{
 				_shift++;
