@@ -213,10 +213,16 @@
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Music\Dubmood.mp3">
+      <Name>Dubmood</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Music\Dubmood_-_Rez_Crackintro_1.mp3">
-      <Name>creditMusic</Name>
+      <Name>creditMusic1</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
     </Compile>

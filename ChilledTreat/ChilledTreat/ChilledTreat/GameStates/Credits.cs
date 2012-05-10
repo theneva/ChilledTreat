@@ -25,7 +25,7 @@ namespace ChilledTreat.GameStates
 			: base(spriteBatch, content)
 		{
 			// Credits content
-			creditMusic = Content.Load<Song>("Music/creditMusic");
+			creditMusic = Content.Load<Song>("Music/DubMood");
 			MediaPlayer.IsRepeating = true;
 
 			_creditsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
