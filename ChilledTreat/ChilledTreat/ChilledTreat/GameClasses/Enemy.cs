@@ -7,6 +7,8 @@ namespace ChilledTreat.GameClasses
 {
 	class Enemy
 	{
+		readonly SpriteBatch _spriteBatch;
+
 		private bool _drawMuzzleFlare;
 		private int _timesDrawnMuzzleFlare;
 
@@ -32,25 +34,15 @@ namespace ChilledTreat.GameClasses
 
 		private bool _alive = true;
 
-
-		// TODO: Find a default health
-		private Enemy()
-			: this(20)
+		private Enemy(SpriteBatch spriteBatch, ContentManager content)
 		{
-		}
-
-		public Enemy(int health)
-		{
-			_health = health;
-
-			_texture = Game1.Instance.Content.Load<Texture2D>("Images/enemy2");
-			// TODO: Redundant
-			Scale = 0.008f * (_position.Y);
+			_spriteBatch = spriteBatch;
 			_frameSize = new Point(41, 80);
 
-			_muzzleFlare = Game1.Instance.Content.Load<Texture2D>("Images/usableMuzzleFlare");
-			_drawMuzzleFlare = false;
-			_timesDrawnMuzzleFlare = 0;
+			_texture = content.Load<Texture2D>("Images/enemy2");
+
+			// TODO: Redundant
+			Scale = 0.008f * (_position.Y);
 
 			_position = new Vector2(538 + _random.Next(192) - _texture.Width * Scale,
 				// TODO: Get enemies to spawn at correct height
@@ -58,6 +50,16 @@ namespace ChilledTreat.GameClasses
 
 			_currentFrame = new Point(0, 0);
 			_sheetSize = new Point(7, 1);
+
+			_muzzleFlare = content.Load<Texture2D>("Images/usableMuzzleFlare");
+			_drawMuzzleFlare = false;
+			_timesDrawnMuzzleFlare = 0;
+		}
+
+		public Enemy(SpriteBatch spriteBatch, ContentManager content, int hp)
+			: this(spriteBatch, content)
+		{
+			_health = hp;
 			//_position = position;
 		}
 
@@ -83,27 +85,23 @@ namespace ChilledTreat.GameClasses
 		}
 
 		// Update health, check if dead
-		public void TakeDamage(int inflictedDamage)
+		public void TakeDamage(int damage)
 		{
-			_health -= inflictedDamage;
+			_health -= damage;
 			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
 
 			if (_health > 0) return;
 
 			_alive = false;
+
+			// TODO: find a better solution
+			EnemyHandler.Instance.Remove(this);
+			Player.Instance.SuccesfullKill();
 		}
 
-		/// <summary>
-		/// Attributes the player for the kill, plays through the spritesheet,
-		/// before removing the enemy from the list
-		/// </summary>
 		void Die()
 		{
-			Player.Instance.SuccesfullKill();
-
-
-
-			EnemyHandler.Instance.Remove(this);
+			// TODO: Animation through spritesheet ending in setting a boolean equal to true so the enemy can be removed from the list
 		}
 
 		public void Update()
@@ -123,7 +121,7 @@ namespace ChilledTreat.GameClasses
 				}
 			}
 
-			if (EnemyHandler.Random.Next(1000) == 0 && _position.Y > Game1.Instance.Window.ClientBounds.Height - 400)
+			if (EnemyHandler.Random.Next(1000) == 0)
 			{
 				Attack();
 				_drawMuzzleFlare = true;
@@ -150,25 +148,23 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			Game1.Instance.SpriteBatch.Draw(_texture, _position,
+			_spriteBatch.Draw(_texture, _position,
 			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
 			Color.White, 0, origin: Vector2.Zero, scale: Scale, effects: SpriteEffects.None, layerDepth: 0); 
 
-            _spriteBatch.Draw(_texture, _position,
+       /*     _spriteBatch.Draw(_texture, _position,
             new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
-            Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
+            Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);*/
 
 
-
-			#region MuzzleFlare
 			if (!_drawMuzzleFlare) return;
 
-			Game1.Instance.SpriteBatch.Draw(_muzzleFlare, new Vector2(_position.X - (_muzzleFlare.Width / 2f), _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), Color.White);
+			_spriteBatch.Draw(_muzzleFlare, position: new Vector2(_position.X - (_muzzleFlare.Width / 2f), y: _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), color: Color.White);
 
         // XBOX :::    _spriteBatch.Draw(_muzzleFlare, new Vector2(_position.X - (_muzzleFlare.Width / 2f), _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), Color.White);
 
 			_timesDrawnMuzzleFlare++;
-			#endregion
+
 			//_spriteBatch.Draw();
 		}
 
