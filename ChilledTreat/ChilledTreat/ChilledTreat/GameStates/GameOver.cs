@@ -37,17 +37,23 @@ namespace ChilledTreat.GameStates
 
 		public override void Update()
 		{
-			if (_input.IsDownPressed())
-			{
-				if (charList[charListPos] < 'Z') charList[charListPos]++;
-			}
-			else if (_input.IsUpPressed())
-			{
-				if (charList[charListPos] > 'A') charList[charListPos]--;
-			}
-			if (_input.IsActionPressed() && charListPos != charList.Length + 1)
-			{
-				charListPos++;
+//			if (charListPos < charList.Length)
+//			{
+		if (_input.IsDownPressed())
+		{
+			if (charList[charListPos] < 'Z') charList[charListPos]++;
+		}
+		else if (_input.IsUpPressed())
+		{
+			if (charList[charListPos] > 'A') charList[charListPos]--;
+		}
+		if (_input.IsActionPressed() && charListPos != charList.Length)
+		{
+			charListPos++;
+		}
+//		}
+//			else
+//			{
 				if (charListPos > charList.Length)
 				{
 					for (int i = 0; i < charList.Length; i++)
@@ -55,11 +61,7 @@ namespace ChilledTreat.GameStates
 						name += charList[i];
 					}
 					Console.WriteLine(name);
-				}
-				else
-				{
-					NewScoreToAdd = true;
-				}
+//				}
 			}
 			if (NewScoreToAdd)
 			{
