@@ -99,8 +99,13 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="Fonts\nameFont.spritefont">
       <Name>nameFont</Name>
+=======
+    <Compile Include="Fonts\urlFont.spritefont">
+      <Name>urlFont</Name>
+>>>>>>> 90db8e112c9c0568ea1c068c14a7398bfc521f5b
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>

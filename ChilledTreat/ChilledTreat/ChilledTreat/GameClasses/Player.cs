@@ -11,8 +11,12 @@ namespace ChilledTreat.GameClasses
 	/// </summary>
 	public class Player
 	{
+		#region Fields
+
 		private readonly SpriteBatch _spriteBatch;
 		private readonly InputHandler _input = InputHandler.Instance;
+
+		private const int MaxHealth = 100, MinimumScore = 0;
 
 		private readonly SoundEffect[] _injuredSounds;
 		private readonly SoundEffect _diedSound;
@@ -46,12 +50,14 @@ namespace ChilledTreat.GameClasses
 
 		public State PlayerState;
 
+		#endregion
+
 		private Player(SpriteBatch spriteBatch, ContentManager content)
 		{
 			_spriteBatch = spriteBatch;
 
-			_health = 100;
-			Score = 0;
+			_health = MaxHealth;
+			Score = MinimumScore;
 
 			//Load all textures fonts
 			_healthTexture = content.Load<Texture2D>("Images/normalUsableHeart");
@@ -188,8 +194,8 @@ namespace ChilledTreat.GameClasses
 		/// </summary>
 		public void ResetPlayer()
 		{
-			_health = 100;
-			Score = 0;
+			_health = MaxHealth;
+			Score = MinimumScore;
 
 			PlayerState = State.Alive;
 

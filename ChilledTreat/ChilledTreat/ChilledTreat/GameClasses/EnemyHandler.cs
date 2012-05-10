@@ -59,7 +59,8 @@ namespace ChilledTreat.GameClasses
 				if (_enemies[i].GetRectangle().Intersects(attackedArea))
 				{
 					_enemies[i].TakeDamage(damage);
-					break;
+
+					if(!WeaponHandler.Instance.Splash) break;
 				}
 		}
 
