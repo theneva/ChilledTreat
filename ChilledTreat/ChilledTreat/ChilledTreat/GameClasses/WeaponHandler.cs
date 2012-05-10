@@ -18,7 +18,7 @@ namespace ChilledTreat.GameClasses
 		internal double CurrentTime, StartReloadTime;
 		private double _startShootTime;
 		internal readonly InputHandler Input = InputHandler.Instance;
-		internal Vector2 ReticulePosition;
+		internal Vector2 ReticulePosition, PointerPosition;
 		internal Rectangle HitBox;
 
 		public bool Splash
@@ -44,9 +44,8 @@ namespace ChilledTreat.GameClasses
 							new Weapon("Pistol", 10, 100, 5, false, false),
 							new Weapon("Rifle", 30, 50, 10, true, false)
 						};
-#if !WINDOWS_PHONE
+
 			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
-#endif
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
 
@@ -54,16 +53,12 @@ namespace ChilledTreat.GameClasses
 		{
 			CurrentTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
+			PointerPosition = Input.PointerLocation();
+
+			ReticulePosition = new Vector2(PointerPosition.X, PointerPosition.Y);
+
 			if (Input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading)
 				ChangeWeapon();
-#if WINDOWS
-			ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
-#elif !WINDOWS_PHONE
-			if (Input.ThumbStickLeft().X > 0.2) ReticulePosition.X += 6;
-			if (Input.ThumbStickLeft().Y > 0.2) ReticulePosition.Y -= 6;
-			if (Input.ThumbStickLeft().X < -0.2) ReticulePosition.X -= 6;
-			if (Input.ThumbStickLeft().Y < -0.2) ReticulePosition.Y += 6;
-#endif
 			
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading)
 				PlayerState = Player.State.Alive;
@@ -83,15 +78,11 @@ namespace ChilledTreat.GameClasses
 				 Input.IsShootDown() && _currentWeapon.IsWeaponAutomatic) && !Player.Instance.InCover)
 			{
 				_startShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
-#if WINDOWS
+
 				HitBox = _currentWeapon.IsWeaponAutomatic
-							? new Rectangle(Input.MouseState.X - 40, Input.MouseState.Y - 40, 80, 80)
-							: new Rectangle(Input.MouseState.X - 10, Input.MouseState.Y - 10, 20, 20);
-#elif !WINDOWS_PHONE
-				HitBox = _currentWeapon.IsWeaponAutomatic
-					? new Rectangle((int)ReticulePosition.X - 40, (int)ReticulePosition.Y - 40, 80, 80)
-					: new Rectangle((int)ReticulePosition.X - 10, (int)ReticulePosition.Y - 10, 20, 20);
-#endif
+							? new Rectangle((int)PointerPosition.X - 40, (int)PointerPosition.Y - 40, 80, 80)
+							: new Rectangle((int)PointerPosition.X - 10, (int)PointerPosition.Y - 10, 20, 20);
+
 				PlayerState = Player.State.Shooting;
 			}
 
@@ -150,7 +141,7 @@ namespace ChilledTreat.GameClasses
 		private bool _drawMuzzleFlare;
 		private readonly Texture2D _reticuleTexture, _cartridgeTexture, _usedCartridgeTexture, _weaponTexture;
 		private readonly Vector2 _halfReticuleTexture;
-		private Vector2 _vectorGunToMouse, _weaponPosition;
+		private Vector2 _vectorWeaponToReticule, _weaponPosition;
 		private readonly Texture2D[] _cartridges;
 		private readonly Vector2[] _cartridgePositions;
 		private readonly SoundEffect _shotSound, _reloadSound;
@@ -216,16 +207,12 @@ namespace ChilledTreat.GameClasses
 				_drawMuzzleFlare = false;
 				_timesDrawnMuzzleFlare = 0;
 			}
-#if WINDOWS
-			_vectorGunToMouse = new Vector2((_weaponPosition.X - WeaponHandler.Instance.Input.MouseState.X),
-											(_weaponPosition.Y - WeaponHandler.Instance.Input.MouseState.Y));
 
-#elif !WINDOWS_PHONE
-			_vectorGunToMouse = new Vector2((_weaponPosition.X - WeaponHandler.Instance.ReticulePosition.X),
-											(_weaponPosition.Y - WeaponHandler.Instance.ReticulePosition.Y));
-#endif
+			_vectorWeaponToReticule = new Vector2((_weaponPosition.X - WeaponHandler.Instance.PointerPosition.X),
+											(_weaponPosition.Y - WeaponHandler.Instance.PointerPosition.Y));
 
-			_gunRotation = (float) Math.Atan2(-_vectorGunToMouse.X, _vectorGunToMouse.Y);
+			//Minus X, to rotate the right way
+			_gunRotation = (float) Math.Atan2(-_vectorWeaponToReticule.X, _vectorWeaponToReticule.Y);
 		}
 
 		internal void Draw()
