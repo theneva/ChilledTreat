@@ -210,9 +210,10 @@ namespace ChilledTreat
 		public Buttons CoverButton = Buttons.RightTrigger;
 		public Buttons ReloadButton = Buttons.Y;
 
-
-
 		public PlayerIndex PlayerIndex = PlayerIndex.One;
+
+        public Vector2 Left { get; private set; }
+        public Vector2 Right { get; private set; }
 #endif
 
 		public void Update()
@@ -511,6 +512,12 @@ namespace ChilledTreat
 			return IsButtonPressed(Buttons.Y);
 #endif
 		}
+#if !WINDOWS_PHONE
+        public Vector2 ThumbStickLeft()
+        {
+            return GamePad.GetState(PlayerIndex.One).ThumbSticks.Left;
+        }
+#endif
 		#endregion
 	}
 }

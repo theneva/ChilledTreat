@@ -10,6 +10,7 @@ namespace ChilledTreat.GameStates
 {
 	class LeaderBoard : GameState
 	{
+#if WINDOWS
 		readonly SpriteFont _menuFont, _scoreFont;
 		private int _shift;
 		Color _fontColor;
@@ -60,5 +61,6 @@ namespace ChilledTreat.GameStates
 			SpriteBatch.Draw(lbTexture, new Rectangle(0, 640, 1280, 80), Color.YellowGreen);
 			SpriteBatch.DrawString(_menuFont, "Leaderboard", new Vector2(Game1.GameScreenWidth / 3f - 100, 50), Color.White);
 		}
+#endif
 	}
 }
