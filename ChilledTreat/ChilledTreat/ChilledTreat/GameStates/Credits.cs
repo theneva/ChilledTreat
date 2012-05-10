@@ -7,18 +7,22 @@ namespace ChilledTreat.GameStates
 	class Credits : GameState
 	{
 		readonly SpriteFont _creditsFont;
+		readonly SpriteFont _creditsFontSources;
 		readonly string[] _creditsContent;
+		readonly string[] _creditsContentSources;
 		private int _shift;
 		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		private int scrolling = 0;
+		private double _startCreditsTimer;
 
 		public Credits(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
 		{
 			// Credits content
 			_creditsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
+			_creditsFontSources = content.Load<SpriteFont>("Fonts/urlFont");
 			_fontColor = Color.Salmon;
 			_creditsContent = new[] {
 				".....CREDITS.....",
@@ -37,7 +41,10 @@ namespace ChilledTreat.GameStates
 				"Steinar Skogly",
 				" ",
 				"Sources",
-				" ",
+				" "
+			};
+
+			_creditsContentSources = new[] {
 				"blogcdn.com/joystiq.com/media/2006/06/reticule.jpg",
 				"tactical-life.com/online/wp-content/uploads/2008/11/bullet.gif",
 				"soundbible.com/tags-gun.html",
@@ -50,9 +57,9 @@ namespace ChilledTreat.GameStates
 				"pacdv.com/sounds/voices-1.html",
 				"media.photobucket.com/image/recent/USCMC/nationstates/Cartridges_pistol.png",
 				"freewebs.com/callpoll100/photos/Sprites/DoomWeaponsPC.png",
-				"i41.tinypic.com/5vx078.png",
-		};
-	}
+				"i41.tinypic.com/5vx078.png"
+			};
+		}
 
 		// Methods
 
@@ -66,7 +73,6 @@ namespace ChilledTreat.GameStates
 				Game1.ChangeState(GameState.Menu);
 				scrolling = 0;
 			}
-
 			scrolling--;
 		}
 
@@ -76,7 +82,16 @@ namespace ChilledTreat.GameStates
 			foreach (string creditEntry in _creditsContent)
 			{
 				_shift++;
-				SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2(320, 680 + (_shift * 50) + (scrolling)), Color.White);
+				SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) + scrolling), Color.White);
+				//	SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) + (scrolling)), Color.White, 0f, new Vector2(Game1.GameScreenWidth / 2, 720), 1f, SpriteEffects.None, 0);
+			}
+			if (_frameInfo.GameTime.TotalGameTime.TotalSeconds >= 5)
+			{
+				foreach (string creditSourcesEntry in _creditsContentSources)
+				{
+					_shift++;
+					SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) + scrolling), Color.White);
+				}
 			}
 		}
 	}
