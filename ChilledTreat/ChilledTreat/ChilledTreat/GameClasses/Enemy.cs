@@ -26,11 +26,6 @@ namespace ChilledTreat.GameClasses
 
 		public float Scale { get; private set; }
 
-		public float GetScale()
-		{
-			return Scale;
-		}
-
 		int _health = 20;
 
 		private Point _frameSize;
