@@ -15,7 +15,6 @@ namespace ChilledTreat.GameStates
 		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
-		private int scrolling = 0;
 		private double _startCreditsTimer, _currentTime;
 
 		public Credits(SpriteBatch spriteBatch, ContentManager content)
@@ -80,9 +79,7 @@ namespace ChilledTreat.GameStates
 			{
 				Game1.ChangeState(Menu);
 				_startAnew = true;
-				scrolling = 0;
 			}
-			scrolling--;
 			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalSeconds - _startCreditsTimer;
 		}
 
@@ -93,14 +90,13 @@ namespace ChilledTreat.GameStates
 			{
 				_shift++;
 				SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
-				//	SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) + (scrolling)), Color.White, 0f, new Vector2(Game1.GameScreenWidth / 2, 720), 1f, SpriteEffects.None, 0);
 			}
 			if (_frameInfo.GameTime.TotalGameTime.TotalSeconds >= 5)
 			{
 				foreach (string creditSourcesEntry in _creditsContentSources)
 				{
 					_shift++;
-					SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) + scrolling), Color.White);
+					SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 				}
 			}
 		}
