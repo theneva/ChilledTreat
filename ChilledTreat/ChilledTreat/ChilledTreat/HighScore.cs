@@ -46,6 +46,8 @@ namespace ChilledTreat
 			var scores = (List<Highscore>)deserializer.Deserialize(textReader);
 			textReader.Close();
 
+			
+
 			return scores;
 		}
 #endif

@@ -22,6 +22,7 @@ namespace ChilledTreat
 		public const int GameScreenWidth = 1280; //Game1.Instance.GraphicsDevice.DisplayMode.Width;
 		public const int GameScreenHeight = 720; //Game1.Instance.GraphicsDevice.DisplayMode.Height;
 
+		//This scale is used to scale everything drawn if the user changes the height and width of the game for the original
 		public const float GameScale = (GameScreenWidth/1280f + GameScreenHeight/720f)/2f;
 
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
