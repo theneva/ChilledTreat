@@ -8,7 +8,6 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly InputHandler _input = InputHandler.Instance;
-
 		readonly SpriteFont _instructionsFont;
 		readonly string[] _instructionsContent;
 		readonly Color _fontColor;
