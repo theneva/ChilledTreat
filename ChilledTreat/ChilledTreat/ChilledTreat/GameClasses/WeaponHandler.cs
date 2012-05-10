@@ -93,6 +93,7 @@ namespace ChilledTreat.GameClasses
 		public void ResetWeapons()
 		{
 			_currentWeapon = _weapons.First();
+
 			foreach (Weapon w in _weapons)
 			{
 				w.ResetWeapon();
