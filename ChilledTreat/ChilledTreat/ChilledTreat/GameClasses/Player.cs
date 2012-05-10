@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,9 +14,13 @@ namespace ChilledTreat.GameClasses
 		private readonly SpriteBatch _spriteBatch;
 		private readonly InputHandler _input = InputHandler.Instance;
 
+		private readonly SoundEffect[] _injuredSounds;
+		private readonly SoundEffect _diedSound;
 		private int _health, _healthIn10, _heartsDrawShift;
+		private double _currentTime, _timeAtDamaged;
 		private readonly int _widthOfHeart;
-		private readonly Texture2D _healthTexture, _coverTexture;
+		private bool _drawRedHaze;
+		private readonly Texture2D _healthTexture, _coverTexture, _damagedTexture;
 		private readonly Rectangle _fullHealthSource, _halfHealthSource, _emptyHealthSource;
 		readonly SpriteFont _scoreFont;
 
@@ -48,10 +53,17 @@ namespace ChilledTreat.GameClasses
 			_health = 100;
 			Score = 0;
 
-			//Load all textures, sounds and fonts
+			//Load all textures fonts
 			_healthTexture = content.Load<Texture2D>("Images/normalUsableHeart");
 			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
+			_damagedTexture = content.Load<Texture2D>("Images/damagedTint");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
+			_diedSound = content.Load<SoundEffect>("Sounds/poor-baby");
+
+			_injuredSounds = new[] { content.Load<SoundEffect>("Sounds/goddamnit"),
+				content.Load<SoundEffect>("Sounds/how-dare-you"),
+				content.Load<SoundEffect>("Sounds/im-in-trouble"),
+				content.Load<SoundEffect>("Sounds/uh") };
 
 			_widthOfHeart = _healthTexture.Width / 3;
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
@@ -62,10 +74,17 @@ namespace ChilledTreat.GameClasses
 
 		public void Update()
 		{
+			_currentTime = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 			if (PlayerState == State.Dead)
 			{
 				EnemyHandler.Instance.Clear();
+				_diedSound.Play();
 				Game1.ChangeState(GameStates.GameState.GameOver);
+			}
+
+			if (_drawRedHaze && _currentTime - _timeAtDamaged > 200)
+			{
+				_drawRedHaze = false;
 			}
 
 			//
@@ -80,7 +99,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
-			if(InCover)
+			if (InCover)
 			{
 				_spriteBatch.Draw(_coverTexture,
 					new Vector2((Game1.Instance.GameScreenWidth - _coverTexture.Width) / 2f, Game1.Instance.GameScreenHeight - _coverTexture.Height),
@@ -92,8 +111,10 @@ namespace ChilledTreat.GameClasses
 			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.Instance.GameScreenWidth - 100, 20), Color.Black);
 
 			WeaponHandler.Instance.Draw();
+
+			if (_drawRedHaze) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, (Game1.Instance.GameScreenWidth / _damagedTexture.Width), SpriteEffects.None, layerDepth: 0);
 		}
-	
+
 		/// <summary>
 		/// How much the player is damaged
 		/// </summary>
@@ -103,9 +124,15 @@ namespace ChilledTreat.GameClasses
 			if (PlayerState != State.Reloading) PlayerState = State.Damaged;
 			if (InCover) damage /= 5;
 
+			//Play a random sound when injured
+			_injuredSounds[EnemyHandler.Random.Next(_injuredSounds.Length)].Play();
 
-				// TODO: Debug purposes
-				Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
+			_drawRedHaze = true;
+
+			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
+
+			// TODO: Debug purposes
+			Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
 
 			_health -= damage;
 
@@ -154,7 +181,7 @@ namespace ChilledTreat.GameClasses
 		{
 			Score++;
 		}
-		
+
 		/// <summary>
 		/// Reset the player's score, health and state
 		/// Since the player is a singleton, the constructor is only called once. Because of that, we use this method
