@@ -29,7 +29,7 @@ namespace ChilledTreat.GameStates
 
 		// Testing
 		private float _timeSinceLastAdd;
-		private float _enemiesPerSecond = 1f;
+		private float _enemiesPerSecond = 20f;
 
 		private int _timeSinceLastIntervalIncrease;
 		private const int AddEnemyInterval = 5000; // milliseconds
