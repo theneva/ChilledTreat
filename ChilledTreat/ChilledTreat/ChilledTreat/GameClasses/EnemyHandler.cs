@@ -12,9 +12,9 @@ namespace ChilledTreat.GameClasses
 
 		public static readonly Random Random = new Random();
 
-		private const int DefaultDamage = 20, DefaultHealth = 1;
 
-		private float _timeSinceLastAdd, _enemiesPerSecond = 20f;
+
+		private float _timeSinceLastAdd, _enemiesPerSecond = 2.5f;
 
 		private int _timeSinceLastIntervalIncrease;
 		private const int AddEnemyInterval = 5000; // milliseconds
@@ -33,15 +33,27 @@ namespace ChilledTreat.GameClasses
 			_enemies = new List<Enemy>();
 		}
 
+
+		/// <summary>
+		/// Adds an enemy to the list
+		/// </summary>
 		public void AddEnemy()
 		{
-			_enemies.Add(new Enemy(DefaultHealth));
+			_enemies.Add(new Enemy());
 		}
 
-		public void AddEnemy(int health)
+		// These are for later use
+		public void AddEnemy(int value, bool isHealth)
 		{
-			_enemies.Add(new Enemy(health));
+			_enemies.Add(new Enemy(value, isHealth));
 		}
+
+		public void AddEnemy(int damage, int health)
+		{
+			_enemies.Add(new Enemy(health, damage));
+		}
+
+
 
 		/// <summary>
 		/// Gets the amount of enemies currently in the list
@@ -106,7 +118,7 @@ namespace ChilledTreat.GameClasses
 			if (_timeSinceLastAdd >= 1000 / _enemiesPerSecond)
 			{
 				_timeSinceLastAdd -= 1000 / _enemiesPerSecond;
-				AddEnemy(DefaultHealth);
+				AddEnemy();
 			}
 
 			foreach (Enemy enemy in _enemies)

@@ -15,6 +15,8 @@ namespace ChilledTreat.GameClasses
 		Vector2 _speed = new Vector2(0, 0.5f);
 		private int _damageInflicted;
 
+		private const int DefaultDamage = 20, DefaultHealth = 1;
+
 		private readonly Random _random = new Random();
 
 		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
@@ -32,14 +34,16 @@ namespace ChilledTreat.GameClasses
 
 		private bool _alive = true;
 
+		/// <summary>
+		/// Constructors!
+		/// </summary>
+		public Enemy()
+			: this(DefaultHealth, DefaultDamage) { }
 
-		// TODO: Find a default health
-		private Enemy()
-			: this(20)
-		{
-		}
+		public Enemy(int value, bool isHealth)
+			: this(isHealth ? value : DefaultHealth, isHealth ? DefaultDamage : value) { }
 
-		public Enemy(int health)
+		public Enemy(int health, int damage)
 		{
 			_health = health;
 
@@ -58,13 +62,6 @@ namespace ChilledTreat.GameClasses
 
 			_currentFrame = new Point(0, 0);
 			_sheetSize = new Point(7, 1);
-			//_position = position;
-		}
-
-		// TODO: THIS IS SHIT.
-		public static Point GetOriginTexture()
-		{
-			return new Point(41, 80);
 		}
 
 		public Rectangle GetRectangle()
@@ -88,7 +85,7 @@ namespace ChilledTreat.GameClasses
 
 			if (_health > 0) return;
 
-			_alive = false;
+			Die();
 		}
 
 		/// <summary>
@@ -97,10 +94,8 @@ namespace ChilledTreat.GameClasses
 		/// </summary>
 		void Die()
 		{
+			_alive = false;
 			Player.Instance.SuccesfullKill();
-
-
-
 			EnemyHandler.Instance.Remove(this);
 		}
 
