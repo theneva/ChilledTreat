@@ -75,7 +75,6 @@ namespace ChilledTreat.GameClasses
 				// TODO: Get enemies to spawn at correct height
 				Game1.GameScreenHeight - 480 /*- _texture.Height * _scale*/);
 
-
 		}
 
 		public Rectangle GetRectangle()
@@ -119,8 +118,7 @@ namespace ChilledTreat.GameClasses
 						return;
 					}
 					_currentFrame.X = 0;
-					++_currentFrame.Y;
-					if (_currentFrame.Y >= _sheetSize.Y)
+					if (++_currentFrame.Y >= _sheetSize.Y)
 						_currentFrame.Y = _currentFrameOrigin;
 				}
 			}
