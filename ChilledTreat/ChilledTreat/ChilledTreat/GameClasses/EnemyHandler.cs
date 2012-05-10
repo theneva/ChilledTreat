@@ -80,7 +80,7 @@ namespace ChilledTreat.GameClasses
 			}
 
 			if (_enemies.Count > 0)
-				Console.WriteLine(_enemies[0].GetScale());
+				Console.WriteLine(_enemies[0].Scale);
 		}
 	}
 }
