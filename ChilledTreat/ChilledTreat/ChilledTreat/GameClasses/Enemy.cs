@@ -145,7 +145,7 @@ namespace ChilledTreat.GameClasses
 		{
 			Game1.Instance.SpriteBatch.Draw(_texture, _position,
 			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
-			Color.White, 0, origin: Vector2.Zero, scale: Scale, effects: SpriteEffects.None, layerDepth: 0);
+			Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
 
 
 			#region MuzzleFlare
@@ -157,10 +157,5 @@ namespace ChilledTreat.GameClasses
 			#endregion
 			//_spriteBatch.Draw();
 		}
-
-
-
 	}
-
-
 }
