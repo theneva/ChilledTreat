@@ -7,15 +7,18 @@ namespace ChilledTreat.GameClasses
 {
 	class Enemy
 	{
-		private bool _drawMuzzleFlare;
-		private int _timesDrawnMuzzleFlare;
 
-		readonly Texture2D _texture, _muzzleFlare;
+		private bool _alive = true;
+		private int _health;
 		Vector2 _position = new Vector2(20, 40);
+		readonly Texture2D _texture, _muzzleFlare;
+
 		Vector2 _speed = new Vector2(0, 0.5f);
 		private int _damageInflicted;
 
 		private const int DefaultDamage = 20, DefaultHealth = 1;
+
+
 
 		private readonly Random _random = new Random();
 
@@ -26,13 +29,17 @@ namespace ChilledTreat.GameClasses
 
 		public float Scale { get; private set; }
 
-		int _health = 20;
+
 
 		private Point _frameSize;
 		Point _currentFrame;
 		private Point _sheetSize;
 
-		private bool _alive = true;
+
+
+
+		private bool _drawMuzzleFlare;
+		private int _timesDrawnMuzzleFlare;
 
 		/// <summary>
 		/// Constructors!
@@ -129,14 +136,13 @@ namespace ChilledTreat.GameClasses
 			}
 
 
-			// Movement based on state
-			if (_alive)
-			{
-				_position.Y += _speed.Y;
-				Scale = 0.008f * (_position.Y);
-				if (_position.Y > Game1.Instance.Window.ClientBounds.Height - 300)
-					_position.Y = Game1.Instance.Window.ClientBounds.Height - 300;
-			}
+			// Movement based on life
+			if (!_alive) return;
+			
+			_position.Y += _speed.Y;
+			Scale = 0.008f * (_position.Y);
+			if (_position.Y > Game1.Instance.Window.ClientBounds.Height - 300)
+				_position.Y = Game1.Instance.Window.ClientBounds.Height - 300;
 		}
 
 
@@ -145,7 +151,7 @@ namespace ChilledTreat.GameClasses
 		{
 			Game1.Instance.SpriteBatch.Draw(_texture, _position,
 			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y),
-			Color.White, 0, origin: Vector2.Zero, scale: Scale, effects: SpriteEffects.None, layerDepth: 0);
+					Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
 
 
 			#region MuzzleFlare
@@ -155,7 +161,6 @@ namespace ChilledTreat.GameClasses
 
 			_timesDrawnMuzzleFlare++;
 			#endregion
-			//_spriteBatch.Draw();
 		}
 
 
