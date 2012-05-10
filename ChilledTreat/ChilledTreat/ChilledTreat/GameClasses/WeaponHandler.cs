@@ -132,12 +132,12 @@ namespace ChilledTreat.GameClasses
 		private bool _drawMuzzleFlare;
 		private readonly Texture2D _reticuleTexture, _cartridgeTexture, _usedCartridgeTexture, _weaponTexture;
 		private readonly Vector2 _halfReticuleTexture;
-		private Vector2 _vectorGunToMouse;
+		private Vector2 _vectorGunToMouse, _weaponPosition;
 		private readonly Texture2D[] _cartridges;
 		private readonly Vector2[] _cartridgePositions;
 		private readonly SoundEffect _shotSound, _reloadSound;
 		private float _gunRotation;
-		private readonly Rectangle _weaponPosition, _weaponDrawSource, _firedWeaponDrawSource;
+		private readonly Rectangle _weaponDrawSource, _firedWeaponDrawSource;
 
 		#endregion
 
@@ -180,12 +180,11 @@ namespace ChilledTreat.GameClasses
 			_firedWeaponDrawSource = new Rectangle(_weaponTexture.Width/2, 0, _weaponTexture.Width/2, _weaponTexture.Height);
 
 			//Set the weapon 30 pixels underneath the game-window, so that, when you rotate the weapon, you can't see the bottom of it
-			_weaponPosition = new Rectangle(Game1.GameScreenWidth/2, Game1.GameScreenHeight + 30, _weaponTexture.Width/2,
-			                                _weaponTexture.Height);
+			_weaponPosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight + 30);
 
 			//Fill the positions-array for the cartridges, so I can iterate over it, placing them where they should be on the screen
 			for (int i = 0; i < _cartridgePositions.Length; i++)
-				_cartridgePositions[i] = new Vector2(i*_cartridgeTexture.Width + 5, Game1.GameScreenHeight - _cartridgeTexture.Height);
+				_cartridgePositions[i] = new Vector2(i*_cartridgeTexture.Width, Game1.GameScreenHeight - _cartridgeTexture.Height * Game1.GameScale);
 
 			//Fill the texture-array for the cartridges, so the correct textures are drawn in the loop in Draw
 			for (int i = 0; i < _cartridges.Length; i++) 
@@ -215,17 +214,17 @@ namespace ChilledTreat.GameClasses
 				if (_drawMuzzleFlare)
 				{
 					_spriteBatch.Draw(_weaponTexture, _weaponPosition, _firedWeaponDrawSource, Color.White, _gunRotation,
-					                  new Vector2(_weaponTexture.Width/4f, _weaponTexture.Height), SpriteEffects.None, 1f);
+					                  new Vector2(_weaponTexture.Width/4f, _weaponTexture.Height), Game1.GameScale, SpriteEffects.None, 0);
 
 					_timesDrawnMuzzleFlare++;
 				}
 				else
 					_spriteBatch.Draw(_weaponTexture, _weaponPosition, _weaponDrawSource, Color.White, _gunRotation,
-					                  new Vector2(_weaponTexture.Width/4f, _weaponTexture.Height), SpriteEffects.None, 1f);
+									  new Vector2(_weaponTexture.Width / 4f, _weaponTexture.Height), Game1.GameScale, SpriteEffects.None, 0);
 			}
 
 			for (int i = 0; i < _cartridges.Length; i++)
-				_spriteBatch.Draw(_cartridges[i], _cartridgePositions[i], Color.White);
+				_spriteBatch.Draw(_cartridges[i], _cartridgePositions[i], _cartridgeTexture.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 		}
 
 		/// <summary>
