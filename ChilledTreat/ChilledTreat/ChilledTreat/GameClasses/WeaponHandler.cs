@@ -44,7 +44,9 @@ namespace ChilledTreat.GameClasses
 			           		new Weapon("Pistol", 10, 100, 5, false, false),
 			           		new Weapon("Rifle", 30, 50, 10, true, false)
 			           	};
-
+#if !WINDOWS_PHONE
+            ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
+#endif
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
 
@@ -54,8 +56,15 @@ namespace ChilledTreat.GameClasses
 
 			if (Input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading)
 				ChangeWeapon();
+#if WINDOWS
+            ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
+#elif !WINDOWS_PHONE
+            if (Input.ThumbStickLeft().X > 0.4) ReticulePosition.X += 5;
+            if (Input.ThumbStickLeft().Y > 0.4) ReticulePosition.Y += 5;
+            if (Input.ThumbStickLeft().X < -0.4) ReticulePosition.X -= 5;
+            if (Input.ThumbStickLeft().Y < -0.4) ReticulePosition.Y -= 5;
+#endif
             
-			ReticulePosition = new Vector2(Input.MouseState.X, Input.MouseState.Y);
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading)
 				PlayerState = Player.State.Alive;
 
@@ -69,11 +78,15 @@ namespace ChilledTreat.GameClasses
 			     Input.IsShootDown() && _currentWeapon.IsWeaponAutomatic) && !Player.Instance.InCover)
 			{
 				_startShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
-
+#if WINDOWS
 				HitBox = _currentWeapon.IsWeaponAutomatic
 				         	? new Rectangle(Input.MouseState.X - 40, Input.MouseState.Y - 40, 80, 80)
 				         	: new Rectangle(Input.MouseState.X - 10, Input.MouseState.Y - 10, 20, 20);
-
+#elif !WINDOWS_PHONE
+                HitBox = _currentWeapon.IsWeaponAutomatic
+                    ? new Rectangle((int)ReticulePosition.X - 40, (int)ReticulePosition.Y - 40, 80, 80)
+                    : new Rectangle((int)ReticulePosition.X - 10, (int)ReticulePosition.Y - 10, 20, 20);
+#endif
 				PlayerState = Player.State.Shooting;
 			}
 
@@ -198,9 +211,14 @@ namespace ChilledTreat.GameClasses
 				_drawMuzzleFlare = false;
 				_timesDrawnMuzzleFlare = 0;
 			}
-
+#if WINDOWS
 			_vectorGunToMouse = new Vector2((_weaponPosition.X - WeaponHandler.Instance.Input.MouseState.X),
 			                                (_weaponPosition.Y - WeaponHandler.Instance.Input.MouseState.Y));
+
+#elif !WINDOWS_PHONE
+            _vectorGunToMouse = new Vector2((_weaponPosition.X - WeaponHandler.Instance.ReticulePosition.X),
+                                            (_weaponPosition.Y - WeaponHandler.Instance.ReticulePosition.Y));
+#endif
 
 			_gunRotation = (float) Math.Atan2(-_vectorGunToMouse.X, _vectorGunToMouse.Y);
 		}

@@ -16,20 +16,23 @@ namespace ChilledTreat.GameStates
 		private int _shift;
 		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
-		private List<Highscore> _highScoreList;
+#if WINDOWS
+        private List<Highscore> _highScoreList;
 		char[] charList;
 		int charListPos = 0;
 		string name = "";
 		int charPos;
 		bool typing = true;
 		bool writeFile = true;
+#endif
 		
 
 		public GameOver(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
 		{
 			// LOAD CONTENT
-			_menuFont = content.Load<SpriteFont>("Fonts/menuFont");
+            _menuFont = content.Load<SpriteFont>("Fonts/menuFont");
+#if WINDOWS
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 			_nameFont = content.Load<SpriteFont>("Fonts/nameFont");
 
@@ -39,12 +42,15 @@ namespace ChilledTreat.GameStates
 
 				_fontColor = Color.RoyalBlue;
 			//_highScoreList = CreateHighScore();
-			_highScoreList = Highscore.CreateHighScore();
+
+            _highScoreList = Highscore.CreateHighScore();
+#endif
 		}
 
 		public override void Update()
 		{
-			if (typing)
+#if WINDOWS
+            if (typing)
 			{
 				if (_input.IsDownPressed())
 				{
@@ -76,6 +82,7 @@ namespace ChilledTreat.GameStates
 				NewScoreToAdd = false;
 			}
 			_shift = 0;
+#endif
 			if (_input.IsAbortPressed())
 				Game1.ChangeState(Menu);
 		}
@@ -83,7 +90,8 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f, 100), Color.White);
-			SpriteBatch.DrawString(_nameFont, "Name: ", new Vector2(70, 250), Color.White);
+#if WINDOWS
+            SpriteBatch.DrawString(_nameFont, "Name: ", new Vector2(70, 250), Color.White);
 			charPos = 250;
 			for (int i = 0; i < charList.Length; i++)
 			{
@@ -100,5 +108,6 @@ namespace ChilledTreat.GameStates
 				SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.GameScreenWidth / 3f * 2f, 300 + (_shift * 50)), Color.White);
 			}
 		}
+#endif
 	}
 }
