@@ -68,6 +68,11 @@ namespace ChilledTreat.GameClasses
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading)
 				PlayerState = Player.State.Alive;
 
+			if (ReticulePosition.X < 0)
+				ReticulePosition = new Vector2(0, ReticulePosition.Y);
+			else if (ReticulePosition.X > Game1.GameScreenWidth)
+				ReticulePosition = new Vector2(Game1.GameScreenWidth, ReticulePosition.Y);
+
 			if (ReticulePosition.Y < 0)
 				ReticulePosition = new Vector2(ReticulePosition.X, 0);
 			else if (ReticulePosition.Y > Game1.GameScreenHeight)
