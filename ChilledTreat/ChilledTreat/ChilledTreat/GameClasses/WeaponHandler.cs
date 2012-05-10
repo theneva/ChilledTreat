@@ -153,6 +153,8 @@ namespace ChilledTreat.GameClasses
 			_cartridgePositions = new Vector2[maxAmmo];
 			_weaponDrawSource = new Rectangle(0, 0, _weaponTexture.Width / 2, _weaponTexture.Height);
 			_firedWeaponDrawSource = new Rectangle(_weaponTexture.Width / 2, 0, _weaponTexture.Width / 2, _weaponTexture.Height);
+
+			//Set the weapon 40 pixels underneath the game-window, so that, when you rotate the weapon, you can't see the bottom of it
 			_weaponPosition = new Rectangle(Game1.GameScreenWidth / 2, Game1.GameScreenHeight + 40, _weaponTexture.Width / 2, _weaponTexture.Height);
 
 			//Fill the positions-array for the cartridges, so I can iterate over it, placing them where they should be on the screen
@@ -230,8 +232,10 @@ namespace ChilledTreat.GameClasses
 			_shotSound.Play();
 			_drawMuzzleFlare = true;
 
+			//The damage dealt is a random number between half the default damage and the default damage
 			_damage = EnemyHandler.Random.Next((_defaultDamage / 2), _defaultDamage);
 
+			//Shoot at the enemy
 			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance.HitBox, _damage);
 
 			//Set the array of textures to appear used when firing a shot
