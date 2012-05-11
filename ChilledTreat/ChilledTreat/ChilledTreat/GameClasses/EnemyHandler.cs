@@ -91,11 +91,15 @@ namespace ChilledTreat.GameClasses
 		{
 			// Hackish as fuck, but it works. A for-each loop won't do here because the
 			// amount of enemies will change if one is killed
+
+			List<Enemy> enemiesReversed = _enemies;
+			enemiesReversed.Reverse();
+
 			for (int i = GetNumberOfEnemies() - 1; i >= 0; i--)
-				if (_enemies[i].GetRectangle().Intersects(attackedArea))
+				if (enemiesReversed[i].GetRectangle().Intersects(attackedArea))
 				{
-					if (_enemies[i].Alive)
-						_enemies[i].TakeDamage(inflictedDamage);
+					if (enemiesReversed[i].Alive)
+						enemiesReversed[i].TakeDamage(inflictedDamage);
 
 					if (!WeaponHandler.Instance.Splash) break;
 				}
