@@ -12,6 +12,8 @@ namespace ChilledTreat.GameStates
 		readonly string[] _instructionsContent;
 		readonly Color _fontColor;
 		int _lineBreak;
+	//	readonly SoundEffect _menuSound;
+
 
 		Texture2D buttonMappingGamePad;
 
@@ -41,7 +43,7 @@ namespace ChilledTreat.GameStates
 			_instructionsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
 			_fontColor = Color.Salmon;
 
-			buttonMappingGamePad = content.Load<Texture2D>("Images/buttonmappingXBOX.png");
+			buttonMappingGamePad = content.Load<Texture2D>("Images/buttonmappingXBOX");
 /*			_instructionsContent = new[] { 
 				"Right or left bumper - Shoot!",
 				" ",
