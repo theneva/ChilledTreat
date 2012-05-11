@@ -237,7 +237,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="Sounds\Enemy\00000050_11025.wav">
       <Name>00000050_11025</Name>
       <Importer>WavImporter</Importer>
@@ -259,11 +258,12 @@
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
     <Compile Include="Sounds\Enemy\00000057_11025.wav">
-      <Name>00000057_11025</Name>
-=======
+		<Name>00000057_11025</Name>
+		<Importer>WavImporter</Importer>
+		<Processor>SoundEffectProcessor</Processor>
+	</Compile>
     <Compile Include="Sounds\buttonSound.wav">
-      <Name>buttonSound</Name>
->>>>>>> b25f53b1a80bb794235311e4384c7b2349a86ac8
+      <Name>buttonSound</Name> 
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>

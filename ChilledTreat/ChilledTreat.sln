@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChilledTreat", "ChilledTrea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChilledTreatContent", "ChilledTreat\ChilledTreatContent\ChilledTreatContent.contentproj", "{7C649C0B-F6EE-4F45-88FC-63113373309C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox 360 Copy of ChilledTreat", "ChilledTreat\ChilledTreat\Xbox 360 Copy of ChilledTreat.csproj", "{7C047091-50FA-47E7-A129-07E6C7D30D97}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -35,20 +33,6 @@ Global
 		{7C649C0B-F6EE-4F45-88FC-63113373309C}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{7C649C0B-F6EE-4F45-88FC-63113373309C}.Release|x86.ActiveCfg = Release|x86
 		{7C649C0B-F6EE-4F45-88FC-63113373309C}.Release|Xbox 360.ActiveCfg = Release|x86
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Debug|Mixed Platforms.ActiveCfg = Debug|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Debug|Mixed Platforms.Build.0 = Debug|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Debug|Mixed Platforms.Deploy.0 = Debug|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Debug|x86.ActiveCfg = Debug|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Debug|Xbox 360.Deploy.0 = Debug|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Release|Mixed Platforms.ActiveCfg = Release|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Release|Mixed Platforms.Build.0 = Release|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Release|Mixed Platforms.Deploy.0 = Release|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Release|x86.ActiveCfg = Release|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Release|Xbox 360.Build.0 = Release|Xbox 360
-		{7C047091-50FA-47E7-A129-07E6C7D30D97}.Release|Xbox 360.Deploy.0 = Release|Xbox 360
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
