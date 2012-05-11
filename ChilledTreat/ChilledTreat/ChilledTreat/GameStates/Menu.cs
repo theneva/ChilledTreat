@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ChilledTreat.GameStates
 {
@@ -15,6 +16,7 @@ namespace ChilledTreat.GameStates
 		readonly int[] _yPos;
 		int _menuPos;
 		readonly InputHandler _input = InputHandler.Instance;
+		readonly SoundEffect _menuSound;
 
 		public Menu(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
@@ -26,7 +28,9 @@ namespace ChilledTreat.GameStates
 			_menuItems = strings;
 			_menuPos = 0;
 			_selectedItem = new float[_menuItems.Length];
-			
+
+			_menuSound = content.Load<SoundEffect>("Sounds/buttonSound");
+
 			for (int i = 0; i < _selectedItem.Length; i++)
 			{
 				_selectedItem[i] = 100f;
@@ -46,11 +50,13 @@ namespace ChilledTreat.GameStates
 		{
 			if (_input.IsDownPressed())
 			{
+				_menuSound.Play();
 				_menuPos++;
 				if (_menuPos > _selectedItem.Length - 1) _menuPos = 0;
 			}
 			if (_input.IsUpPressed())
 			{
+				_menuSound.Play();
 				_menuPos--;
 				if (_menuPos < 0) _menuPos = _selectedItem.Length - 1;
 			}

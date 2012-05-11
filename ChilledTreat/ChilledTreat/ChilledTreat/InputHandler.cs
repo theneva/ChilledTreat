@@ -208,8 +208,8 @@ namespace ChilledTreat
 		public Buttons DownButton = Buttons.DPadDown;
 		public Buttons UpButton = Buttons.DPadUp;
 
-		public Buttons ActionButton = Buttons.A;
 		public Buttons AbortButton = Buttons.B;
+		public Buttons ActionButton = Buttons.A;
 
 		public Buttons ShootButton = Buttons.LeftTrigger;
 		public Buttons CoverButton = Buttons.RightTrigger;
@@ -458,7 +458,7 @@ namespace ChilledTreat
 #if WINDOWS
 			return IsKeyPressed(ActionKey);
 #elif XBOX
-			return IsButtonPressed(AbortButton);
+			return IsButtonPressed(ActionButton);
 #endif
 		}
 
@@ -550,7 +550,7 @@ namespace ChilledTreat
 #if WINDOWS
 			return IsKeyPressed(Keys.Tab);
 #elif XBOX
-			return IsButtonPressed(Buttons.Y);
+			return IsButtonPressed(ChangeWeaponButton);
 #endif
 		}
 
@@ -558,12 +558,12 @@ namespace ChilledTreat
 		public bool ThumbStickLeftUp()
 		{
 			return GamePadState.ThumbSticks.Left.Y > 0.4 && 
-				PreviousGamePadState.ThumbSticks.Left.Y == 0;
+				PreviousGamePadState.ThumbSticks.Left.Y < 0.2;
 		}
 		public bool ThumbStickLeftDown()
 		{
 			return GamePadState.ThumbSticks.Left.Y < -0.4 &&
-				PreviousGamePadState.ThumbSticks.Left.Y == 0;
+				PreviousGamePadState.ThumbSticks.Left.Y > -0.2;
 		}
 #endif
 
