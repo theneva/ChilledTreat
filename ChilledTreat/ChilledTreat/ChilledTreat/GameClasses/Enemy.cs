@@ -10,7 +10,8 @@ namespace ChilledTreat.GameClasses
 	{
 
 		public bool Alive { get; protected set; }
-		private int _health, _damage;
+		private int _health;
+		private readonly int _damage;
 		Vector2 _position = new Vector2(20, 40);
 		readonly Texture2D _texture, _muzzleFlare;
 
@@ -30,14 +31,10 @@ namespace ChilledTreat.GameClasses
 
 		public float Scale { get; private set; }
 
-
-
 		private Point _frameSize;
 		Point _currentFrame;
 		private Point _sheetSize;
 		private int _currentFrameOrigin;
-
-
 
 		private bool _drawMuzzleFlare;
 		private int _timesDrawnMuzzleFlare;
@@ -165,8 +162,7 @@ namespace ChilledTreat.GameClasses
 		public void Draw()
 		{
 			Game1.Instance.SpriteBatch.Draw(_texture, _position,
-			new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y), Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
-
+					new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y), Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
 
 			#region MuzzleFlare
 			if (!_drawMuzzleFlare) return;
