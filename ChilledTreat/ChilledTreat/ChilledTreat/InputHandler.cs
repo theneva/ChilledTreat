@@ -567,11 +567,10 @@ namespace ChilledTreat
 		public Vector2 PointerLocation()
 		{
 #if !XBOX
-			return GamePad.GetState(PlayerIndex.One).IsConnected
+			return GamePad.GetState(PlayerIndex).IsConnected
 			       	? GamePadPointerLocation()
 			       	: new Vector2(MouseState.X, MouseState.Y);
-#endif
-#if XBOX
+#else
 			return GamePadPointerLocation();
 #endif
 
@@ -579,7 +578,6 @@ namespace ChilledTreat
 		}
 
 #if !WINDOWS_PHONE
-		
 		private Vector2 GamePadPointerLocation()
 		{
 			if (GamePadState.ThumbSticks.Left.X > 0.2) _gamePadPointerLocation.X += 6;
