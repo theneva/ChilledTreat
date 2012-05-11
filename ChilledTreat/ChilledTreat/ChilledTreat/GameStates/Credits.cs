@@ -22,15 +22,14 @@ namespace ChilledTreat.GameStates
 		Song creditMusic;
 		bool songstart = false;
 
-		public Credits(SpriteBatch spriteBatch, ContentManager content)
-			: base(spriteBatch, content)
+		public Credits()
 		{
 			// Credits content
-			creditMusic = Content.Load<Song>("Music/DubMood");
+			creditMusic = Game1.Instance.Content.Load<Song>("Music/DubMood");
 			MediaPlayer.IsRepeating = true;
 
-			_creditsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
-			_creditsFontSources = content.Load<SpriteFont>("Fonts/urlFont");
+			_creditsFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/CreditsFont");
+			_creditsFontSources = Game1.Instance.Content.Load<SpriteFont>("Fonts/urlFont");
 			_fontColor = Color.Salmon;
 			_creditsContent = new[] {
 
@@ -108,14 +107,14 @@ namespace ChilledTreat.GameStates
 			foreach (string creditEntry in _creditsContent)
 			{
 				_shift++;
-				SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
+				Game1.Instance.SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 			}
 			if (_frameInfo.GameTime.TotalGameTime.TotalSeconds >= 5)
 			{
 				foreach (string creditSourcesEntry in _creditsContentSources)
 				{
 					_shift++;
-					SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
+					Game1.Instance.SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 				}
 			}
 		}

@@ -1,8 +1,6 @@
-﻿using ChilledTreat.GameClasses;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 
 namespace ChilledTreat.GameStates
@@ -18,11 +16,10 @@ namespace ChilledTreat.GameStates
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly SoundEffect _menuSound, _selectSound;
 
-		public Menu(SpriteBatch spriteBatch, ContentManager content)
-			: base(spriteBatch, content)
+		public Menu()
 		{
 			// Menu content
-			_menuFont = Content.Load<SpriteFont>("Fonts/menuFont");
+			_menuFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/menuFont");
 			_fontColor = Color.Salmon;
 #if WINDOWS
 			string[] strings = {"New Game", "Instructions", "Leaderboard", "Credits", "EXIT"};
@@ -33,13 +30,12 @@ namespace ChilledTreat.GameStates
 			_menuPos = 0;
 			_selectedItem = new float[_menuItems.Length];
 
-			_menuSound = content.Load<SoundEffect>("Sounds/buttonSound");
-			_selectSound = content.Load<SoundEffect>("Sounds/selectSound");
+			_menuSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/buttonSound");
+			_selectSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/selectSound");
 
 			for (int i = 0; i < _selectedItem.Length; i++)
-			{
 				_selectedItem[i] = 100f;
-			}
+
 			_selectedItem[_menuPos] = 150f;
 
 			int yStartPos = 100;
@@ -57,52 +53,44 @@ namespace ChilledTreat.GameStates
 			{
 				_menuSound.Play();
 				_menuPos++;
-				if (_menuPos > _selectedItem.Length - 1) _menuPos = 0;
+				if (_menuPos > _selectedItem.Length - 1)
+					_menuPos = 0;
 			}
 			if (_input.IsUpPressed())
 			{
 				_menuSound.Play();
 				_menuPos--;
-				if (_menuPos < 0) _menuPos = _selectedItem.Length - 1;
+				if (_menuPos < 0)
+					_menuPos = _selectedItem.Length - 1;
 			}
-			for (int i = 0; i < _selectedItem.Length; i++) _selectedItem[i] = 100f;
+			for (int i = 0; i < _selectedItem.Length; i++)
+				_selectedItem[i] = 100f;
 			_selectedItem[_menuPos] = 150f;
 
-			if (_input.IsActionPressed())
+			if (!_input.IsActionPressed()) return;
+
+			_selectSound.Play();
+			if (_menuItems[_menuPos].Contains("EXIT"))
+				Game1.Instance.Exit();
+			else if (_menuItems[_menuPos].Contains("New Game"))
 			{
-				_selectSound.Play();
-				if (_menuItems[_menuPos].Contains("EXIT"))
-				{
-					Game1.Instance.Exit();
-				}
-				else if (_menuItems[_menuPos].Contains("New Game"))
-				{
-					Game1.NewGame();
-					Game1.ChangeState(GameState.InGame);
-				}
-				else if (_menuItems[_menuPos].Contains("Instructions"))
-				{
-                    Game1.ChangeState(GameState.Instructions);
-				}
-				else if (_menuItems[_menuPos].Contains("Credits"))
-				{
-					Game1.NewCredits();
-					Game1.ChangeState(GameState.Credits);
-				}
-				else if (_menuItems[_menuPos].Contains("Leaderboard"))
-				{
-					Game1.ChangeState(GameState.LeaderBoard);
-				}
+				Game1.NewGame();
+				Game1.ChangeState(InGame);
 			}
+			else if (_menuItems[_menuPos].Contains("Instructions"))
+				Game1.ChangeState(Instructions);
+			else if (_menuItems[_menuPos].Contains("Credits"))
+			{
+				Game1.NewCredits();
+				Game1.ChangeState(Credits);
+			}
+			else if (_menuItems[_menuPos].Contains("Leaderboard"))
+				Game1.ChangeState(LeaderBoard);
 		}
 		public override void Draw()
 		{
-			
-			// Draw here
 			for (int i = 0; i < _menuItems.Length; i++)
-			{
-				SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);	
-			}
+				Game1.Instance.SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
 		}
 	}
 }

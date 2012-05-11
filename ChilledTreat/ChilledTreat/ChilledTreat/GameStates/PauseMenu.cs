@@ -19,17 +19,16 @@ namespace ChilledTreat.GameStates
 		int _menuPos;
 
 		// Constructor
-		public PauseMenu(SpriteBatch spriteBatch, ContentManager content)
-			: base(spriteBatch, content)
+		public PauseMenu()
 		{
-			_menuFont = content.Load<SpriteFont>("fonts/menuFont");
+			_menuFont = Game1.Instance.Content.Load<SpriteFont>("fonts/menuFont");
 			_fontColor = Color.Salmon;
 			string[] strings = { "Resume Game", "Main Menu" };
 			_menuItems = strings;
 			_selectedItem = new float[_menuItems.Length];
 			_menuPos = 0;
-			_buttonSound = content.Load<SoundEffect>("Sounds/buttonSound");
-			_selectSound = content.Load<SoundEffect>("Sounds/selectSound");
+			_buttonSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/buttonSound");
+			_selectSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/selectSound");
 
 			for (int i = 0; i < _selectedItem.Length; i++)
 			{
@@ -82,10 +81,7 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 			for (int i = 0; i < _menuItems.Length; i++)
-			{
-				SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor);
-
-			}
+				Game1.Instance.SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor);
 		}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace ChilledTreat.GameStates
 {
@@ -8,17 +7,19 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly InputHandler _input = InputHandler.Instance;
-	//	readonly SoundEffect _menuSound;
+		//	readonly SoundEffect _menuSound;
 
-		Texture2D buttonMappingGamePad;
-		Texture2D buttonMappingKeyboardMouse;
-
-		public Instructions(SpriteBatch spriteBatch, ContentManager content)
-			: base(spriteBatch, content)
+		readonly Texture2D _buttonMappingGamePad;
+#if WINDOWS
+		Texture2D _buttonMappingKeyboardMouse;
+#endif
+		public Instructions()
 		{
 			// Credits content
-			buttonMappingGamePad = content.Load<Texture2D>("Images/buttonmappingXBOX");
-			buttonMappingKeyboardMouse = content.Load<Texture2D>("Images/buttonmappingWIN");
+			_buttonMappingGamePad = Game1.Instance.Content.Load<Texture2D>("Images/buttonmappingXBOX");
+#if WINDOWS
+			_buttonMappingKeyboardMouse = Game1.Instance.Content.Load<Texture2D>("Images/buttonmappingWIN");
+#endif
 		}
 
 		#region
@@ -195,15 +196,11 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
-			// DRAW!!!! LåååL
-
-#if XBOX
 			Game1.Instance.GraphicsDevice.Clear(Color.White);
-			SpriteBatch.Draw(buttonMappingGamePad, new Vector2(0, 0), Color.White);
-
-#elif WINDOWS
-			Game1.Instance.GraphicsDevice.Clear(Color.White);
-			SpriteBatch.Draw(buttonMappingKeyboardMouse, new Vector2(0, 0), Color.White);
+#if WINDOWS
+			Game1.Instance.SpriteBatch.Draw(_buttonMappingKeyboardMouse, new Vector2(0, 0), Color.White);
+#elif XBOX
+			Game1.Instance.SpriteBatch.Draw(_buttonMappingGamePad, new Vector2(0, 0), Color.White);
 #endif
 		}
 	}

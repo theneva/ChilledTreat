@@ -219,7 +219,6 @@ namespace ChilledTreat
 
 		public PlayerIndex PlayerIndex = PlayerIndex.One;
 
-		//TODO: TESTING!!!!!
 		private Vector2 _gamePadPointerLocation;
 #endif
 
