@@ -79,9 +79,15 @@ namespace ChilledTreat.GameClasses
 			{
 				_startShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-				HitBox = _currentWeapon.IsWeaponAutomatic
+				/*HitBox = _currentWeapon.IsWeaponAutomatic
 							? new Rectangle((int)PointerPosition.X - 40, (int)PointerPosition.Y - 40, 80, 80)
-							: new Rectangle((int)PointerPosition.X - 10, (int)PointerPosition.Y - 10, 20, 20);
+							: new Rectangle((int)PointerPosition.X - 10, (int)PointerPosition.Y - 10, 20, 20);*/
+
+				//TODO: Funker dette?
+				HitBox = new Rectangle((int)PointerPosition.X - _currentWeapon.RateOfFire * 10, (int)PointerPosition.Y - _currentWeapon.RateOfFire * 10, _currentWeapon.RateOfFire * 20, _currentWeapon.RateOfFire * 20);
+
+				//Set up a usable hit-box. Inside of the overall hit-box, create a randomly placed hit-box 10x10 pixels within the former hitbox to use for the actual collision test
+				HitBox = new Rectangle(EnemyHandler.Random.Next(HitBox.X, HitBox.X + HitBox.Width), EnemyHandler.Random.Next(HitBox.Y,  HitBox.Y + HitBox.Height), 10, 10);
 
 				PlayerState = Player.State.Shooting;
 			}
@@ -132,7 +138,7 @@ namespace ChilledTreat.GameClasses
 
 		private readonly SpriteBatch _spriteBatch;
 		internal int CurrentAmmo;
-		internal readonly int MaxAmmo;
+		internal readonly int MaxAmmo, RateOfFire;
 		private int _timesDrawnMuzzleFlare, _damage;
 		private readonly int _defaultDamage;
 		internal readonly double DelayBetweenShots;
@@ -169,6 +175,7 @@ namespace ChilledTreat.GameClasses
 			MaxAmmo = maxAmmo;
 			_defaultDamage = damage;
 			DelayBetweenShots = 1000f/rateOfFire;
+			RateOfFire = rateOfFire;
 			IsWeaponAutomatic = automatic;
 			Splash = splash;
 
