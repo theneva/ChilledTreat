@@ -24,8 +24,8 @@ namespace ChilledTreat.GameStates
 			: base(spriteBatch, content)
 		{
 #if WINDOWS		
-            _highScoreList = Highscore.CreateHighScore();
-            Console.WriteLine(_highScoreList.Count);
+			_highScoreList = Highscore.CreateHighScore();
+			Console.WriteLine(_highScoreList.Count);
 #endif
 			_menuFont = content.Load<SpriteFont>("Fonts/menuFont");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
@@ -50,20 +50,20 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 #if WINDOWS
-            foreach (Highscore hs in _highScoreList)
-                        {
-                            _shift++;
-                            SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.GameScreenWidth / 3f - 35, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
-                            SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.GameScreenWidth / 3f, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
-                            SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.GameScreenWidth / 3f * 2f, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
-                        }
-                        //Ramme oppe og nede for å sentrere leaderboardet
-                        SpriteBatch.Draw(lbTexture, new Rectangle(0, 0, 1280, 150), Color.YellowGreen);
-                        //Kan fjernes og evt bytte fontstørrelse og linjeskift
-                        SpriteBatch.Draw(lbTexture, new Rectangle(0, 640, 1280, 80), Color.YellowGreen);
-                        SpriteBatch.DrawString(_menuFont, "Leaderboard", new Vector2(Game1.GameScreenWidth / 3f - 100, 50), Color.White);
+			foreach (Highscore hs in _highScoreList)
+						{
+							_shift++;
+							SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.GameScreenWidth / 3f - 35, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
+							SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.GameScreenWidth / 3f, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
+							SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.GameScreenWidth / 3f * 2f, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
+						}
+						//Top/Bot Frame, this is centering the scrolling leaderboard, and hiding text under the title
+						SpriteBatch.Draw(lbTexture, new Rectangle(0, 0, 1280, 150), Color.YellowGreen);
+						//Can be removed and rather tweak fontsize and spacing.
+						SpriteBatch.Draw(lbTexture, new Rectangle(0, 640, 1280, 80), Color.YellowGreen);
+						SpriteBatch.DrawString(_menuFont, "Leaderboard", new Vector2(Game1.GameScreenWidth / 3f - 100, 50), Color.White);
 #endif
-        }
-            
+		}
+			
 	}
 }

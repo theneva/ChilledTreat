@@ -12,6 +12,8 @@ namespace ChilledTreat.GameStates
 		readonly string[] _instructionsContent;
 		readonly Color _fontColor;
 		int _lineBreak;
+		private readonly Texture2D buttonMappingTexture;
+
 
 		public Instructions(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
@@ -33,7 +35,11 @@ namespace ChilledTreat.GameStates
 			};
 #endif
 
-#if XBOX
+			//#if XBOX
+			{
+				buttonMappingTexture = content.Load<Texture2D>("Images/buttonmappingXBOX");
+			}
+			/*
 			{
 			// Credits content
 			_instructionsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
@@ -49,8 +55,10 @@ namespace ChilledTreat.GameStates
 				" ",
 				"This line of text is completely unnecessary"
 			};
-#endif
+			*/
 		}
+//#endif
+		
 
 // Methods
 /*								   8888  8888888
@@ -227,11 +235,18 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 			// DRAW!!!! LåååL
+#if XBOX
+			Game1.Instance.GraphicsDevice.Clear(Color.White);
+			SpriteBatch.Draw(buttonMappingTexture, new Vector2(0, 0), Color.White);
+#endif
+
+#if WINDOWS
 			foreach (string creditEntry in _instructionsContent)
 			{
 				_lineBreak += 60;
 				SpriteBatch.DrawString(_instructionsFont, creditEntry, new Vector2(40, _lineBreak), _fontColor);
 			}
+#endif
 		}
 	}
 }

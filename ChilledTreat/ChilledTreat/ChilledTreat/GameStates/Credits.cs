@@ -7,6 +7,7 @@ namespace ChilledTreat.GameStates
 {
 	class Credits : GameState
 	{
+		//fields
 		readonly SpriteFont _creditsFont;
 		readonly SpriteFont _creditsFontSources;
 		readonly string[] _creditsContent;
@@ -32,6 +33,8 @@ namespace ChilledTreat.GameStates
 			_creditsFontSources = content.Load<SpriteFont>("Fonts/urlFont");
 			_fontColor = Color.Salmon;
 			_creditsContent = new[] {
+
+				//People who have worked on this project
 				".....CREDITS.....",
 				"Programmers",
 				" ",
@@ -51,6 +54,8 @@ namespace ChilledTreat.GameStates
 				" "
 			};
 
+
+			//sourcepaths to some of the content used in this project.
 			_creditsContentSources = new[] {
 				"blogcdn.com/joystiq.com/media/2006/06/reticule.jpg",
 				"tactical-life.com/online/wp-content/uploads/2008/11/bullet.gif",
