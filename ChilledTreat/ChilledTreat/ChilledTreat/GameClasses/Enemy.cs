@@ -152,6 +152,9 @@ namespace ChilledTreat.GameClasses
 		void Die()
 		{
 			Alive = false;
+
+			EnemyHandler.Instance.SoundEffects[InGame.Random.Next(EnemyHandler.Instance.SoundEffects.Count)].Play();
+
 			Player.Instance.SuccesfullKill();
 			_currentFrame = new Point(0, 1);
 			_currentFrameOrigin = _frameSize.Y;
