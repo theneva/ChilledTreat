@@ -97,7 +97,7 @@ namespace ChilledTreat.GameClasses
 				Die();
 
 			// TODO: Debug
-			Console.WriteLine("Enemy hit! Remaining hp: " + _health);
+		//	Console.WriteLine("Enemy hit! Remaining hp: " + _health);
 		}
 
 

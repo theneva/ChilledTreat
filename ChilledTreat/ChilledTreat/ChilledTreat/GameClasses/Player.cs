@@ -137,7 +137,7 @@ namespace ChilledTreat.GameClasses
 			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 
 			// TODO: Debug purposes
-			Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
+			//Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
 
 			_health -= damage;
 

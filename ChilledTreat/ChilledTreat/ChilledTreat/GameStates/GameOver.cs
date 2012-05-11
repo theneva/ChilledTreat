@@ -31,7 +31,9 @@ namespace ChilledTreat.GameStates
 			: base(spriteBatch, content)
 		{
 			// LOAD CONTENT
-            _menuFont = content.Load<SpriteFont>("Fonts/menuFont");
+
+			_menuFont = content.Load<SpriteFont>("Fonts/menuFont");
+			_fontColor = Color.Salmon;
 #if WINDOWS
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 			_nameFont = content.Load<SpriteFont>("Fonts/nameFont");
@@ -40,7 +42,7 @@ namespace ChilledTreat.GameStates
 			for (int i = 0; i < charList.Length; i++) charList[i] = 'A';
 			
 
-				_fontColor = Color.RoyalBlue;
+				
 			//_highScoreList = CreateHighScore();
 
             _highScoreList = Highscore.CreateHighScore();
@@ -89,7 +91,7 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
-			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f - 70, 100), Color.White);
+			SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f - 70, 100), Color.Salmon);
 #if WINDOWS
             if (typing)
             {

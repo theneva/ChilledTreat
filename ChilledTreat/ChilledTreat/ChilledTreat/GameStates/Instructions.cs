@@ -19,7 +19,7 @@ namespace ChilledTreat.GameStates
 		{
 			// Credits content
 			_instructionsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
-			_fontColor = Color.White;
+			_fontColor = Color.Salmon;
 			_instructionsContent = new[] { 
 				"Mouse1 - Shoot!",
 				" ",
@@ -37,7 +37,7 @@ namespace ChilledTreat.GameStates
 			{
 			// Credits content
 			_instructionsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
-			_fontColor = Color.White;
+			_fontColor = Color.Salmon;
 			_instructionsContent = new[] { 
 				"Right or left bumper - Shoot!",
 				" ",
