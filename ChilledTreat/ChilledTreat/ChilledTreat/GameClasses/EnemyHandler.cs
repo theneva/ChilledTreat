@@ -13,8 +13,9 @@ namespace ChilledTreat.GameClasses
 		public static readonly Random Random = new Random();
 
 
+		private const float InitialEnemiesPerSecond = 1f;
 
-		private float _timeSinceLastAdd, _enemiesPerSecond = 1f;
+		private float _timeSinceLastAdd, _enemiesPerSecond = InitialEnemiesPerSecond;
 
 		private int _timeSinceLastIntervalIncrease;
 		private const int AddEnemyInterval = 5000; // milliseconds
@@ -98,6 +99,13 @@ namespace ChilledTreat.GameClasses
 
 					if(!WeaponHandler.Instance.Splash) break;
 				}
+		}
+
+
+		public void ResetEnemyHandler()
+		{
+			Clear();
+			_enemiesPerSecond = InitialEnemiesPerSecond;
 		}
 
 		/// <summary>
