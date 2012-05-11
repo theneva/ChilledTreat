@@ -12,7 +12,6 @@ namespace ChilledTreat.GameClasses
 
 		public static readonly Random Random = new Random();
 
-
 		private const float InitialEnemiesPerSecond = 1f;
 
 		private float _timeSinceLastAdd, _enemiesPerSecond = InitialEnemiesPerSecond;
@@ -141,9 +140,9 @@ namespace ChilledTreat.GameClasses
 		/// </summary>
 		public void Draw()
 		{
-			foreach (Enemy enemy in _enemies)
+			for (int i = _enemies.Count - 1; i >= 0; i--)
 			{
-				enemy.Draw();
+				_enemies[i].Draw();
 			}
 		}
 	}
