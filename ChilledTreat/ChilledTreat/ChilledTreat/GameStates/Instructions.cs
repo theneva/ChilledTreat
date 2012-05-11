@@ -8,58 +8,22 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly InputHandler _input = InputHandler.Instance;
-		readonly SpriteFont _instructionsFont;
-		readonly string[] _instructionsContent;
-		readonly Color _fontColor;
-		int _lineBreak;
 	//	readonly SoundEffect _menuSound;
 
-
 		Texture2D buttonMappingGamePad;
+		Texture2D buttonMappingKeyboardMouse;
 
 		public Instructions(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
-#if WINDOWS
 		{
 			// Credits content
-			_instructionsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
-			_fontColor = Color.Salmon;
-			_instructionsContent = new[] { 
-				"Mouse1 - Shoot!",
-				" ",
-				"Space - Take cover!",
-				" ", 
-				"R - Reload!",
-				" ", 
-				"Tab - Change Weapon!",
-				" ",
-				"This line of text is completely unnecessary"
-			};
-#endif
-
-#if XBOX
-		{
-			// Credits content
-			_instructionsFont = content.Load<SpriteFont>("Fonts/CreditsFont");
-			_fontColor = Color.Salmon;
-
 			buttonMappingGamePad = content.Load<Texture2D>("Images/buttonmappingXBOX");
-/*			_instructionsContent = new[] { 
-				"Right or left bumper - Shoot!",
-				" ",
-				"Right or left trigger - Take cover!",
-				" ", 
-				"X - Reload!",
-				" ", 
-				"Y - Change Weapon!",
-				" ",
-				"This line of text is completely unnecessary"
-			}; */
-#endif
+			buttonMappingKeyboardMouse = content.Load<Texture2D>("Images/buttonmappingWIN");
 		}
 
-		// Methods
-		/*								   8888  8888888
+		#region
+		/*
+										   8888  8888888
 								   888888888888888888888888
 								8888:::8888888888888888888888888
 							  8888::::::8888888888888888888888888888
@@ -218,7 +182,10 @@ namespace ChilledTreat.GameStates
 												   MM::::m:MM
 													MM::::MM
 													 MM::MM
-													  MMMM				 */
+													  MMMM				 
+		 */
+		#endregion
+
 		public override void Update()
 		{
 			// Logic
@@ -226,27 +193,19 @@ namespace ChilledTreat.GameStates
 			{
 				Game1.ChangeState(Menu);
 			}
-#if WINDOWS
-			_lineBreak = 0;
-#endif
 		}
 
 		public override void Draw()
 		{
-
 			// DRAW!!!! LåååL
 
 #if XBOX
-
-
+			Game1.Instance.GraphicsDevice.Clear(Color.White);
+			SpriteBatch.Draw(buttonMappingGamePad, new Vector2(0, 0), Color.White);
 
 #elif WINDOWS
-
-			foreach (string creditEntry in _instructionsContent)
-			{
-				_lineBreak += 60;
-				SpriteBatch.DrawString(_instructionsFont, creditEntry, new Vector2(40, _lineBreak), _fontColor);
-			}
+			Game1.Instance.GraphicsDevice.Clear(Color.White);
+			SpriteBatch.Draw(buttonMappingKeyboardMouse, new Vector2(0, 0), Color.White);
 #endif
 		}
 	}
