@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ChilledTreat.GameClasses
 {
 	class EnemyHandler
 	{
 		readonly List<Enemy> _enemies;
+
+		public List<SoundEffect> SoundEffects { get; protected set; }
 
 		public static readonly Random Random = new Random();
 
@@ -31,6 +32,7 @@ namespace ChilledTreat.GameClasses
 		private EnemyHandler()
 		{
 			_enemies = new List<Enemy>();
+			SoundEffects = new List<SoundEffect> { Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000050_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000053_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000054_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000056_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000057_11025") };
 		}
 
 
@@ -52,7 +54,6 @@ namespace ChilledTreat.GameClasses
 		{
 			_enemies.Add(new Enemy(health, damage));
 		}
-
 
 
 		/// <summary>
@@ -96,7 +97,7 @@ namespace ChilledTreat.GameClasses
 					if (_enemies[i].Alive)
 						_enemies[i].TakeDamage(inflictedDamage);
 
-					if(!WeaponHandler.Instance.Splash) break;
+					if (!WeaponHandler.Instance.Splash) break;
 				}
 		}
 
@@ -130,20 +131,18 @@ namespace ChilledTreat.GameClasses
 			}
 
 			for (int i = _enemies.Count - 1; i >= 0; i--)
-			{
 				_enemies[i].Update();
-			}
 		}
 
 		/// <summary>
-		/// Draws each enemy currently in the list
+		/// Draws each enemy currently in the list.
+		/// Loops through the list backwards so that enemies be drawn
+		/// in correct order based on spawn time.
 		/// </summary>
 		public void Draw()
 		{
 			for (int i = _enemies.Count - 1; i >= 0; i--)
-			{
 				_enemies[i].Draw();
-			}
 		}
 	}
 }
