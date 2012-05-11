@@ -19,7 +19,7 @@ namespace ChilledTreat.GameClasses
 
 		private const int DefaultDamage = 20, DefaultHealth = 1;
 
-
+		public int ZIndex { get; protected set; }
 
 		private readonly Random _random = new Random();
 

@@ -21,8 +21,6 @@ namespace ChilledTreat.GameStates
 			_background = content.Load<Texture2D>("Images/bg");
 		}
 
-		// Methods
-
 		/// <summary>
 		/// Updates player and enemies, pauses the game if the abort key is pressed
 		/// or the game loses focus

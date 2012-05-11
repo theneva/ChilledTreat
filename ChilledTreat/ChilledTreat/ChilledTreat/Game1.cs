@@ -147,11 +147,7 @@ namespace ChilledTreat
 			}
 
 			Player.Instance.ResetPlayer();
-			
-			// Hvorfor funker ikke dette?
-			////Instance._gameStates[4] = new InGame(Instance.SpriteBatch, Instance.Content);
-
-			// Kunne vi brukt et Array i stedet for en liste, og initialisert det med fem plasser for å slippe dette rotet?
+			EnemyHandler.Instance.ResetEnemyHandler();
 		}
 	}
 }
