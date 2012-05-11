@@ -8,9 +8,7 @@ namespace ChilledTreat.GameStates
 		protected SpriteBatch SpriteBatch;
 		protected ContentManager Content;
 
-		protected static int Splash = 0;
-		protected internal static int Menu = 1, InGame = 7, GameOver = 4;
-		protected static int Credits = 2, PauseMenu = 3, Instructions = 5, LeaderBoard = 6;
+		public const int Splash = 0, Menu = 1, Credits = 2, PauseMenu = 3, GameOver = 4, Instructions = 5, LeaderBoard = 6, InGame = 7;
 /*
              .u+m.z"!!::~~~~!~"+!
           .*~~~*"~~~~~~~~~~~~~~~~~?L.

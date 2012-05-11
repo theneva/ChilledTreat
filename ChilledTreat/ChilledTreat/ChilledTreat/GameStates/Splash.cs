@@ -19,7 +19,7 @@ namespace ChilledTreat.GameStates
 			InputHandler input = InputHandler.Instance;
 
 			if (input.IsActionPressed())
-				Game1.ChangeState(GameState.Menu);
+				Game1.ChangeState(Menu);
 		}
 
 		public override void Draw()

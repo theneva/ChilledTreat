@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
@@ -12,13 +10,12 @@ namespace ChilledTreat.GameStates
 	{
 		readonly SpriteFont _menuFont, _scoreFont;
 		private int _shift;
-		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
-		private List<Highscore> _highScoreList;
-		public int scrolling = 0;
+		private readonly List<Highscore> _highScoreList;
+		private int _scrolling;
 
-		Texture2D lbTexture = new Texture2D(Game1.Instance.Graphics.GraphicsDevice, 1, 1);
-		Color[] colorData = {Color.White};
+		readonly Texture2D _lbTexture = new Texture2D(Game1.Instance.Graphics.GraphicsDevice, 1, 1);
+		readonly Color[] _colorData = {Color.White};
 
 		public LeaderBoard(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
@@ -29,9 +26,8 @@ namespace ChilledTreat.GameStates
 #endif
 			_menuFont = content.Load<SpriteFont>("Fonts/menuFont");
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
-			_fontColor = Color.RoyalBlue;
 
-			lbTexture.SetData<Color>(colorData);
+			_lbTexture.SetData(_colorData);
 		}
 
 		public override void Update()
@@ -40,11 +36,11 @@ namespace ChilledTreat.GameStates
 			
 			if (_input.IsAbortPressed())
 			{
-				Game1.ChangeState(GameState.Menu);
+				Game1.ChangeState(Menu);
 			}
-			if (_input.IsDownPressed() && scrolling < 0) scrolling++;
+			if (_input.IsDownPressed() && _scrolling < 0) _scrolling++;
 
-			else if (_input.IsUpPressed() && scrolling > -_highScoreList.Count + 10) scrolling--;
+			else if (_input.IsUpPressed() && _scrolling > -_highScoreList.Count + 10) _scrolling--;
 		}
 
 		public override void Draw()
@@ -53,14 +49,14 @@ namespace ChilledTreat.GameStates
 			foreach (Highscore hs in _highScoreList)
 						{
 							_shift++;
-							SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.GameScreenWidth / 3f - 35, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
-							SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.GameScreenWidth / 3f, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
-							SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.GameScreenWidth / 3f * 2f, 100 + (_shift * 50) + (scrolling * 50)), Color.White);
+							SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.GameScreenWidth / 3f - 35, 100 + (_shift * 50) + (_scrolling * 50)), Color.White);
+							SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.GameScreenWidth / 3f, 100 + (_shift * 50) + (_scrolling * 50)), Color.White);
+							SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.GameScreenWidth / 3f * 2f, 100 + (_shift * 50) + (_scrolling * 50)), Color.White);
 						}
 						//Top/Bot Frame, this is centering the scrolling leaderboard, and hiding text under the title
-						SpriteBatch.Draw(lbTexture, new Rectangle(0, 0, 1280, 150), Color.YellowGreen);
+						SpriteBatch.Draw(_lbTexture, new Rectangle(0, 0, 1280, 150), Color.YellowGreen);
 						//Can be removed and rather tweak fontsize and spacing.
-						SpriteBatch.Draw(lbTexture, new Rectangle(0, 640, 1280, 80), Color.YellowGreen);
+						SpriteBatch.Draw(_lbTexture, new Rectangle(0, 640, 1280, 80), Color.YellowGreen);
 						SpriteBatch.DrawString(_menuFont, "Leaderboard", new Vector2(Game1.GameScreenWidth / 3f - 100, 50), Color.White);
 #endif
 		}

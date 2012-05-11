@@ -17,23 +17,23 @@ namespace ChilledTreat
 		}
 
 #if WINDOWS
-		public KeyboardState KeyboardState { get; private set; }
-		public KeyboardState PreviousKeyboardState { get; private set; }
+		private KeyboardState KeyboardState { get; set; }
+		private KeyboardState PreviousKeyboardState { get; set; }
 
-		public Keys UpKey = Keys.Up;
-		public Keys LeftKey = Keys.Left;
-		public Keys RightKey = Keys.Right;
-		public Keys DownKey = Keys.Down;
+		private const Keys UpKey = Keys.Up;
+		private const Keys LeftKey = Keys.Left;
+		private const Keys RightKey = Keys.Right;
+		private const Keys DownKey = Keys.Down;
 
 		/*- = = L E H M A N N  H A N D I C A P E T = = -*/
 		/*Lehmann*/
-		public Keys WKey = Keys.W; /*Lehmann*/
+		private const Keys WKey = Keys.W; /*Lehmann*/
 		/*Lehmann*/
-		public Keys AKey = Keys.A; /*Lehmann*/
+		private const Keys AKey = Keys.A; /*Lehmann*/
 		/*Lehmann*/
-		public Keys SKey = Keys.S; /*Lehmann*/
+		private const Keys SKey = Keys.S; /*Lehmann*/
 		/*Lehmann*/
-		public Keys DKey = Keys.D; /*Lehmann*/
+		private const Keys DKey = Keys.D; /*Lehmann*/
 		/*- = = L E H M A N N  H A N D I C A P E T = = -*/
 		/*
 		 * 
@@ -185,41 +185,39 @@ namespace ChilledTreat
 											$$...   .&&&       $$&&&   &&$
 		*/
 
-		public Keys ActionKey = Keys.Enter;
-		public Keys AbortKey = Keys.Escape;
+		private const Keys ActionKey = Keys.Enter;
+		private const Keys AbortKey = Keys.Escape;
 
-		public Keys ReloadKey = Keys.R;
-		public Keys CoverKey = Keys.Space;
+		private const Keys ReloadKey = Keys.R;
+		private const Keys CoverKey = Keys.Space;
 
 
 #endif
 
 #if !XBOX
-		public MouseState MouseState { get; private set; }
-		public MouseState PreviouseMouseState { get; private set; }
+		private MouseState MouseState { get; set; }
+		private MouseState PreviouseMouseState { get; set; }
 #endif
 
 #if !WINDOWS_PHONE
-		public GamePadState GamePadState { get; private set; }
-		public GamePadState PreviousGamePadState { get; private set; }
+		private GamePadState GamePadState { get; set; }
+		private GamePadState PreviousGamePadState { get; set; }
 
-		public Buttons LeftButton = Buttons.DPadLeft;
-		public Buttons RightButton = Buttons.DPadRight;
-		public Buttons DownButton = Buttons.DPadDown;
-		public Buttons UpButton = Buttons.DPadUp;
+		private const Buttons LeftButton = Buttons.DPadLeft;
+		private const Buttons RightButton = Buttons.DPadRight;
+		private const Buttons DownButton = Buttons.DPadDown;
+		private const Buttons UpButton = Buttons.DPadUp;
 
-		public Buttons AbortButton = Buttons.B;
-		public Buttons ActionButton = Buttons.A;
+		private const Buttons AbortButton = Buttons.B;
+		private const Buttons ActionButton = Buttons.A;
 
+		// Must be public
 		public Buttons ShootButton = Buttons.LeftTrigger;
 		public Buttons CoverButton = Buttons.RightTrigger;
 		public Buttons ReloadButton = Buttons.Y;
 		public Buttons ChangeWeaponButton = Buttons.X;
 
 		public PlayerIndex PlayerIndex = PlayerIndex.One;
-
-		public Vector2 Left { get; private set; }
-		public Vector2 Right { get; private set; }
 
 		//TODO: TESTING!!!!!
 		private Vector2 _gamePadPointerLocation;
@@ -557,7 +555,7 @@ namespace ChilledTreat
 #if !WINDOWS_PHONE
 		public bool ThumbStickLeftUp()
 		{
-			return GamePadState.ThumbSticks.Left.Y > 0.4 && 
+			return GamePadState.ThumbSticks.Left.Y > 0.4 &&
 				PreviousGamePadState.ThumbSticks.Left.Y < 0.2;
 		}
 		public bool ThumbStickLeftDown()
@@ -575,8 +573,8 @@ namespace ChilledTreat
 		{
 #if !XBOX
 			return GamePad.GetState(PlayerIndex).IsConnected
-			       	? GamePadPointerLocation()
-			       	: new Vector2(MouseState.X, MouseState.Y);
+					? GamePadPointerLocation()
+					: new Vector2(MouseState.X, MouseState.Y);
 #else
 			return GamePadPointerLocation();
 #endif
@@ -591,8 +589,8 @@ namespace ChilledTreat
 			else if (GamePadState.ThumbSticks.Left.Y < -0.2) _gamePadPointerLocation.Y += 6;
 
 			return _gamePadPointerLocation;
-		}	
+		}
 #endif
-		
+
 	}
 }
