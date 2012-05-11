@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ChilledTreat.GameStates
 {
@@ -14,6 +15,7 @@ namespace ChilledTreat.GameStates
 		readonly string[] _menuItems;
 		readonly float[] _selectedItem;
 		readonly int[] _yPos;
+		readonly SoundEffect _buttonSound, _selectSound;
 		int _menuPos;
 
 		// Constructor
@@ -26,7 +28,8 @@ namespace ChilledTreat.GameStates
 			_menuItems = strings;
 			_selectedItem = new float[_menuItems.Length];
 			_menuPos = 0;
-			
+			_buttonSound = content.Load<SoundEffect>("Sounds/buttonSound");
+			_selectSound = content.Load<SoundEffect>("Sounds/selectSound");
 
 			for (int i = 0; i < _selectedItem.Length; i++)
 			{

@@ -16,7 +16,7 @@ namespace ChilledTreat.GameStates
 		readonly int[] _yPos;
 		int _menuPos;
 		readonly InputHandler _input = InputHandler.Instance;
-		readonly SoundEffect _menuSound;
+		readonly SoundEffect _menuSound, _selectSound;
 
 		public Menu(SpriteBatch spriteBatch, ContentManager content)
 			: base(spriteBatch, content)
@@ -24,12 +24,17 @@ namespace ChilledTreat.GameStates
 			// Menu content
 			_menuFont = Content.Load<SpriteFont>("Fonts/menuFont");
 			_fontColor = Color.Salmon;
+#if WINDOWS
 			string[] strings = {"New Game", "Instructions", "Leaderboard", "Credits", "EXIT"};
+#elif XBOX
+			string[] strings = { "New Game", "Leaderboard", "Credits", "EXIT" };	
+#endif
 			_menuItems = strings;
 			_menuPos = 0;
 			_selectedItem = new float[_menuItems.Length];
 
 			_menuSound = content.Load<SoundEffect>("Sounds/buttonSound");
+			_selectSound = content.Load<SoundEffect>("Sounds/selectSound");
 
 			for (int i = 0; i < _selectedItem.Length; i++)
 			{
@@ -65,6 +70,7 @@ namespace ChilledTreat.GameStates
 
 			if (_input.IsActionPressed())
 			{
+				_selectSound.Play();
 				if (_menuItems[_menuPos].Contains("EXIT"))
 				{
 					Game1.Instance.Exit();
@@ -80,6 +86,7 @@ namespace ChilledTreat.GameStates
 				}
 				else if (_menuItems[_menuPos].Contains("Credits"))
 				{
+					Game1.NewCredits();
 					Game1.ChangeState(GameState.Credits);
 				}
 				else if (_menuItems[_menuPos].Contains("Leaderboard"))

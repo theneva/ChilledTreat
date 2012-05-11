@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using ChilledTreat.GameClasses;
 using System;
+using Microsoft.Xna.Framework.Audio;
 
 namespace ChilledTreat.GameStates
 {
@@ -16,6 +17,7 @@ namespace ChilledTreat.GameStates
 		private int _shift;
 		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
+		readonly SoundEffect _buttonSound, _selectSound;
 #if WINDOWS
         private List<Highscore> _highScoreList;
 		char[] charList;
@@ -31,9 +33,10 @@ namespace ChilledTreat.GameStates
 			: base(spriteBatch, content)
 		{
 			// LOAD CONTENT
-
 			_menuFont = content.Load<SpriteFont>("Fonts/menuFont");
 			_fontColor = Color.Salmon;
+			_buttonSound = Content.Load<SoundEffect>("Sounds/buttonSound");
+			_selectSound = Content.Load<SoundEffect>("Sounds/selectSound");
 #if WINDOWS
 			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
 			_nameFont = content.Load<SpriteFont>("Fonts/nameFont");
@@ -41,10 +44,6 @@ namespace ChilledTreat.GameStates
 			charList = new char[6];
 			for (int i = 0; i < charList.Length; i++) charList[i] = 'A';
 			
-
-				
-			//_highScoreList = CreateHighScore();
-
             _highScoreList = Highscore.CreateHighScore();
 #endif
 		}
@@ -56,17 +55,32 @@ namespace ChilledTreat.GameStates
 			{
 				if (_input.IsDownPressed())
 				{
+					_buttonSound.Play();
 					charList[charListPos]++;
 					if (charList[charListPos] > 'Z') charList[charListPos] = 'A';
 				}
 				else if (_input.IsUpPressed())
 				{
+					_buttonSound.Play();
 					charList[charListPos]--;
 					 if (charList[charListPos] < 'A') charList[charListPos] = 'Z';
 				}
-				else if (_input.IsRightPressed() && charListPos != charList.Length - 1) charListPos++;
-				else if (_input.IsLeftPressed() && charListPos != 0) charListPos--;
-				if (_input.IsActionPressed()) typing = false;
+				else if (_input.IsRightPressed() && charListPos != charList.Length - 1)
+				{
+					_selectSound.Play();
+					charListPos++;
+				}
+				else if (_input.IsLeftPressed() && charListPos != 0)
+				{
+					_selectSound.Play();
+					charListPos--;
+				}
+
+				if (_input.IsActionPressed())
+				{
+					_selectSound.Play();
+					typing = false;
+				}
 			}
 			else if (writeFile)
 			{
@@ -86,7 +100,11 @@ namespace ChilledTreat.GameStates
 			_shift = 0;
 #endif
 			if (_input.IsAbortPressed())
+			{
+				_buttonSound.Play();
 				Game1.ChangeState(Menu);
+			}
+				
 		}
 
 		public override void Draw()

@@ -258,12 +258,12 @@
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
     <Compile Include="Sounds\Enemy\00000057_11025.wav">
-		<Name>00000057_11025</Name>
-		<Importer>WavImporter</Importer>
-		<Processor>SoundEffectProcessor</Processor>
-	</Compile>
+      <Name>00000057_11025</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
     <Compile Include="Sounds\buttonSound.wav">
-      <Name>buttonSound</Name> 
+      <Name>buttonSound</Name>
       <Name>00000057_11025</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
@@ -279,6 +279,13 @@
       <Name>buttonmappingWIN</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sounds\selectSound.wav">
+      <Name>selectSound</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

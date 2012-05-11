@@ -149,5 +149,9 @@ namespace ChilledTreat
 			Player.Instance.ResetPlayer();
 			EnemyHandler.Instance.ResetEnemyHandler();
 		}
+		public static void NewCredits()
+		{
+			Instance._gameStates[GameState.Credits] = new Credits(Instance.SpriteBatch, Instance.Content);
+		}
 	}
 }
