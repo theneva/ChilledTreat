@@ -83,11 +83,15 @@ namespace ChilledTreat.GameClasses
 							? new Rectangle((int)PointerPosition.X - 40, (int)PointerPosition.Y - 40, 80, 80)
 							: new Rectangle((int)PointerPosition.X - 10, (int)PointerPosition.Y - 10, 20, 20);*/
 
-				//TODO: Funker dette?
-				HitBox = new Rectangle((int)PointerPosition.X - _currentWeapon.RateOfFire * 10, (int)PointerPosition.Y - _currentWeapon.RateOfFire * 10, _currentWeapon.RateOfFire * 20, _currentWeapon.RateOfFire * 20);
+				HitBox = new Rectangle((int)PointerPosition.X - _currentWeapon.RateOfFire * 5, (int)PointerPosition.Y - _currentWeapon.RateOfFire * 5, _currentWeapon.RateOfFire * 10, _currentWeapon.RateOfFire * 10);
+
+				Console.WriteLine("Original hitbox: " + HitBox.ToString());
 
 				//Set up a usable hit-box. Inside of the overall hit-box, create a randomly placed hit-box 10x10 pixels within the former hitbox to use for the actual collision test
-				HitBox = new Rectangle(EnemyHandler.Random.Next(HitBox.X, HitBox.X + HitBox.Width), EnemyHandler.Random.Next(HitBox.Y,  HitBox.Y + HitBox.Height), 10, 10);
+				if(!_currentWeapon.Splash)
+					HitBox = new Rectangle(EnemyHandler.Random.Next(HitBox.X, HitBox.X + HitBox.Width), EnemyHandler.Random.Next(HitBox.Y,  HitBox.Y + HitBox.Height), 10, 10);
+
+				Console.WriteLine("New hitbox: " + HitBox.ToString());
 
 				PlayerState = Player.State.Shooting;
 			}
