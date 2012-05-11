@@ -208,12 +208,13 @@ namespace ChilledTreat
 		public Buttons DownButton = Buttons.DPadDown;
 		public Buttons UpButton = Buttons.DPadUp;
 
-		public Buttons ActionButton = Buttons.B;
-		public Buttons AbortButton = Buttons.A;
+		public Buttons ActionButton = Buttons.A;
+		public Buttons AbortButton = Buttons.B;
 
 		public Buttons ShootButton = Buttons.LeftTrigger;
 		public Buttons CoverButton = Buttons.RightTrigger;
 		public Buttons ReloadButton = Buttons.Y;
+		public Buttons ChangeWeaponButton = Buttons.X;
 
 		public PlayerIndex PlayerIndex = PlayerIndex.One;
 
@@ -476,7 +477,7 @@ namespace ChilledTreat
 			return IsKeyPressed(UpKey) || IsKeyPressed(WKey);
 			;
 #elif XBOX
-			return IsButtonPressed(UpButton);
+			return IsButtonPressed(UpButton) || ThumbStickLeftUp();
 #endif
 		}
 
@@ -485,7 +486,7 @@ namespace ChilledTreat
 #if WINDOWS
 			return IsKeyPressed(DownKey) || IsKeyPressed(SKey);
 #elif XBOX
-			return IsButtonPressed(DownButton);
+			return IsButtonPressed(DownButton) || ThumbStickLeftDown();
 #endif
 		}
 
@@ -554,9 +555,15 @@ namespace ChilledTreat
 		}
 
 #if !WINDOWS_PHONE
-		public Vector2 ThumbStickLeft()
+		public bool ThumbStickLeftUp()
 		{
-			return GamePad.GetState(PlayerIndex.One).ThumbSticks.Left;
+			return GamePadState.ThumbSticks.Left.Y > 0.4 && 
+				PreviousGamePadState.ThumbSticks.Left.Y == 0;
+		}
+		public bool ThumbStickLeftDown()
+		{
+			return GamePadState.ThumbSticks.Left.Y < -0.4 &&
+				PreviousGamePadState.ThumbSticks.Left.Y == 0;
 		}
 #endif
 
@@ -573,8 +580,6 @@ namespace ChilledTreat
 #else
 			return GamePadPointerLocation();
 #endif
-
-
 		}
 
 #if !WINDOWS_PHONE

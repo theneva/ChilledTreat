@@ -30,7 +30,7 @@ namespace ChilledTreat.GameStates
 		{
 			//SpriteBatch.Draw(SplashTexture, Vector2.Zero, Color.White);
 
-			Game1.Instance.GraphicsDevice.Clear(Color.Turquoise);
+			Game1.Instance.GraphicsDevice.Clear(Color.Salmon);
 
 
 		}
