@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ChilledTreat.GameClasses
@@ -35,7 +34,7 @@ namespace ChilledTreat.GameClasses
 		static Player _instance;
 		public static Player Instance
 		{
-			get { return _instance ?? (_instance = new Player(Game1.Instance.SpriteBatch, Game1.Instance.Content)); }
+			get { return _instance ?? (_instance = new Player()); }
 		}
 
 		public enum State
@@ -52,24 +51,24 @@ namespace ChilledTreat.GameClasses
 
 		#endregion
 
-		private Player(SpriteBatch spriteBatch, ContentManager content)
+		private Player()
 		{
-			_spriteBatch = spriteBatch;
-
+			_spriteBatch = Game1.Instance.SpriteBatch;
 			_health = MaxHealth;
 
-			//Load all textures fonts
-			_healthTexture = content.Load<Texture2D>("Images/normalUsableHeart");
-			_coverTexture = content.Load<Texture2D>("Images/usableCoverBox");
-			_damagedTexture = content.Load<Texture2D>("Images/damagedTint");
-			_scoreFont = content.Load<SpriteFont>("Fonts/ScoreFont");
-			_diedSound = content.Load<SoundEffect>("Sounds/poor-baby");
+			//Load all textures, font and sounds
+			_healthTexture = Game1.Instance.Content.Load<Texture2D>("Images/normalUsableHeart");
+			_coverTexture = Game1.Instance.Content.Load<Texture2D>("Images/usableCoverBox");
+			_damagedTexture = Game1.Instance.Content.Load<Texture2D>("Images/damagedTint");
+			_scoreFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/ScoreFont");
+			_diedSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/poor-baby");
 
-			_injuredSounds = new[] { content.Load<SoundEffect>("Sounds/goddamnit"),
-				content.Load<SoundEffect>("Sounds/how-dare-you"),
-				content.Load<SoundEffect>("Sounds/im-in-trouble"),
-				content.Load<SoundEffect>("Sounds/uh") };
+			_injuredSounds = new[] { Game1.Instance.Content.Load<SoundEffect>("Sounds/goddamnit"),
+				Game1.Instance.Content.Load<SoundEffect>("Sounds/how-dare-you"),
+				Game1.Instance.Content.Load<SoundEffect>("Sounds/im-in-trouble"),
+				Game1.Instance.Content.Load<SoundEffect>("Sounds/uh") };
 
+			//Create the rectangle used for drawing hearts (health indicator) on the screen
 			_widthOfHeart = _healthTexture.Width / 3;
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
 			_halfHealthSource = new Rectangle(_widthOfHeart, 0, _widthOfHeart, _healthTexture.Height);
@@ -80,6 +79,7 @@ namespace ChilledTreat.GameClasses
 		public void Update()
 		{
 			_currentTime = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
+
 			if (PlayerState == State.Dead)
 			{
 				EnemyHandler.Instance.Clear();
@@ -88,11 +88,9 @@ namespace ChilledTreat.GameClasses
 			}
 
 			if (_drawRedHaze && _currentTime - _timeAtDamaged > 200)
-			{
 				_drawRedHaze = false;
-			}
 
-			//
+			//Divide the health into 10 parts, to easily calculate how mnay hearts to draw on the screen
 			_healthIn10 = _health / 10;
 			//The shift to the side, so that the hearts are not drawn on top of each other
 			_heartsDrawShift = 0;
