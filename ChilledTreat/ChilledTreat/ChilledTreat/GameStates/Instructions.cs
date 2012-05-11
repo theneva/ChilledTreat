@@ -190,9 +190,7 @@ namespace ChilledTreat.GameStates
 		{
 			// Logic
 			if (_input.IsAbortPressed())
-			{
 				Game1.ChangeState(Menu);
-			}
 		}
 
 		public override void Draw()

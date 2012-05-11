@@ -264,8 +264,21 @@
 	</Compile>
     <Compile Include="Sounds\buttonSound.wav">
       <Name>buttonSound</Name> 
+      <Name>00000057_11025</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Sounds\buttonSound.wav">
+      <Name>buttonSound</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Images\buttonmappingWIN.png">
+      <Name>buttonmappingWIN</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
