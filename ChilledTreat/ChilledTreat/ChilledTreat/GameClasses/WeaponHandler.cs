@@ -17,7 +17,7 @@ namespace ChilledTreat.GameClasses
 		private int _currentWeaponIndex;
 		internal double CurrentTime, StartReloadTime;
 		private double _startShootTime;
-		internal readonly InputHandler Input = InputHandler.Instance;
+		private readonly InputHandler _input = InputHandler.Instance;
 		internal Vector2 ReticulePosition, PointerPosition;
 		internal Rectangle HitBox;
 
@@ -42,7 +42,8 @@ namespace ChilledTreat.GameClasses
 			_weapons = new[]
 						{
 							new Weapon("Pistol", 10, 100, 5, false, false),
-							new Weapon("Rifle", 30, 50, 10, true, false)
+							new Weapon("Rifle", 30, 50, 10, true, false),
+							new Weapon("Pistol", 1000, 100, 20, true, true)
 						};
 
 			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
@@ -53,11 +54,11 @@ namespace ChilledTreat.GameClasses
 		{
 			CurrentTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-			PointerPosition = Input.PointerLocation();
+			PointerPosition = _input.PointerLocation();
 
 			ReticulePosition = new Vector2(PointerPosition.X, PointerPosition.Y);
 
-			if (Input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading)
+			if (_input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading)
 				ChangeWeapon();
 			
 			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading)
@@ -74,8 +75,8 @@ namespace ChilledTreat.GameClasses
 				ReticulePosition = new Vector2(ReticulePosition.X, Game1.GameScreenHeight);
 
 			if (PlayerState == Player.State.Alive &&
-				(Input.IsShootPressed() && !_currentWeapon.IsWeaponAutomatic ||
-				 Input.IsShootDown() && _currentWeapon.IsWeaponAutomatic) && !Player.Instance.InCover)
+				(_input.IsShootPressed() && !_currentWeapon.IsWeaponAutomatic ||
+				 _input.IsShootDown() && _currentWeapon.IsWeaponAutomatic) && !Player.Instance.InCover)
 			{
 				_startShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
@@ -85,18 +86,18 @@ namespace ChilledTreat.GameClasses
 
 				HitBox = new Rectangle((int)PointerPosition.X - _currentWeapon.RateOfFire * 5, (int)PointerPosition.Y - _currentWeapon.RateOfFire * 5, _currentWeapon.RateOfFire * 10, _currentWeapon.RateOfFire * 10);
 
-				Console.WriteLine("Original hitbox: " + HitBox.ToString());
+				Console.WriteLine("Original hitbox: " + HitBox);
 
 				//Set up a usable hit-box. Inside of the overall hit-box, create a randomly placed hit-box 10x10 pixels within the former hitbox to use for the actual collision test
-				if(!_currentWeapon.Splash)
-					HitBox = new Rectangle(EnemyHandler.Random.Next(HitBox.X, HitBox.X + HitBox.Width), EnemyHandler.Random.Next(HitBox.Y,  HitBox.Y + HitBox.Height), 10, 10);
+				if (!_currentWeapon.Splash)
+					HitBox = new Rectangle(EnemyHandler.Random.Next(HitBox.X, HitBox.X + HitBox.Width), EnemyHandler.Random.Next(HitBox.Y, HitBox.Y + HitBox.Height), 10, 10);
 
-				Console.WriteLine("New hitbox: " + HitBox.ToString());
+				Console.WriteLine("New hitbox: " + HitBox);
 
 				PlayerState = Player.State.Shooting;
 			}
 
-			if (Input.IsReloadPressed() && PlayerState == Player.State.Alive &&
+			if (_input.IsReloadPressed() && PlayerState == Player.State.Alive &&
 				_currentWeapon.CurrentAmmo < _currentWeapon.MaxAmmo)
 			{
 				PlayerState = Player.State.Reloading;

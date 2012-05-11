@@ -13,7 +13,7 @@ namespace ChilledTreat.GameClasses
 	{
 		#region Fields
 
-		private const int MaxHealth = 100;
+		private const int MaxHealth = 100000;
 
 		private readonly SpriteBatch _spriteBatch;
 		private readonly InputHandler _input = InputHandler.Instance;
@@ -136,15 +136,10 @@ namespace ChilledTreat.GameClasses
 
 			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 
-			// TODO: Debug purposes
-			//Console.WriteLine("Player hit for " + damage + "points @ " + FrameInfo.Instance.GameTime.TotalGameTime.TotalSeconds);
-
 			_health -= damage;
 
 			if (_health <= 0)
-			{
 				PlayerState = State.Dead;
-			}
 		}
 
 		/// <summary>

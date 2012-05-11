@@ -60,13 +60,13 @@ namespace ChilledTreat
 			// Legge til gamestates som klasser i listen
 			// ex: _gameStates.add(new InGame(Sprite...., con);
 
-			_gameStates.Add(new Splash(SpriteBatch, Content));
-			_gameStates.Add(new Menu(SpriteBatch, Content));
-			_gameStates.Add(new Credits(SpriteBatch, Content));
-			_gameStates.Add(new PauseMenu(SpriteBatch, Content));
-			_gameStates.Add(new GameOver(SpriteBatch, Content));
-			_gameStates.Add(new Instructions(SpriteBatch, Content));
-			_gameStates.Add(new LeaderBoard(SpriteBatch, Content));
+			_gameStates.Add(new Splash());
+			_gameStates.Add(new Menu());
+			_gameStates.Add(new Credits());
+			_gameStates.Add(new PauseMenu());
+			_gameStates.Add(new GameOver());
+			_gameStates.Add(new Instructions());
+			_gameStates.Add(new LeaderBoard());
 		   
 
 			_activeGameState = _gameStates[GameState.Splash];
@@ -152,7 +152,7 @@ namespace ChilledTreat
 		}
 		public static void NewCredits()
 		{
-			Instance._gameStates[GameState.Credits] = new Credits(Instance.SpriteBatch, Instance.Content);
+			Instance._gameStates[GameState.Credits] = new Credits();
 		}
 	}
 }

@@ -14,7 +14,6 @@ namespace ChilledTreat.GameStates
 
 		// Constructor
 		public InGame(SpriteBatch spriteBatch, ContentManager content)
-			: base (spriteBatch, content)
 		{
 			// CONTENT LOAD
 			Game1.Instance.IsMouseVisible = false;
@@ -37,7 +36,7 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 			// DRAW THAT SHIT
-			SpriteBatch.Draw(_background, Vector2.Zero, Color.White);
+			Game1.Instance.SpriteBatch.Draw(_background, Vector2.Zero, Color.White);
 			EnemyHandler.Instance.Draw();
 			Player.Instance.Draw();
 		}

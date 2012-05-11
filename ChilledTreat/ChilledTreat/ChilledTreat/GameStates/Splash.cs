@@ -1,16 +1,10 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace ChilledTreat.GameStates
 {
 	class Splash : GameState
 	{
-		//Texture2D SplashTexture;
-
-
-		public Splash(SpriteBatch spriteBatch, ContentManager content)
-			: base(spriteBatch, content)
+		public Splash()
 		{
 			// LOAD CONTENT
 		}		
@@ -24,11 +18,7 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
-			//SpriteBatch.Draw(SplashTexture, Vector2.Zero, Color.White);
-
 			Game1.Instance.GraphicsDevice.Clear(Color.Salmon);
-
-
 		}
 
 	}
