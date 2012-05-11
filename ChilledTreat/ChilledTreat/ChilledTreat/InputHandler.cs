@@ -212,10 +212,10 @@ namespace ChilledTreat
 		private const Buttons ActionButton = Buttons.A;
 
 		// Must be public
-		public Buttons ShootButton = Buttons.LeftTrigger;
-		public Buttons CoverButton = Buttons.RightTrigger;
-		public Buttons ReloadButton = Buttons.Y;
-		public Buttons ChangeWeaponButton = Buttons.X;
+		public Buttons ShootButton = Buttons.RightTrigger;
+		public Buttons CoverButton = Buttons.LeftTrigger;
+		public Buttons ReloadButton = Buttons.X;
+		public Buttons ChangeWeaponButton = Buttons.Y;
 
 		public PlayerIndex PlayerIndex = PlayerIndex.One;
 
@@ -583,10 +583,10 @@ namespace ChilledTreat
 #if !WINDOWS_PHONE
 		private Vector2 GamePadPointerLocation()
 		{
-			if (GamePadState.ThumbSticks.Left.X > 0.2) _gamePadPointerLocation.X += 6;
-			else if (GamePadState.ThumbSticks.Left.Y > 0.2) _gamePadPointerLocation.Y -= 6;
-			if (GamePadState.ThumbSticks.Left.X < -0.2) _gamePadPointerLocation.X -= 6;
-			else if (GamePadState.ThumbSticks.Left.Y < -0.2) _gamePadPointerLocation.Y += 6;
+			if (GamePadState.ThumbSticks.Left.X > 0.2) _gamePadPointerLocation.X += 10;
+			else if (GamePadState.ThumbSticks.Left.Y > 0.2) _gamePadPointerLocation.Y -= 10;
+			if (GamePadState.ThumbSticks.Left.X < -0.2) _gamePadPointerLocation.X -= 10;
+			else if (GamePadState.ThumbSticks.Left.Y < -0.2) _gamePadPointerLocation.Y += 10;
 
 			return _gamePadPointerLocation;
 		}

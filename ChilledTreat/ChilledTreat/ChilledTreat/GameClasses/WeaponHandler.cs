@@ -133,6 +133,9 @@ namespace ChilledTreat.GameClasses
 			foreach (Weapon w in _weapons)
 				w.ResetWeapon();
 
+			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2f, Game1.GameScreenHeight / 2f);
+
+
 		}
 	}
 
