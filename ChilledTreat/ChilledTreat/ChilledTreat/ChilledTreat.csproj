@@ -127,7 +127,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="GameStates\Splash.cs" />
     <Compile Include="Tools\GameConstants.cs" />
-    <Compile Include="Tools\Trapeze.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
