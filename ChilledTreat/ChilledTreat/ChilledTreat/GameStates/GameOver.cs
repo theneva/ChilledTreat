@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using ChilledTreat.GameClasses;
 using System;
@@ -20,12 +19,12 @@ namespace ChilledTreat.GameStates
 		readonly SoundEffect _buttonSound, _selectSound;
 #if WINDOWS
         private List<Highscore> _highScoreList;
-		char[] charList;
-		int charListPos = 0;
-		string name = "";
-		int charPos;
-		bool typing = true;
-		bool writeFile = true;
+		readonly char[] _charList;
+		int _charListPos = 0;
+		string _name = "";
+		int _charPos;
+		bool _typing = true;
+		bool _writeFile = true;
 #endif
 		
 
@@ -40,8 +39,8 @@ namespace ChilledTreat.GameStates
 			_scoreFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/ScoreFont");
 			_nameFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/nameFont");
 
-			charList = new char[6];
-			for (int i = 0; i < charList.Length; i++) charList[i] = 'A';
+			_charList = new char[6];
+			for (int i = 0; i < _charList.Length; i++) _charList[i] = 'A';
 			
             _highScoreList = Highscore.CreateHighScore();
 #endif
@@ -50,48 +49,48 @@ namespace ChilledTreat.GameStates
 		public override void Update()
 		{
 #if WINDOWS
-            if (typing)
+            if (_typing)
 			{
 				if (_input.IsDownPressed())
 				{
 					_buttonSound.Play();
-					charList[charListPos]++;
-					if (charList[charListPos] > 'Z') charList[charListPos] = 'A';
+					_charList[_charListPos]++;
+					if (_charList[_charListPos] > 'Z') _charList[_charListPos] = 'A';
 				}
 				else if (_input.IsUpPressed())
 				{
 					_buttonSound.Play();
-					charList[charListPos]--;
-					 if (charList[charListPos] < 'A') charList[charListPos] = 'Z';
+					_charList[_charListPos]--;
+					 if (_charList[_charListPos] < 'A') _charList[_charListPos] = 'Z';
 				}
-				else if (_input.IsRightPressed() && charListPos != charList.Length - 1)
+				else if (_input.IsRightPressed() && _charListPos != _charList.Length - 1)
 				{
 					_selectSound.Play();
-					charListPos++;
+					_charListPos++;
 				}
-				else if (_input.IsLeftPressed() && charListPos != 0)
+				else if (_input.IsLeftPressed() && _charListPos != 0)
 				{
 					_selectSound.Play();
-					charListPos--;
+					_charListPos--;
 				}
 
 				if (_input.IsActionPressed())
 				{
 					_selectSound.Play();
-					typing = false;
+					_typing = false;
 				}
 			}
-			else if (writeFile)
+			else if (_writeFile)
 			{
-				for (int i = 0; i < charList.Length; i++)
-					name += charList[i];
-				Console.WriteLine(name);
-				writeFile = false;
+				for (int i = 0; i < _charList.Length; i++)
+					_name += _charList[i];
+				Console.WriteLine(_name);
+				_writeFile = false;
 				NewScoreToAdd = true;
 			}
 			if (NewScoreToAdd)
 			{
-				_highScoreList.Add(new Highscore(name, Player.Instance.Score));
+				_highScoreList.Add(new Highscore(_name, Player.Instance.Score));
 				_highScoreList = _highScoreList.OrderByDescending(x => x.Score).ThenBy(x => x.CurrentTime).ToList();
 				Highscore.SerializeToXml(_highScoreList);
 				NewScoreToAdd = false;
@@ -110,15 +109,15 @@ namespace ChilledTreat.GameStates
 		{
 			Game1.Instance.SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f - 70, 100), Color.Salmon);
 #if WINDOWS
-            if (typing)
+            if (_typing)
             {
 				Game1.Instance.SpriteBatch.DrawString(_nameFont, "Name: ", new Vector2(400, 250), Color.White);
-			    charPos = 570;
-			    for (int i = 0; i < charList.Length; i++)
+			    _charPos = 570;
+			    for (int i = 0; i < _charList.Length; i++)
 			    {
-					if (i != charListPos) Game1.Instance.SpriteBatch.DrawString(_nameFont, "" + charList[i], new Vector2(charPos, 250), Color.White);
-					else Game1.Instance.SpriteBatch.DrawString(_nameFont, "" + charList[charListPos], new Vector2(charPos, 240), Color.White);
-			    	charPos += 50;
+					if (i != _charListPos) Game1.Instance.SpriteBatch.DrawString(_nameFont, "" + _charList[i], new Vector2(_charPos, 250), Color.White);
+					else Game1.Instance.SpriteBatch.DrawString(_nameFont, "" + _charList[_charListPos], new Vector2(_charPos, 240), Color.White);
+			    	_charPos += 50;
 			    }
             }
 			foreach (var hs in _highScoreList)

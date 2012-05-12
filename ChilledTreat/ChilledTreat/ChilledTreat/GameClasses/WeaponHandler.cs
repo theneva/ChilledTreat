@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using ChilledTreat.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -12,7 +14,7 @@ namespace ChilledTreat.GameClasses
 	/// </summary>
 	public class WeaponHandler
 	{
-		private readonly Weapon[] _weapons;
+		private readonly List<Weapon> _weapons;
 		private Weapon _currentWeapon;
 		private int _currentWeaponIndex;
 		internal double CurrentTime, StartReloadTime;
@@ -39,12 +41,13 @@ namespace ChilledTreat.GameClasses
 
 		private WeaponHandler()
 		{
-			_weapons = new[]
+			_weapons = new List<Weapon>()
 						{
 							new Weapon("Pistol", 10, 100, 5, false, false),
 							new Weapon("Rifle", 30, 50, 10, true, false),
-							new Weapon("Pistol", 1000, 100, 20, true, true)
 						};
+			if (GameConstants.GodMode)
+				_weapons.Add(new Weapon("Pistol", 1000, 100, 20, true, true));
 
 			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
 			_currentWeapon = _weapons[_currentWeaponIndex];
@@ -121,7 +124,7 @@ namespace ChilledTreat.GameClasses
 
 		private void ChangeWeapon()
 		{
-			if (_currentWeaponIndex + 1 == _weapons.Length)
+			if (_currentWeaponIndex + 1 == _weapons.Count())
 				_currentWeaponIndex = 0;
 			else _currentWeaponIndex++;
 			_currentWeapon = _weapons[_currentWeaponIndex];

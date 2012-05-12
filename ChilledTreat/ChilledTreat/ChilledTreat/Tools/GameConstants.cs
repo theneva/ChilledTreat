@@ -7,6 +7,9 @@ namespace ChilledTreat.Tools
 {
 	static class GameConstants
 	{
+
+		public const bool GodMode = false;
+		
 		public const int PlayerHealth = 100;
 		public const int PlayerDamage = 10000;
 
