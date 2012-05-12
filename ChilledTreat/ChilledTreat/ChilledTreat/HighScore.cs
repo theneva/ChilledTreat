@@ -41,7 +41,7 @@ namespace ChilledTreat
 
 		public static List<Highscore> DeserializeFromXml()
 		{
-			var deserializer = new XmlSerializer(typeof(List<Highscore>));
+			XmlSerializer deserializer = new XmlSerializer(typeof(List<Highscore>));
 			TextReader textReader = new StreamReader(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
 			var scores = (List<Highscore>)deserializer.Deserialize(textReader);
 			textReader.Close();
