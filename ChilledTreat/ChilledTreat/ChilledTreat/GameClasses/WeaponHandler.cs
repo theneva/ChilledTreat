@@ -44,12 +44,15 @@ namespace ChilledTreat.GameClasses
 		{
 			_weapons = new []
 			           	{
+							new Weapon("Rifle", 10000, 1000, 100, true, true),
 							new Weapon("Pistol", 10, 100, 5, false, false),
 							new Weapon("Rifle", 30, 50, 10, true, false)
 						};
 
 			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
-			_currentWeapon = _weapons[_currentWeaponIndex];
+
+			//If godmode is active, use the god weapon. If not, use the normal weapon
+			_currentWeapon = Tools.GameConstants.GodMode ? _weapons[0] : _weapons[1];
 		}
 		#endregion
 
@@ -127,8 +130,10 @@ namespace ChilledTreat.GameClasses
 		#region Methods for changing the current weapon and restarting the instance
 		private void ChangeWeapon()
 		{
+			//If going to the next wepaon takes you out of the array, start over
 			if (_currentWeaponIndex + 1 == _weapons.Count())
-				_currentWeaponIndex = 0;
+				//If God-mode is activated, allow the use of the god weapon. If not, start at index 1
+				_currentWeaponIndex = Tools.GameConstants.GodMode ? 0 : 1;
 			else _currentWeaponIndex++;
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
