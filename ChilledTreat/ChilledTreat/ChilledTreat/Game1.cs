@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using ChilledTreat.GameStates;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ChilledTreat.GameClasses;
@@ -42,6 +43,10 @@ namespace ChilledTreat
 			Graphics.PreferredBackBufferHeight = GameScreenHeight;
 
 			//Graphics.IsFullScreen = true;
+
+#if XBOX
+			Components.Add(new GamerServicesComponent(this));
+#endif
 
 			IsMouseVisible = true;
 
