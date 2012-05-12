@@ -25,19 +25,13 @@ namespace ChilledTreat
 		private const Keys RightKey = Keys.Right;
 		private const Keys DownKey = Keys.Down;
 
-		/*- = = L E H M A N N  H A N D I C A P E T = = -*/
-		/*Lehmann*/
-		private const Keys WKey = Keys.W; /*Lehmann*/
-		/*Lehmann*/
-		private const Keys AKey = Keys.A; /*Lehmann*/
-		/*Lehmann*/
-		private const Keys SKey = Keys.S; /*Lehmann*/
-		/*Lehmann*/
-		private const Keys DKey = Keys.D; /*Lehmann*/
-		/*- = = L E H M A N N  H A N D I C A P E T = = -*/
+		private const Keys WKey = Keys.W;
+		private const Keys AKey = Keys.A;
+		private const Keys SKey = Keys.S;
+		private const Keys DKey = Keys.D;
+
+#region WOMANS-FOR-U
 		/*
-		 * 
-		 * WOMANS FOR U
 								 ********** *** &**P....
 							  $$$..........  . .* &.&.&&&&
 							$$$....$$$$$$$.. .. .*.&&&...*...
@@ -184,6 +178,7 @@ namespace ChilledTreat
 											 $$...   .&&&      $$*&&&  &&$$
 											$$...   .&&&       $$&&&   &&$
 		*/
+#endregion
 
 		private const Keys ActionKey = Keys.Enter;
 		private const Keys AbortKey = Keys.Escape;
@@ -566,8 +561,7 @@ namespace ChilledTreat
 
 		#endregion
 
-		//TODO: TEST!!!!!!!!!!!!
-
+		
 		public Vector2 PointerLocation()
 		{
 #if !XBOX
@@ -590,6 +584,5 @@ namespace ChilledTreat
 			return _gamePadPointerLocation;
 		}
 #endif
-
 	}
 }
