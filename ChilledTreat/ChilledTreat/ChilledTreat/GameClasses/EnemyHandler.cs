@@ -13,7 +13,7 @@ namespace ChilledTreat.GameClasses
 
 		public static readonly Random Random = new Random();
 
-		private const float InitialEnemiesPerSecond = 1f;
+		private const float InitialEnemiesPerSecond = 600f;
 
 		private float _timeSinceLastAdd, _enemiesPerSecond = InitialEnemiesPerSecond;
 

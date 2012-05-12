@@ -13,7 +13,7 @@ namespace ChilledTreat.GameClasses
 	{
 		#region Fields
 
-		private const int MaxHealth = 100000;
+		private const int MaxHealth = 100;
 
 		private readonly SpriteBatch _spriteBatch;
 		private readonly InputHandler _input = InputHandler.Instance;
