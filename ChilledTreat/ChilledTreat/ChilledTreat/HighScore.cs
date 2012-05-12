@@ -36,19 +36,18 @@ namespace ChilledTreat
 #if WINDOWS
 			TextWriter textWriter = new StreamWriter(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
 
-			serializer.Serialize(textWriter, highscores);
-			textWriter.Close();
-
 #elif XBOX
 
 			using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
 			{
-
 				using (
-					IsolatedStorageFileStream stream =
+					IsolatedStorageFileStream textWriter =
 						new IsolatedStorageFileStream(Game1.Instance.Content.RootDirectory + "/HighScore.xml", FileMode.Create, iso))
 				{
-					serializer.Serialize(stream, highscores);
+#endif
+					serializer.Serialize(textWriter, highscores);
+					textWriter.Close();
+#if XBOX
 
 				}
 			}
@@ -65,6 +64,4 @@ namespace ChilledTreat
 			return scores;
 		}
 	}
-
-
 }

@@ -37,9 +37,9 @@ namespace ChilledTreat.GameStates
 			{
 				Game1.ChangeState(Menu);
 			}
-			if (_input.IsDownPressed() && _scrolling < 0) _scrolling++;
+			if (_input.IsUpPressed() && _scrolling < 0) _scrolling++;
 
-			else if (_input.IsUpPressed() && _scrolling > -_highScoreList.Count + 10) _scrolling--;
+			else if (_input.IsDownPressed() && _scrolling > -_highScoreList.Count + 10) _scrolling--;
 		}
 
 		public override void Draw()
