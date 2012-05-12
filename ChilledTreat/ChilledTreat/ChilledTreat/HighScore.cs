@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.IO;
-using Microsoft.Xna.Framework.Storage;
+
+
 
 namespace ChilledTreat
 {
 	public class Highscore
 	{
-#if WINDOWS
-        public string Name { get; set; }
+		public string Name { get; set; }
 		public int Score { get; set; }
 		public DateTime CurrentTime { get; set; }
 
@@ -31,7 +31,7 @@ namespace ChilledTreat
 
 		public Highscore() { }
 
-	    static public void SerializeToXml(List<Highscore> highscores)
+		static public void SerializeToXml(List<Highscore> highscores)
 		{
 			XmlSerializer serializer = new XmlSerializer(typeof(List<Highscore>));
 			TextWriter textWriter = new StreamWriter(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
@@ -45,11 +45,8 @@ namespace ChilledTreat
 			TextReader textReader = new StreamReader(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
 			var scores = (List<Highscore>)deserializer.Deserialize(textReader);
 			textReader.Close();
-
 			
-
 			return scores;
 		}
-#endif
 	}
 }

@@ -1,9 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ArrayOfHighscore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Highscore>
+    <Name>TAAAAA</Name>
+    <Score>7751</Score>
+    <CurrentTime>2012-05-11T20:25:56.368126+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>AAAABA</Name>
+    <Score>4422</Score>
+    <CurrentTime>2012-05-11T20:28:02.3641434+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>AAAAAA</Name>
+    <Score>85</Score>
+    <CurrentTime>2012-05-11T14:34:18.0815384+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>AAAAAA</Name>
+    <Score>70</Score>
+    <CurrentTime>2012-05-11T16:31:24.3742308+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>AAAAAA</Name>
+    <Score>58</Score>
+    <CurrentTime>2012-05-11T14:03:41.6706049+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>MAAAAA</Name>
+    <Score>57</Score>
+    <CurrentTime>2012-05-11T00:36:11.7325279+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>AAAAAA</Name>
+    <Score>20</Score>
+    <CurrentTime>2012-05-10T18:17:10.5687821+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
     <Name>Simen</Name>
     <Score>18</Score>
     <CurrentTime>2012-05-08T22:47:33.0296596+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>AAAAAA</Name>
+    <Score>17</Score>
+    <CurrentTime>2012-05-10T21:52:41.4597003+02:00</CurrentTime>
   </Highscore>
   <Highscore>
     <Name>Per</Name>
@@ -16,9 +56,9 @@
     <CurrentTime>2012-05-08T22:49:26.9171736+02:00</CurrentTime>
   </Highscore>
   <Highscore>
-    <Name>Ole</Name>
-    <Score>5</Score>
-    <CurrentTime>2012-05-08T22:47:15.8846789+02:00</CurrentTime>
+    <Name>AAAAAA</Name>
+    <Score>6</Score>
+    <CurrentTime>2012-05-12T12:45:53.3735195+02:00</CurrentTime>
   </Highscore>
   <Highscore>
     <Name>Ole</Name>
@@ -69,5 +109,20 @@
     <Name>Ole</Name>
     <Score>5</Score>
     <CurrentTime>2012-05-08T22:47:15.8846789+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>Ole</Name>
+    <Score>5</Score>
+    <CurrentTime>2012-05-08T22:47:15.8846789+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>AEAAAA</Name>
+    <Score>3</Score>
+    <CurrentTime>2012-05-10T18:13:57.0700448+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>AAAAAA</Name>
+    <Score>1</Score>
+    <CurrentTime>2012-05-10T21:52:15.7322662+02:00</CurrentTime>
   </Highscore>
 </ArrayOfHighscore>
