@@ -21,11 +21,8 @@ namespace ChilledTreat.GameStates
 			// Menu content
 			_menuFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/menuFont");
 			_fontColor = Color.Salmon;
-#if WINDOWS
+
 			string[] strings = {"New Game", "Instructions", "Leaderboard", "Credits", "EXIT"};
-#elif XBOX
-			string[] strings = { "New Game", "Instructions", "Credits", "EXIT" };	
-#endif
 			_menuItems = strings;
 			_menuPos = 0;
 			_selectedItem = new float[_menuItems.Length];

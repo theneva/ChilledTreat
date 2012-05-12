@@ -19,10 +19,10 @@ namespace ChilledTreat.GameStates
 
 		public LeaderBoard()
 		{
-#if WINDOWS
+
 			_highScoreList = Highscore.CreateHighScore();
 			Console.WriteLine(_highScoreList.Count);
-#endif
+
 			_menuFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/menuFont");
 			_scoreFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/ScoreFont");
 
@@ -44,7 +44,7 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
-#if WINDOWS
+
 			foreach (Highscore hs in _highScoreList)
 			{
 				_shift++;
@@ -57,7 +57,7 @@ namespace ChilledTreat.GameStates
 			//Can be removed and rather tweak fontsize and spacing.
 			Game1.Instance.SpriteBatch.Draw(_lbTexture, new Rectangle(0, 640, 1280, 80), Color.YellowGreen);
 			Game1.Instance.SpriteBatch.DrawString(_menuFont, "Leaderboard", new Vector2(Game1.GameScreenWidth / 3f - 100, 50), Color.White);
-#endif
+
 		}
 
 	}
