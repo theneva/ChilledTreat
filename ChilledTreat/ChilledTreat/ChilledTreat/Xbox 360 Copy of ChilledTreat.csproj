@@ -16,7 +16,8 @@
     <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>d9d47807-d2b1-49ef-b77f-1879a4f842d4</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -59,8 +60,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChilledTreatContent\ChilledTreatContent.contentproj">
-      <Name>ChilledTreatContent</Name>
+      <Name>ChilledTreatContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{7C649C0B-F6EE-4F45-88FC-63113373309C}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -86,7 +88,7 @@
     <Compile Include="Tools\GameConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Game.ico" />
+    <Content Include="GameIcon.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
