@@ -5,9 +5,9 @@ namespace ChilledTreat
 {
 	internal class InputHandler
 	{
-		private static InputHandler _instance;
 
-		public static InputHandler Instance
+		private static InputHandler _instance;
+        public static InputHandler Instance
 		{
 			get { return _instance ?? (_instance = new InputHandler()); }
 		}
@@ -16,11 +16,17 @@ namespace ChilledTreat
 		{
 		}
 
+        // Preprocessor directives used to seperate WINDOWS, WINDOWS_PHONE and XBOX
+        // code. Making it possible to write code which compiles on each platform
+
+        #region FILEDS
+
 #if WINDOWS
-		private KeyboardState KeyboardState { get; set; }
+        // Fileds used for the WINDOWS platform
+        private KeyboardState KeyboardState { get; set; }
 		private KeyboardState PreviousKeyboardState { get; set; }
 
-		private const Keys UpKey = Keys.Up;
+        private const Keys UpKey = Keys.Up;
 		private const Keys LeftKey = Keys.Left;
 		private const Keys RightKey = Keys.Right;
 		private const Keys DownKey = Keys.Down;
@@ -179,22 +185,22 @@ namespace ChilledTreat
 											$$...   .&&&       $$&&&   &&$
 		*/
 #endregion
-
-		private const Keys ActionKey = Keys.Enter;
+        
+        private const Keys ActionKey = Keys.Enter;
 		private const Keys AbortKey = Keys.Escape;
 
 		private const Keys ReloadKey = Keys.R;
 		private const Keys CoverKey = Keys.Space;
-
-
 #endif
 
 #if !XBOX
+        // Fields which are used for both WINDOWS and WINDOWS_PHONE
 		private MouseState MouseState { get; set; }
 		private MouseState PreviouseMouseState { get; set; }
 #endif
 
 #if !WINDOWS_PHONE
+        // Fields which are common for XBOX and WINDOWS
 		private GamePadState GamePadState { get; set; }
 		private GamePadState PreviousGamePadState { get; set; }
 
@@ -206,18 +212,18 @@ namespace ChilledTreat
 		private const Buttons AbortButton = Buttons.B;
 		private const Buttons ActionButton = Buttons.A;
 
-		// Must be public
-		public Buttons ShootButton = Buttons.RightTrigger;
-		public Buttons CoverButton = Buttons.LeftTrigger;
-		public Buttons ReloadButton = Buttons.X;
-		public Buttons ChangeWeaponButton = Buttons.Y;
+		// Must be public since these are used 
+		private Buttons ShootButton = Buttons.RightTrigger;
+		private Buttons CoverButton = Buttons.LeftTrigger;
+		private Buttons ReloadButton = Buttons.X;
+		private Buttons ChangeWeaponButton = Buttons.Y;
 
 		public PlayerIndex PlayerIndex = PlayerIndex.One;
 
 		private Vector2 _gamePadPointerLocation;
 #endif
-
-		public void Update()
+        #endregion
+        public void Update()
 		{
 #if WINDOWS
 			PreviousKeyboardState = KeyboardState;
