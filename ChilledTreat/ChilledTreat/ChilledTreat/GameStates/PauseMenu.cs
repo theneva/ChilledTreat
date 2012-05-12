@@ -60,20 +60,24 @@ namespace ChilledTreat.GameStates
 			for (int i = 0; i < _selectedItem.Length; i++) _selectedItem[i] = 100f;
 			_selectedItem[_menuPos] = 150f;
 
-			if (_input.IsActionPressed())
+			if (_input.IsPausePressed() || (_input.IsAbortPressed()))
 			{
-				if (_menuItems[_menuPos].Contains("Main Menu"))
-				{
-					Player.ResetPlayer();
+				Game1.ChangeState(InGame);
+				Game1.Instance.IsMouseVisible = false;
+			}
 
-					EnemyHandler.Instance.Clear();
-					Game1.ChangeState(Menu);
-				} 
-				else if (_menuItems[_menuPos].Contains("Resume Game"))
-				{
-					Game1.ChangeState(GameState.InGame);
-					Game1.Instance.IsMouseVisible = false;
-				}
+			if (!_input.IsActionPressed()) return;
+			if (_menuItems[_menuPos].Contains("Main Menu"))
+			{
+				Player.ResetPlayer();
+
+				EnemyHandler.Instance.Clear();
+				Game1.ChangeState(Menu);
+			} 
+			else if (_menuItems[_menuPos].Contains("Resume Game"))
+			{
+				Game1.ChangeState(InGame);
+				Game1.Instance.IsMouseVisible = false;
 			}
 		}
 

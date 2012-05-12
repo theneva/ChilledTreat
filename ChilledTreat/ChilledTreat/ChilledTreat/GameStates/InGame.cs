@@ -29,7 +29,7 @@ namespace ChilledTreat.GameStates
 			Player.Instance.Update();
 			EnemyHandler.Instance.Update();
 
-			if (InputHandler.Instance.IsAbortPressed() || Game1.Instance.IsActive == false)
+			if (InputHandler.Instance.IsPausePressed() || Game1.Instance.IsActive == false)
 				Game1.ChangeState(PauseMenu);
 		}
 

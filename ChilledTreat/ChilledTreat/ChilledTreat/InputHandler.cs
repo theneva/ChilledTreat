@@ -595,5 +595,18 @@ namespace ChilledTreat
 			return _gamePadPointerLocation;
 		}
 #endif
+
+		public bool IsPausePressed()
+		{
+#if WINDOWS
+			if (GamePad.GetState(PlayerIndex.One).IsConnected)
+			{
+#endif
+				return IsButtonPressed(Buttons.Start);
+#if WINDOWS
+			}
+			return IsKeyPressed(Keys.Escape);
+#endif
+		}
 	}
 }
