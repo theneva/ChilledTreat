@@ -40,13 +40,13 @@ namespace ChilledTreat
 
 			serializer.Serialize(textWriter, highscores);
 			textWriter.Close();
-#endif
-			#elif XBOX
+
+#elif XBOX
 
 using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
 {
 
-using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(Game1.Instance.Content.RootDirectory + "/HighScore.xml", FileMode.Create, iso))
+using (var stream = new IsolatedStorageFileStream(Game1.Instance.Content.RootDirectory + "/HighScore.xml", FileMode.Create, iso))
 {
 	serializer.Serialize(stream, highscores);
 
@@ -59,7 +59,7 @@ using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(Game1.In
 		{
 			XmlSerializer deserializer = new XmlSerializer(typeof(List<Highscore>));
 			TextReader textReader = new StreamReader(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
-			var scores = (List<Highscore>)deserializer.Deserialize(textReader);
+			XmlSerializer scores = (List<Highscore>)deserializer.Deserialize(textReader);
 			textReader.Close();
 			
 			return scores;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ChilledTreat.Tools
+﻿namespace ChilledTreat.Tools
 {
 	static class GameConstants
 	{
@@ -14,7 +9,7 @@ namespace ChilledTreat.Tools
 		public const int PlayerDamage = 10000;
 
 		public const int EnemyHealth = 10;
-		public const int EnemyDamage = 2;
+		public const int EnemyDamage = 30;
 
 
 		// TODO: Simen
