@@ -1,6 +1,5 @@
 ﻿using ChilledTreat.GameClasses;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 
@@ -65,7 +64,7 @@ namespace ChilledTreat.GameStates
 			{
 				if (_menuItems[_menuPos].Contains("Main Menu"))
 				{
-					Player.Instance.ResetPlayer();
+					Player.ResetPlayer();
 
 					EnemyHandler.Instance.Clear();
 					Game1.ChangeState(Menu);

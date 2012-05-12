@@ -1,8 +1,8 @@
 ﻿using System;
-using ChilledTreat.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using ChilledTreat.Tools;
 
 namespace ChilledTreat.GameClasses
 {
@@ -32,19 +32,20 @@ namespace ChilledTreat.GameClasses
 
 		public int Score { get; private set; }
 
-		static Player _instance;
+		//Create a singleton-object of the player
+		private static Player _instance;
 		public static Player Instance
 		{
 			get { return _instance ?? (_instance = new Player()); }
 		}
 
+		//These enum-states determine what's updated, and whether or nit certain actions are possible
 		public enum State
 		{
 			Alive,
 			Shooting,
 			Reloading,
 			Waiting,
-			Damaged,
 			Dead
 		}
 
@@ -52,6 +53,7 @@ namespace ChilledTreat.GameClasses
 
 		#endregion
 
+		#region Constructor
 		private Player()
 		{
 			_spriteBatch = Game1.Instance.SpriteBatch;
@@ -62,21 +64,24 @@ namespace ChilledTreat.GameClasses
 			_coverTexture = Game1.Instance.Content.Load<Texture2D>("Images/usableCoverBox");
 			_damagedTexture = Game1.Instance.Content.Load<Texture2D>("Images/damagedTint");
 			_scoreFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/ScoreFont");
-			_diedSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/poor-baby");
+			_diedSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/poor-baby");
 
-			_injuredSounds = new[] { Game1.Instance.Content.Load<SoundEffect>("Sounds/goddamnit"),
-				Game1.Instance.Content.Load<SoundEffect>("Sounds/how-dare-you"),
-				Game1.Instance.Content.Load<SoundEffect>("Sounds/im-in-trouble"),
-				Game1.Instance.Content.Load<SoundEffect>("Sounds/uh") };
+			_injuredSounds = new[] { Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/goddamnit"),
+				Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/how-dare-you"),
+				Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/im-in-trouble"),
+				Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/uh") };
 
 			//Create the rectangle used for drawing hearts (health indicator) on the screen
 			_widthOfHeart = _healthTexture.Width / 3;
 			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
 			_halfHealthSource = new Rectangle(_widthOfHeart, 0, _widthOfHeart, _healthTexture.Height);
 			_emptyHealthSource = new Rectangle(_widthOfHeart * 2, 0, _widthOfHeart, _healthTexture.Height);
+
 			PlayerState = State.Alive;
 		}
+		#endregion
 
+		#region Update & Draw
 		public void Update()
 		{
 			_currentTime = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
@@ -88,10 +93,11 @@ namespace ChilledTreat.GameClasses
 				Game1.ChangeState(GameStates.GameState.GameOver);
 			}
 
+			//If the red haze (damaged) has been drawn for 200 ms, stop it
 			if (_drawRedHaze && _currentTime - _timeAtDamaged > 200)
 				_drawRedHaze = false;
 
-			//Divide the health into 10 parts, to easily calculate how mnay hearts to draw on the screen
+			//Divide the health into 10 parts, to easily calculate how many hearts to draw on the screen
 			_healthIn10 = _health / 10;
 			//The shift to the side, so that the hearts are not drawn on top of each other
 			_heartsDrawShift = 0;
@@ -103,6 +109,7 @@ namespace ChilledTreat.GameClasses
 
 		public void Draw()
 		{
+			//If the player's in cover, draw the cover-box
 			if (InCover)
 			{
 				_spriteBatch.Draw(_coverTexture,
@@ -112,6 +119,7 @@ namespace ChilledTreat.GameClasses
 
 			DrawHealth();
 
+			//Score indicator
 			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.GameScreenWidth - 100 * Game1.GameScale, 20 * Game1.GameScale), Color.Black, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 
 			WeaponHandler.Instance.Draw();
@@ -120,33 +128,14 @@ namespace ChilledTreat.GameClasses
 		}
 
 		/// <summary>
-		/// How much the player is damaged
-		/// </summary>
-		/// <param name="damage">The amount of damage recieved</param>
-		public void Damaged(int damage)
-		{
-			if (PlayerState != State.Reloading) PlayerState = State.Damaged;
-			if (InCover) damage /= 5;
-
-			//Play a random sound when injured
-			_injuredSounds[EnemyHandler.Random.Next(_injuredSounds.Length)].Play();
-
-			_drawRedHaze = true;
-
-			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
-
-			_health -= damage;
-
-			if (_health <= 0)
-				PlayerState = State.Dead;
-		}
-
-		/// <summary>
 		/// Draw the correct amount of hearts (health-indicator) on the screen.
 		/// It's cleaner having the logic behind it in it's own method
 		/// </summary>
 		private void DrawHealth()
 		{
+			//The vector calculation for the X is really ugly.
+			//It takes the width of the screen, subtracts the width of 5 hearts (plus 5 on each, to put some space between them), multiplies it by the scale of the game, before adding to it so that each heart drawn is shifted the necessary pixels to the right
+
 			for (int i = 0; i < _healthIn10 / 2; i++)
 			{
 				_spriteBatch.Draw(_healthTexture,
@@ -172,6 +161,30 @@ namespace ChilledTreat.GameClasses
 				_heartsDrawShift++;
 			}
 		}
+		#endregion
+
+		#region Methods for detemrining what happens to the player
+		/// <summary>
+		/// How much the player is damaged
+		/// </summary>
+		/// <param name="damage">The amount of damage recieved</param>
+		public void Damaged(int damage)
+		{
+			if (InCover) damage /= 5;
+
+			//Play a random sound when injured
+			_injuredSounds[EnemyHandler.Random.Next(_injuredSounds.Length)].Play();
+
+			_drawRedHaze = true;
+
+			//Get the current time, so we can remove the red haze after a certai time interval
+			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
+
+			_health -= damage;
+
+			if (_health <= 0)
+				PlayerState = State.Dead;
+		}
 
 		/// <summary>
 		/// Adds 1 to the player score
@@ -182,17 +195,15 @@ namespace ChilledTreat.GameClasses
 		}
 
 		/// <summary>
-		/// Reset the player's score, health and state
-		/// Since the player is a singleton, the constructor is only called once. Because of that, we use this method
+		/// Creates a new instance of the player object, to set all variables back to their default valuess
 		/// </summary>
-		public void ResetPlayer()
+		public static void ResetPlayer()
 		{
-			_health = MaxHealth;
-			Score = 0;
-
-			PlayerState = State.Alive;
+			_instance = new Player();
 
 			WeaponHandler.Instance.ResetWeapons();
 		}
+
+		#endregion
 	}
 }

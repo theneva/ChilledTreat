@@ -1,10 +1,13 @@
 using System.Collections.Generic;
-using ChilledTreat.GameStates;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ChilledTreat.GameClasses;
+using ChilledTreat.GameStates;
+
+#if XBOX
+using Microsoft.Xna.Framework.GamerServices;
+#endif
 
 namespace ChilledTreat
 {
@@ -151,7 +154,7 @@ namespace ChilledTreat
 				Instance._gameStates[GameState.InGame] = new InGame(Instance.SpriteBatch, Instance.Content);
 			}
 
-			Player.Instance.ResetPlayer();
+			Player.ResetPlayer();
 			EnemyHandler.ResetEnemyHandler();
 			
 		}

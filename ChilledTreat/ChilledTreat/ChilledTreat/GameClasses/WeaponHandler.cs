@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using ChilledTreat.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -14,7 +12,8 @@ namespace ChilledTreat.GameClasses
 	/// </summary>
 	public class WeaponHandler
 	{
-		private readonly List<Weapon> _weapons;
+		#region Fields
+		private readonly Weapon[] _weapons;
 		private Weapon _currentWeapon;
 		private int _currentWeaponIndex;
 		internal double CurrentTime, StartReloadTime;
@@ -38,21 +37,23 @@ namespace ChilledTreat.GameClasses
 		{
 			get { return _instance ?? (_instance = new WeaponHandler()); }
 		}
+		#endregion
 
+		#region Constructors
 		private WeaponHandler()
 		{
-			_weapons = new List<Weapon>()
-						{
+			_weapons = new []
+			           	{
 							new Weapon("Pistol", 10, 100, 5, false, false),
-							new Weapon("Rifle", 30, 50, 10, true, false),
+							new Weapon("Rifle", 30, 50, 10, true, false)
 						};
-			if (GameConstants.GodMode)
-				_weapons.Add(new Weapon("Pistol", 1000, 100, 20, true, true));
 
 			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
+		#endregion
 
+		#region Update & Draw
 		public void Update()
 		{
 			CurrentTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
@@ -121,7 +122,9 @@ namespace ChilledTreat.GameClasses
 		{
 			_currentWeapon.Draw();
 		}
+		#endregion
 
+		#region Methods for changing the current weapon and restarting the instance
 		private void ChangeWeapon()
 		{
 			if (_currentWeaponIndex + 1 == _weapons.Count())
@@ -132,17 +135,14 @@ namespace ChilledTreat.GameClasses
 
 		public void ResetWeapons()
 		{
-			_currentWeapon = _weapons.First();
-
-			foreach (Weapon w in _weapons)
-				w.ResetWeapon();
-
-			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2f, Game1.GameScreenHeight / 2f);
-
-
+			_instance = new WeaponHandler();
 		}
+		#endregion
 	}
 
+	/// <summary>
+	/// An internal class, for giving each weapon seperate values, textures and sounds
+	/// </summary>
 	internal class Weapon
 	{
 		#region Fields
@@ -167,6 +167,7 @@ namespace ChilledTreat.GameClasses
 
 		#endregion
 
+		#region Constructor
 		/// <summary>
 		/// Create a weapon
 		/// </summary>
@@ -217,7 +218,9 @@ namespace ChilledTreat.GameClasses
 			for (int i = 0; i < _cartridges.Length; i++) 
 				_cartridges[i] = _cartridgeTexture;
 		}
+		#endregion
 
+		#region Update & Draw
 		internal void Update()
 		{
 			if (_timesDrawnMuzzleFlare >= 5)
@@ -254,7 +257,9 @@ namespace ChilledTreat.GameClasses
 			for (int i = 0; i < _cartridges.Length; i++)
 				_spriteBatch.Draw(_cartridges[i], _cartridgePositions[i], _cartridgeTexture.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 		}
+		#endregion
 
+		#region Reload and Shoot method
 		/// <summary>
 		/// Reload the current weapon
 		/// It adds a timer before reverting the player state to Alive, to allowing the firing of the weapon again
@@ -309,13 +314,6 @@ namespace ChilledTreat.GameClasses
 			if (WeaponHandler.Instance.PlayerState != Player.State.Reloading && WeaponHandler.Instance.PlayerState != Player.State.Waiting && WeaponHandler.Instance.PlayerState != Player.State.Dead) 
 					WeaponHandler.Instance.PlayerState = Player.State.Alive;
 		}
-
-		internal void ResetWeapon()
-		{
-			CurrentAmmo = _cartridges.Length;
-
-			for (int i = 0; i < _cartridges.Length; i++)
-				_cartridges[i] = _cartridgeTexture;
-		}
+		#endregion
 	}
 }
