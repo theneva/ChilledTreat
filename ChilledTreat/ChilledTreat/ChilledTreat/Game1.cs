@@ -147,7 +147,7 @@ namespace ChilledTreat
 			}
 
 			Player.Instance.ResetPlayer();
-			EnemyHandler.Instance.ResetEnemyHandler();
+			EnemyHandler.ResetEnemyHandler();
 			
 		}
 		public static void NewCredits()

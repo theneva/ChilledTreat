@@ -11,7 +11,7 @@ namespace ChilledTreat.GameStates
 
 		readonly Texture2D _buttonMappingGamePad;
 #if WINDOWS
-		Texture2D _buttonMappingKeyboardMouse;
+		readonly Texture2D _buttonMappingKeyboardMouse;
 #endif
 		public Instructions()
 		{

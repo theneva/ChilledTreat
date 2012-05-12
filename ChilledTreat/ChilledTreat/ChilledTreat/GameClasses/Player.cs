@@ -1,4 +1,5 @@
 ﻿using System;
+using ChilledTreat.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,7 +13,7 @@ namespace ChilledTreat.GameClasses
 	{
 		#region Fields
 
-		private const int MaxHealth = 100;
+		private const int MaxHealth = GameConstants.PlayerHealth;
 
 		private readonly SpriteBatch _spriteBatch;
 		private readonly InputHandler _input = InputHandler.Instance;

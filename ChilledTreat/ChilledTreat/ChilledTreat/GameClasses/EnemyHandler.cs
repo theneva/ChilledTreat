@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ChilledTreat.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 
@@ -9,16 +10,14 @@ namespace ChilledTreat.GameClasses
 	{
 		readonly List<Enemy> _enemies;
 
-		public List<SoundEffect> SoundEffects { get; protected set; }
+		public List<SoundEffect> SoundEffects { get; private set; }
 
 		public static readonly Random Random = new Random();
 
-		private const float InitialEnemiesPerSecond = 600f;
-
-		private float _timeSinceLastAdd, _enemiesPerSecond = InitialEnemiesPerSecond;
+		private float _timeSinceLastAdd, _enemiesPerSecond = GameConstants.InitialEnemiesPerSecond;
 
 		private int _timeSinceLastIntervalIncrease;
-		private const int AddEnemyInterval = 5000; // milliseconds
+		private const int AddEnemyInterval = GameConstants.AddEnemyInterval; // milliseconds
 
 		/// <summary>
 		/// Returns the singleton; defines it if null
@@ -50,17 +49,11 @@ namespace ChilledTreat.GameClasses
 			_enemies.Add(new Enemy(value, isHealth));
 		}
 
-		public void AddEnemy(int damage, int health)
-		{
-			_enemies.Add(new Enemy(health, damage));
-		}
-
-
 		/// <summary>
 		/// Gets the amount of enemies currently in the list
 		/// </summary>
 		/// <returns>The number of enemies</returns>
-		public int GetNumberOfEnemies()
+		private int GetNumberOfEnemies()
 		{
 			return _enemies.Count;
 		}
@@ -90,8 +83,7 @@ namespace ChilledTreat.GameClasses
 		public void FiredAt(Rectangle attackedArea, int inflictedDamage)
 		{
 			// Hackish as fuck, but it works. A for-each loop won't do here because the
-			// amount of enemies will change if one is killed
-
+			// amount of enemies will change if one is killed.
 			List<Enemy> enemiesReversed = _enemies;
 			enemiesReversed.Reverse();
 
@@ -106,10 +98,9 @@ namespace ChilledTreat.GameClasses
 		}
 
 
-		public void ResetEnemyHandler()
+		public static void ResetEnemyHandler()
 		{
-			Clear();
-			_enemiesPerSecond = InitialEnemiesPerSecond;
+			_instance = new EnemyHandler();
 		}
 
 		/// <summary>
@@ -130,8 +121,8 @@ namespace ChilledTreat.GameClasses
 
 			if (_timeSinceLastAdd >= 1000 / _enemiesPerSecond)
 			{
-				_timeSinceLastAdd -= 1000 / _enemiesPerSecond;
 				AddEnemy();
+				_timeSinceLastAdd -= 1000 / _enemiesPerSecond;
 			}
 
 			for (int i = _enemies.Count - 1; i >= 0; i--)
