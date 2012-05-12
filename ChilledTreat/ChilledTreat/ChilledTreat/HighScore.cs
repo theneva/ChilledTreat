@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.IO.IsolatedStorage;
 using System.Xml.Serialization;
 using System.IO;
+
+#if XBOX
+using System.IO.IsolatedStorage;
+#endif
 
 namespace ChilledTreat
 {
@@ -23,7 +26,7 @@ namespace ChilledTreat
 
 		public static List<Highscore> CreateHighScore()
 		{
-			List<Highscore> highScoreList = Highscore.DeserializeFromXml();
+			List<Highscore> highScoreList = DeserializeFromXml();
 
 			return highScoreList;
 		}
@@ -54,7 +57,7 @@ namespace ChilledTreat
 #endif
 		}
 
-		public static List<Highscore> DeserializeFromXml()
+		private static List<Highscore> DeserializeFromXml()
 		{
 			XmlSerializer deserializer = new XmlSerializer(typeof (List<Highscore>));
 			TextReader textReader = new StreamReader(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
