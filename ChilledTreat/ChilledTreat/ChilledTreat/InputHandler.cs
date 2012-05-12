@@ -212,17 +212,21 @@ namespace ChilledTreat
 		private const Buttons AbortButton = Buttons.B;
 		private const Buttons ActionButton = Buttons.A;
 
-		// Must be public since these are used 
-		private Buttons ShootButton = Buttons.RightTrigger;
-		private Buttons CoverButton = Buttons.LeftTrigger;
-		private Buttons ReloadButton = Buttons.X;
-		private Buttons ChangeWeaponButton = Buttons.Y;
-
-		public PlayerIndex PlayerIndex = PlayerIndex.One;
+		// Must be public
+		public Buttons ShootButton = Buttons.RightTrigger;
+		public Buttons CoverButton = Buttons.LeftTrigger;
+		public Buttons ReloadButton = Buttons.X;
+		public Buttons ChangeWeaponButton = Buttons.Y;
 
 		private Vector2 _gamePadPointerLocation;
+
+        public PlayerIndex PlayerIndex = PlayerIndex.One;
 #endif
         #endregion
+
+        // Update method
+        // Must be called per Update for the InputHandler to
+        // work properly
         public void Update()
 		{
 #if WINDOWS
@@ -241,32 +245,37 @@ namespace ChilledTreat
 #endif
 		}
 
+        // The Keyboard region contains methods used to handle
+        // input from the keyboard. Each method accepts a 
+        // key object as a parameter and returns a bool 
+        // according to the state of the key
 		#region Keyboard
-
+        
 #if WINDOWS
 		public bool IsKeyUp(Keys key)
 		{
 			return KeyboardState.IsKeyUp(key);
 		}
-
 		public bool IsKeyDown(Keys key)
 		{
 			return KeyboardState.IsKeyDown(key);
 		}
-
 		public bool IsKeyPressed(Keys key)
 		{
 			return IsKeyDown(key) && PreviousKeyboardState.IsKeyUp(key);
 		}
-
-		public bool IsKeyReleased(Keys key)
-		{
-			return IsKeyUp(key) && PreviousKeyboardState.IsKeyDown(key);
-		}
+        public bool IsKeyReleased(Keys key)
+        {
+            return IsKeyUp(key) && PreviousKeyboardState.IsKeyDown(key);
+        }
 #endif
 
 		#endregion
 
+        // The GamePad region contains methods used to handle
+        // input from a GamePad. Each methods accepts a
+        // Button object as a parameter and returns a bool
+        // according to the state of the button
 		#region GamePad
 
 #if !WINDOWS_PHONE
@@ -293,17 +302,14 @@ namespace ChilledTreat
 
 		#endregion
 
+        // The Mouse region contains methods which can be used
+        // to handle different input from the mouse
 		#region Mouse
-
 #if !XBOX
-
 		public bool IsLeftMouseButtonPressed()
 		{
 			return ((MouseState.LeftButton == ButtonState.Pressed) && (PreviouseMouseState.LeftButton == ButtonState.Released));
 		}
-#endif
-
-#if !XBOX
 
 		public bool IsLeftMouseButtonDown()
 		{
@@ -313,6 +319,9 @@ namespace ChilledTreat
 
 		#endregion
 
+
+        // The Common Methods region contains methods that describe 
+        // common actions, but which have different input from each platform
 		#region Common Methods
 
 		public bool IsUpDown()
@@ -447,126 +456,122 @@ namespace ChilledTreat
 #endif
 		}
 
-		#endregion
-
-		#region COMMON METHODS FOR XBOX & WINDOWS
-
-		public bool IsActionPressed()
-		{
+        public bool IsActionPressed()
+        {
 #if WINDOWS
-			return IsKeyPressed(ActionKey);
+            return IsKeyPressed(ActionKey);
 #elif XBOX
 			return IsButtonPressed(ActionButton);
 #endif
-		}
+        }
 
-		public bool IsAbortPressed()
-		{
+        public bool IsAbortPressed()
+        {
 #if WINDOWS
-			return IsKeyPressed(AbortKey);
+            return IsKeyPressed(AbortKey);
 #elif XBOX
 			return IsButtonPressed(AbortButton);
 #endif
-		}
+        }
 
-		public bool IsUpPressed()
-		{
+        public bool IsUpPressed()
+        {
 #if WINDOWS
-			return IsKeyPressed(UpKey) || IsKeyPressed(WKey);
-			;
+            return IsKeyPressed(UpKey) || IsKeyPressed(WKey);
+            ;
 #elif XBOX
 			return IsButtonPressed(UpButton) || ThumbStickLeftUp();
 #endif
-		}
+        }
 
-		public bool IsDownPressed()
-		{
+        public bool IsDownPressed()
+        {
 #if WINDOWS
-			return IsKeyPressed(DownKey) || IsKeyPressed(SKey);
+            return IsKeyPressed(DownKey) || IsKeyPressed(SKey);
 #elif XBOX
 			return IsButtonPressed(DownButton) || ThumbStickLeftDown();
 #endif
-		}
+        }
 
-		public bool IsLeftPressed()
-		{
+        public bool IsLeftPressed()
+        {
 #if WINDOWS
-			return IsKeyPressed(LeftKey) || IsKeyPressed(AKey);
-			;
+            return IsKeyPressed(LeftKey) || IsKeyPressed(AKey);
+            ;
 #elif XBOX
 			return IsButtonPressed(LeftButton);
 #endif
-		}
+        }
 
-		public bool IsRightPressed()
-		{
+        public bool IsRightPressed()
+        {
 #if WINDOWS
-			return IsKeyPressed(RightKey) || IsKeyPressed(DKey);
+            return IsKeyPressed(RightKey) || IsKeyPressed(DKey);
 #elif XBOX
 			return IsButtonPressed(RightButton);
 #endif
-		}
+        }
 
-		public bool IsReloadPressed()
-		{
+        public bool IsReloadPressed()
+        {
 #if WINDOWS
-			return IsKeyPressed(ReloadKey);
+            return IsKeyPressed(ReloadKey);
 #elif XBOX
 			return IsButtonPressed(ReloadButton);	
 #endif
-		}
+        }
 
-		public bool IsCoverDown()
-		{
+        public bool IsCoverDown()
+        {
 #if WINDOWS
-			return IsKeyDown(CoverKey);
+            return IsKeyDown(CoverKey);
 #elif XBOX
 			return IsButtonDown(CoverButton);
 #endif
-		}
+        }
 
-		public bool IsShootPressed()
-		{
+        public bool IsShootPressed()
+        {
 #if WINDOWS
-			return IsLeftMouseButtonPressed();
+            return IsLeftMouseButtonPressed();
 #elif XBOX
 			return IsButtonPressed(ShootButton);
 #endif
-		}
+        }
 
-		public bool IsShootDown()
-		{
+        public bool IsShootDown()
+        {
 #if WINDOWS
-			return IsLeftMouseButtonDown();
+            return IsLeftMouseButtonDown();
 #elif XBOX
 			return IsButtonDown(ShootButton);
 #endif
-		}
+        }
 
-		public bool IsSwitchWeaponPressed()
-		{
+        public bool IsSwitchWeaponPressed()
+        {
 #if WINDOWS
-			return IsKeyPressed(Keys.Tab);
+            return IsKeyPressed(Keys.Tab);
 #elif XBOX
 			return IsButtonPressed(ChangeWeaponButton);
 #endif
-		}
+        }
 
 #if !WINDOWS_PHONE
-		public bool ThumbStickLeftUp()
-		{
-			return GamePadState.ThumbSticks.Left.Y > 0.4 &&
-				PreviousGamePadState.ThumbSticks.Left.Y < 0.2;
-		}
-		public bool ThumbStickLeftDown()
-		{
-			return GamePadState.ThumbSticks.Left.Y < -0.4 &&
-				PreviousGamePadState.ThumbSticks.Left.Y > -0.2;
-		}
+        public bool ThumbStickLeftUp()
+        {
+            return GamePadState.ThumbSticks.Left.Y > 0.4 &&
+                PreviousGamePadState.ThumbSticks.Left.Y < 0.2;
+        }
+        public bool ThumbStickLeftDown()
+        {
+            return GamePadState.ThumbSticks.Left.Y < -0.4 &&
+                PreviousGamePadState.ThumbSticks.Left.Y > -0.2;
+        }
 #endif
-
 		#endregion
 
+		
 		
 		public Vector2 PointerLocation()
 		{
