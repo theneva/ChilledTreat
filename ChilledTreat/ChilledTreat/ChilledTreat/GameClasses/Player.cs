@@ -163,7 +163,7 @@ namespace ChilledTreat.GameClasses
 		}
 		#endregion
 
-		#region Methods for detemrining what happens to the player
+		#region Methods for determining what happens to the player
 		/// <summary>
 		/// How much the player is damaged
 		/// </summary>
@@ -180,7 +180,9 @@ namespace ChilledTreat.GameClasses
 			//Get the current time, so we can remove the red haze after a certai time interval
 			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 
-			_health -= damage;
+			//If you're in godmode, you're invincible
+			if(!GameConstants.GodMode)
+				_health -= damage;
 
 			if (_health <= 0)
 				PlayerState = State.Dead;
