@@ -44,7 +44,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_weapons = new []
 			           	{
-							new Weapon("Rifle", 10000, 1000, 100, true, true),
+							new Weapon("Rifle", 10000, 1000, 50, true, true),
 							new Weapon("Pistol", 10, 100, 5, false, false),
 							new Weapon("Rifle", 30, 50, 10, true, false)
 						};
