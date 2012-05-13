@@ -26,7 +26,7 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 			if (!_welcomeScreen)
-				Game1.Instance.SpriteBatch.Draw(_splash, Vector2.Zero, Color.White);
+				Game1.Instance.SpriteBatch.Draw(_splash, Vector2.Zero, _splash.Bounds,Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 			else
 			{
 				Game1.Instance.SpriteBatch.DrawString(_welcomeFont, "Welcome to Chilled Treat!",

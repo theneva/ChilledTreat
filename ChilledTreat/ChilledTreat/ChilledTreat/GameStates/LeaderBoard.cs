@@ -49,16 +49,17 @@ namespace ChilledTreat.GameStates
 
 			foreach (Highscore hs in _highScoreList)
 			{
+				//_shift creates a linebreak between items in the list, scrolling moves items accordingly to allow users to scroll
 				_shift++;
 				Game1.Instance.SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.GameScreenWidth / 3f - 35, 100 + (_shift * 50) + (_scrolling * 50)), Color.White);
 				Game1.Instance.SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.GameScreenWidth / 3f, 100 + (_shift * 50) + (_scrolling * 50)), Color.White);
 				Game1.Instance.SpriteBatch.DrawString(_scoreFont, Convert.ToString(hs.Score), new Vector2(Game1.GameScreenWidth / 3f * 2f, 100 + (_shift * 50) + (_scrolling * 50)), Color.White);
 			}
 			//Top/Bot Frame, this is centering the scrolling leaderboard, and hiding text under the title
-			Game1.Instance.SpriteBatch.Draw(_lbTexture, new Rectangle(0, 0, 1280, 150), Color.Black);
+			Game1.Instance.SpriteBatch.Draw(_lbTexture, new Rectangle(0, 0, Game1.GameScreenWidth, 150), Color.Black);
 			//Can be removed and rather tweak fontsize and spacing.
 
-			Game1.Instance.SpriteBatch.Draw(_lbTexture, new Rectangle(0, 640, 1280, 80), Color.YellowGreen);
+			Game1.Instance.SpriteBatch.Draw(_lbTexture, new Rectangle(0, Game1.GameScreenHeight - 80, Game1.GameScreenWidth, 80), Color.Black);
 			Game1.Instance.SpriteBatch.DrawString(_menuFont, "Leaderboard", new Vector2(Game1.GameScreenWidth / 3f - 50, 50), Color.White);
 
 		}

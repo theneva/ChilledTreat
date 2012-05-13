@@ -10,10 +10,8 @@ namespace ChilledTreat.GameStates
 		// Fields
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly SpriteFont _menuFont;
-		readonly Color _fontColor; 
 		readonly string[] _menuItems;
-		readonly float[] _selectedItem;
-		readonly int[] _yPos;
+		readonly float[] _selectedItem, _yPos;
 		readonly SoundEffect _buttonSound, _selectSound;
 		int _menuPos;
 
@@ -21,7 +19,6 @@ namespace ChilledTreat.GameStates
 		public PauseMenu()
 		{
 			_menuFont = Game1.Instance.Content.Load<SpriteFont>("fonts/menuFont");
-			_fontColor = Color.Salmon;
 			string[] strings = { "Resume Game", "Main Menu" };
 			_menuItems = strings;
 			_selectedItem = new float[_menuItems.Length];
@@ -31,16 +28,16 @@ namespace ChilledTreat.GameStates
 
 			for (int i = 0; i < _selectedItem.Length; i++)
 			{
-				_selectedItem[i] = 100f;
+				_selectedItem[i] = 100f * Game1.GameScale;
 			}
-			_selectedItem[_menuPos] = 150f;
+			_selectedItem[_menuPos] = 150f * Game1.GameScale;
 
-			int yStartPos = 100;
-			_yPos = new int[_menuItems.Length];
+			float yStartPos = 100f;
+			_yPos = new float[_menuItems.Length];
 			for (int i = 0; i < _yPos.Length; i++)
 			{
 				_yPos[i] = yStartPos;
-				yStartPos += 100;
+				yStartPos += 100f * Game1.GameScale;
 			}
 		}
 
@@ -61,8 +58,8 @@ namespace ChilledTreat.GameStates
 				_menuPos--;
 				if (_menuPos < 0) _menuPos = _selectedItem.Length - 1;
 			}
-			for (int i = 0; i < _selectedItem.Length; i++) _selectedItem[i] = 100f;
-			_selectedItem[_menuPos] = 150f;
+			for (int i = 0; i < _selectedItem.Length; i++) _selectedItem[i] = 100f * Game1.GameScale;
+			_selectedItem[_menuPos] = 150f * Game1.GameScale;
 
 			if (_input.IsPausePressed() || (_input.IsAbortPressed()))
 			{
@@ -92,7 +89,7 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 			for (int i = 0; i < _menuItems.Length; i++)
-				Game1.Instance.SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor);
+				Game1.Instance.SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 		}
 	}
 }

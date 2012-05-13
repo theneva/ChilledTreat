@@ -87,6 +87,7 @@ namespace ChilledTreat.GameStates
 
 			if (_input.IsAbortPressed())
 			{
+				//resets the creditsscreen
 				Game1.ChangeState(Menu);
 				_startAnew = true;
 				MediaPlayer.Stop();
@@ -95,11 +96,12 @@ namespace ChilledTreat.GameStates
 
 			if (!_songstart)
 			{
+				//starts music player for the creditssceen
 				MediaPlayer.Play(_creditMusic);
 				_songstart = true;
 			}
-
-			if (_currentTime - _startCreditsTimer > 36)
+				//timer for when the logos appears at the bottom of the creditsscreen
+			if (_currentTime - _startCreditsTimer > 33)
 			{
 				_drawLogos = true;
 			}
@@ -111,16 +113,18 @@ namespace ChilledTreat.GameStates
 			
 			foreach (string creditEntry in _creditsContent)
 			{
+				//draws people involved in credits
 				_shift++;
 				Game1.Instance.SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 			}
 			foreach (string creditSourcesEntry in _creditsContentSources)
 			{
+				//draws sources used in project
 				_shift++;
 				Game1.Instance.SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 			}
 			if (!_drawLogos) return;
-
+				//draws logos at the end of creditsscreen
 			Game1.Instance.SpriteBatch.Draw(_nithLogo, new Vector2((Game1.GameScreenWidth - _nithLogo.Width) / 2f, (Game1.GameScreenHeight - _nithLogo.Height) / 2.5f), Color.White);
 			Game1.Instance.SpriteBatch.Draw(_xnaLogo, new Vector2((Game1.GameScreenWidth - _xnaLogo.Width) / 2f, (Game1.GameScreenHeight - _xnaLogo.Height) / 1.25f), Color.White);
 		}
