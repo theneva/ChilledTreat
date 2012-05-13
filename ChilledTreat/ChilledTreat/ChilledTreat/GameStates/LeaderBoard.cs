@@ -58,14 +58,14 @@ namespace ChilledTreat.GameStates
 			//Top/Bot Frame, this is centering the scrolling leaderboard, and hiding text under the title
 			Game1.Instance.SpriteBatch.Draw(_lbTexture, new Rectangle(0, 0, 1280, 150), Color.Black);
 			//Can be removed and rather tweak fontsize and spacing.
-<<<<<<< HEAD
+
 			Game1.Instance.SpriteBatch.Draw(_lbTexture, new Rectangle(0, 640, 1280, 80), Color.YellowGreen);
 			Game1.Instance.SpriteBatch.DrawString(_menuFont, "Leaderboard", new Vector2(Game1.GameScreenWidth / 3f - 50, 50), Color.White);
 
-=======
+
 			Game1.Instance.SpriteBatch.Draw(_lbTexture, new Rectangle(0, 640, 1280, 80), Color.Black);
 			Game1.Instance.SpriteBatch.DrawString(_menuFont, "Leaderboard", new Vector2(Game1.GameScreenWidth / 3f - 100, 50), Color.White);
->>>>>>> 4caa991e700a945672c27dae679b4a7970384491
+
 		}
 	}
 }
