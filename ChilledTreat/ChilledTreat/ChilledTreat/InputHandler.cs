@@ -578,69 +578,62 @@ namespace ChilledTreat
 
         // Used to handle input to move crosshair
         public Vector2 PointerLocation()
-		{
+        {
 #if !XBOX
             // In the PC version the mouse is used for
             // crosshair movement
-			return GamePad.GetState(PlayerIndex).IsConnected
-					? GamePadPointerLocation()
-					: new Vector2(MouseState.X, MouseState.Y);
+            return GamePad.GetState(PlayerIndex).IsConnected
+                    ? GamePadPointerLocation()
+                    : new Vector2(MouseState.X, MouseState.Y);
 #else
             // In the XBOX version the gamepad thumbstick
             // is used to move the crosshair
 			return GamePadPointerLocation();
 #endif
-		}
+        }
 
 #if !WINDOWS_PHONE
-		private Vector2 GamePadPointerLocation()
-		{
-			if (GamePadState.ThumbSticks.Left.X > 0.2) _gamePadPointerLocation.X += 10;
-			else if (GamePadState.ThumbSticks.Left.Y > 0.2) _gamePadPointerLocation.Y -= 10;
-			if (GamePadState.ThumbSticks.Left.X < -0.2) _gamePadPointerLocation.X -= 10;
-			else if (GamePadState.ThumbSticks.Left.Y < -0.2) _gamePadPointerLocation.Y += 10;
+        private Vector2 GamePadPointerLocation()
+        {
+            if (GamePadState.ThumbSticks.Left.X > 0.2) _gamePadPointerLocation.X += 10;
+            else if (GamePadState.ThumbSticks.Left.Y > 0.2) _gamePadPointerLocation.Y -= 10;
+            if (GamePadState.ThumbSticks.Left.X < -0.2) _gamePadPointerLocation.X -= 10;
+            else if (GamePadState.ThumbSticks.Left.Y < -0.2) _gamePadPointerLocation.Y += 10;
 
-			return _gamePadPointerLocation;
-		}
+            return _gamePadPointerLocation;
+        }
 #endif
 
-		public bool IsPausePressed()
-		{
+        public bool IsPausePressed()
+        {
 #if WINDOWS
-			if (GamePad.GetState(PlayerIndex.One).IsConnected)
-			{
+            if (GamePad.GetState(PlayerIndex.One).IsConnected)
+            {
 #endif
-				return IsButtonPressed(Buttons.Start);
+                return IsButtonPressed(Buttons.Start);
 #if WINDOWS
-			}
-			return IsKeyPressed(Keys.Escape);
+            }
+            return IsKeyPressed(Keys.Escape);
 #endif
-		}
+        }
 
 #if !WINDOWS_PHONE
-		public bool IsControllerConnected()
-		{
-			return GamePadState.IsConnected;
-		}
+        public bool IsControllerConnected()
+        {
+            return GamePadState.IsConnected;
+        }
 #endif
-<<<<<<< HEAD
-        #endregion
-    }
-=======
-
-#if !WINDOWS_PHONE
-		public void StartVibrate()
-		{
-			GamePad.SetVibration(PlayerIndex, 1f, 1f);
-		}
-#endif
-
 #if !WINDOWS_PHONE
 		public void StopVibrate()
 		{
 			GamePad.SetVibration(PlayerIndex, 0, 0);
 		}
+        public void StartVibrate()
+        {
+            GamePad.SetVibration(PlayerIndex, 1f, 1f);
+        }
 #endif
 	}
->>>>>>> b365adf0daf8a2443548d49e6d234937c18449a1
+        #endregion
+ 
 }
