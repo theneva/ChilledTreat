@@ -90,6 +90,7 @@
   <ItemGroup>
     <Content Include="GameIcon.ico" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="HighScore.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GameThumbnail.png">

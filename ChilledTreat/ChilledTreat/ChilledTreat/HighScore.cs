@@ -44,15 +44,15 @@ namespace ChilledTreat
 		{
 			XmlSerializer serializer = new XmlSerializer(typeof (List<Highscore>));
 #if WINDOWS
-			TextWriter writer = new StreamWriter(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
+			TextWriter writer = new StreamWriter("HighScore.xml");
 #elif XBOX
 			//This shit doesn't work
 			IsolatedStorageFile meh = IsolatedStorageFile.GetUserStoreForApplication();
 
-			using (var isoFileStream = new IsolatedStorageFileStream(Game1.Instance.Content.RootDirectory + "/HighScore.xml", FileMode.OpenOrCreate, meh))
+			using (IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream("HighScore.xml", FileMode.OpenOrCreate, meh))
 			{
 				//Write the data
-				using (var writer = new StreamWriter(isoFileStream))
+				using (StreamWriter writer = new StreamWriter(isoFileStream))
 				{
 #endif
 					serializer.Serialize(writer, highscores);
@@ -68,7 +68,7 @@ namespace ChilledTreat
 		private static List<Highscore> DeserializeFromXml()
 		{
 			XmlSerializer deserializer = new XmlSerializer(typeof (List<Highscore>));
-			TextReader textReader = new StreamReader(Game1.Instance.Content.RootDirectory + "/HighScore.xml");
+			TextReader textReader = new StreamReader("HighScore.xml");
 			List<Highscore> scores = (List<Highscore>) deserializer.Deserialize(textReader);
 			textReader.Close();
 			textReader.Dispose();
