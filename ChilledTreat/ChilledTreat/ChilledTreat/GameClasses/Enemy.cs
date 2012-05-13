@@ -18,9 +18,7 @@ namespace ChilledTreat.GameClasses
 		private Vector2 _speed;
 		private int _damageInflicted;
 
-		private readonly Random _random = new Random();
-
-		private readonly FrameInfo _frameInfo = FrameInfo.Instance;
+		private readonly Random _random;
 
 		int _timeSinceLastFrame;
 		private const int MillisecondsPerFrame = 100;
@@ -72,6 +70,8 @@ namespace ChilledTreat.GameClasses
 			// Redundant but not sufficiently inefficient for a workaround
 			Scale = 0.008f * (_position.Y);
 
+			_random = new Random();
+
 			// 510 is the height of the road, 192 is the width of the top of the road,
 			// 540 is the distance from the left border to the top of the road
 			_position = new Vector2(510 + _random.Next(192) - _frameSize.X * Scale,
@@ -121,7 +121,7 @@ namespace ChilledTreat.GameClasses
 		{
 			Alive = false;
 
-			// Play a random sound
+			// Play a random grunt
 			EnemyHandler.Instance.SoundEffects[InGame.Random.Next(EnemyHandler.Instance.SoundEffects.Count)].Play();
 			Player.Instance.SuccesfullKill();
 
@@ -140,10 +140,13 @@ namespace ChilledTreat.GameClasses
 		public void Update()
 		{
 			#region Animation frames
-			_timeSinceLastFrame += _frameInfo.GameTime.ElapsedGameTime.Milliseconds;
+			_timeSinceLastFrame += FrameInfo.Instance.GameTime.ElapsedGameTime.Milliseconds;
 			if (_timeSinceLastFrame > MillisecondsPerFrame)
 			{
 				_timeSinceLastFrame -= MillisecondsPerFrame;
+
+				// Sneaky
+				_drawMuzzleFlare = false;
 
 				if (++_currentFrame.X >= _sheetSize.X)
 				{
@@ -167,13 +170,6 @@ namespace ChilledTreat.GameClasses
 				_drawMuzzleFlare = true;
 			}
 
-			if (_timesDrawnMuzzleFlare >= 5)
-			{
-				_drawMuzzleFlare = false;
-				_timesDrawnMuzzleFlare = 0;
-			}
-
-
 			#region Movement
 			_position.Y += _speed.Y;
 
@@ -195,8 +191,6 @@ namespace ChilledTreat.GameClasses
 			if (!_drawMuzzleFlare) return;
 
 			Game1.Instance.SpriteBatch.Draw(_muzzleFlare, new Vector2(_position.X - (_muzzleFlare.Width / 2f), _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), Color.White);
-
-			_timesDrawnMuzzleFlare++;
 			#endregion
 		}
 #endregion
