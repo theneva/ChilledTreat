@@ -35,12 +35,12 @@ namespace ChilledTreat.GameStates
 				Game1.Instance.SpriteBatch.DrawString(_welcomeFont, "Press " +
 
 #if WINDOWS
-				                                                    "the Return key " +
+					"the Return key " +
 #elif XBOX
 					"A " +
 #endif
- "to continue.", new Vector2(Game1.GameScreenWidth / 10, Game1.GameScreenHeight * 0.8f), Color.White, 0,
-				                                      Vector2.Zero, Game1.GameScale/2f, SpriteEffects.None, 0);
+					"to continue.", new Vector2(Game1.GameScreenWidth / 10, Game1.GameScreenHeight * 0.8f), Color.White, 0,
+					Vector2.Zero, Game1.GameScale/2f, SpriteEffects.None, 0);
 			}
 		}
 	}
