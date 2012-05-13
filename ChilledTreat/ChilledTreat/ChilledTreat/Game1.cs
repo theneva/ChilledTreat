@@ -64,7 +64,6 @@ namespace ChilledTreat
 			// Create a new SpriteBatch, which can be used to draw textures.
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-
 			// GameStates added
 			_gameStates.Add(new Splash());
 			_gameStates.Add(new Menu());
@@ -74,9 +73,10 @@ namespace ChilledTreat
 			_gameStates.Add(new Instructions());
 			_gameStates.Add(new LeaderBoard());
 			_gameStates.Add(new InGame());
-		   
+
 			// Splashscreen state set as activegamestate at startup
 			_activeGameState = _gameStates[GameState.Splash];
+
 		}
 
 		/// <summary>
@@ -100,16 +100,15 @@ namespace ChilledTreat
 
 			// InputHandler updated to handle input 
 			_inputHandler.Update();
-
 			// Used to change between gamestates
 			if (_nextState != null)
 			{
-				_activeGameState = _nextState;
-				_nextState = null;
+		       _activeGameState = _nextState;
+			    _nextState = null;
 			}
 			// Update method called in the activegamestate
 			_activeGameState.Update();
-
+			
 			base.Update(gameTime);
 		}
 
@@ -125,7 +124,7 @@ namespace ChilledTreat
 
 			// Draw method in the activegamestate called
 			_activeGameState.Draw();
-
+			
 			SpriteBatch.End();
 
 			base.Draw(gameTime);
