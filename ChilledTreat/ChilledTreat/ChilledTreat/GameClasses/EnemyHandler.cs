@@ -8,6 +8,7 @@ namespace ChilledTreat.GameClasses
 {
 	class EnemyHandler
 	{
+		#region Fields
 		readonly List<Enemy> _enemies;
 
 		public List<SoundEffect> SoundEffects { get; private set; }
@@ -18,7 +19,9 @@ namespace ChilledTreat.GameClasses
 
 		private int _timeSinceLastIntervalIncrease;
 		private const int AddEnemyInterval = GameConstants.AddEnemyInterval; // milliseconds
+		#endregion
 
+		#region Singleton-constructor
 		/// <summary>
 		/// Returns the singleton; defines it if null
 		/// </summary>
@@ -33,10 +36,11 @@ namespace ChilledTreat.GameClasses
 			_enemies = new List<Enemy>();
 			SoundEffects = new List<SoundEffect> { Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000050_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000053_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000054_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000056_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000057_11025") };
 		}
+		#endregion
 
-
+		#region Methods
 		/// <summary>
-		/// Adds an enemy to the list
+		/// Adds an enemy to the list.
 		/// </summary>
 		public void AddEnemy()
 		{
@@ -50,7 +54,7 @@ namespace ChilledTreat.GameClasses
 		}
 
 		/// <summary>
-		/// Gets the amount of enemies currently in the list
+		/// Gets the amount of enemies currently in the list.
 		/// </summary>
 		/// <returns>The number of enemies</returns>
 		private int GetNumberOfEnemies()
@@ -59,7 +63,7 @@ namespace ChilledTreat.GameClasses
 		}
 
 		/// <summary>
-		/// Removes an enemy from the list
+		/// Removes an enemy from the list.
 		/// </summary>
 		/// <param name="enemy">The enemy to remove</param>
 		public void Remove(Enemy enemy)
@@ -68,7 +72,7 @@ namespace ChilledTreat.GameClasses
 		}
 
 		/// <summary>
-		/// Wipes (clears) the list for a fresh start
+		/// Wipes (clears) the list for a fresh start.
 		/// </summary>
 		public void Clear()
 		{
@@ -76,14 +80,12 @@ namespace ChilledTreat.GameClasses
 		}
 
 		/// <summary>
-		/// Lets the handler check if an enemy is hit, and damage that one enemy
+		/// Lets the handler check if an enemy is hit, and damage that one enemy.
 		/// </summary>
 		/// <param name="attackedArea">Rectangle targeted by player's weapon</param>
 		/// <param name="inflictedDamage">Damage the weapon inflicted</param>
 		public void FiredAt(Rectangle attackedArea, int inflictedDamage)
 		{
-			if (GameConstants.GodMode) return;
-
 			// Hackish as fuck, but it works. A for-each loop won't do here because the
 			// amount of enemies will change if one is killed.
 			List<Enemy> enemiesReversed = _enemies;
@@ -106,7 +108,9 @@ namespace ChilledTreat.GameClasses
 		{
 			_instance = new EnemyHandler();
 		}
+		#endregion
 
+		#region Update
 		/// <summary>
 		/// Adds the given number of enemies to the screen every AddEnemyInterval milliseconds;
 		/// increases that interval at that given interval.
@@ -132,7 +136,9 @@ namespace ChilledTreat.GameClasses
 			for (int i = _enemies.Count - 1; i >= 0; i--)
 				_enemies[i].Update();
 		}
+		#endregion
 
+		#region Draw
 		/// <summary>
 		/// Draws each enemy currently in the list.
 		/// Loops through the list backwards so that enemies be drawn
@@ -143,5 +149,6 @@ namespace ChilledTreat.GameClasses
 			for (int i = _enemies.Count - 1; i >= 0; i--)
 				_enemies[i].Draw();
 		}
+		#endregion
 	}
 }

@@ -8,14 +8,14 @@ namespace ChilledTreat.GameClasses
 {
 	class Enemy
 	{
-
+		#region Fields
 		public bool Alive { get; private set; }
 		private int _health;
 		private readonly int _damage;
-		Vector2 _position = new Vector2(20, 40);
+		private Vector2 _position;
 		readonly Texture2D _texture, _muzzleFlare;
 
-		Vector2 _speed = new Vector2(0, 0.5f);
+		private Vector2 _speed;
 		private int _damageInflicted;
 
 		private readonly Random _random = new Random();
@@ -34,30 +34,42 @@ namespace ChilledTreat.GameClasses
 
 		private bool _drawMuzzleFlare;
 		private int _timesDrawnMuzzleFlare;
+		#endregion
 
-		// TODO: This isn't right
+		#region Constructors
 		/// <summary>
-		/// Constructors!
+		/// Default constructor = default values
 		/// </summary>
 		public Enemy()
 			: this(GameConstants.EnemyHealth, GameConstants.EnemyDamage) { }
 
+		/// <summary>
+		/// Specifies one value and sets the other to default based on a boolean
+		/// </summary>
+		/// <param name="value">The value to specify</param>
+		/// <param name="isHealth">Whether or not the value to specify is health</param>
 		public Enemy(int value, bool isHealth)
 			: this(isHealth ? value : GameConstants.EnemyHealth, isHealth ? GameConstants.EnemyHealth : value) { }
 
-		private Enemy(int health, int damage)
+		/// <summary>
+		/// Main constructor. Gives each field its value.
+		/// </summary>
+		/// <param name="health">Value of health</param>
+		/// <param name="damage">Value of damage</param>
+		public Enemy(int health, int damage)
 		{
 			Alive = true;
 			_health = health;
 			_damage = damage;
 
-			_texture = Game1.Instance.Content.Load<Texture2D>("Images/enemy2 - Copy");
+			_speed = new Vector2(0, 0.5f);
+
+			_texture = Game1.Instance.Content.Load<Texture2D>("Images/enemy");
 			_currentFrame = new Point(0, 0);
-			_frameSize = new Point(39, 58);
-			_sheetSize = new Point(7, 1);
+			_frameSize = new Point(41, 58);
+			_sheetSize = new Point(6, 0);
 
-
-			// TODO: Redundant
+			// Redundant but not sufficiently inefficient for a workaround
 			Scale = 0.008f * (_position.Y);
 
 			_position = new Vector2(538 + _random.Next(192) - _frameSize.X * Scale,
@@ -68,19 +80,31 @@ namespace ChilledTreat.GameClasses
 			_drawMuzzleFlare = false;
 			_timesDrawnMuzzleFlare = 0;
 		}
+		#endregion
 
+		#region Methods
+		/// <summary>
+		/// The texture's surrounding rectangle
+		/// </summary>
+		/// <returns>Returns a new rectangle based on the texture's size and position</returns>
 		public Rectangle GetRectangle()
 		{
 			return new Rectangle((int)_position.X, (int)_position.Y, (int)(Scale * _frameSize.X), (int)(Scale * _frameSize.Y));
 		}
 
+		/// <summary>
+		/// Damages the player based on max damage
+		/// </summary>
 		void Attack()
 		{
 			_damageInflicted = InGame.Random.Next(_damage);
 			Player.Instance.Damaged(_damageInflicted);
 		}
 
-		// Update health, check if dead
+		/// <summary>
+		/// Updates health based on damage inflicted by player.
+		/// </summary>
+		/// <param name="inflictedDamage"></param>
 		public void TakeDamage(int inflictedDamage)
 		{
 			_health -= inflictedDamage;
@@ -90,7 +114,7 @@ namespace ChilledTreat.GameClasses
 
 		/// <summary>
 		/// Attributes the player for the kill, plays through the spritesheet,
-		/// before removing the enemy from the list
+		/// and finally removes the enemy from the list
 		/// </summary>
 		void Die()
 		{
@@ -104,8 +128,12 @@ namespace ChilledTreat.GameClasses
 			_frameSize = new Point(78, 60);
 			_sheetSize = new Point(3, 1);
 		}
+#endregion
 
-
+		#region Update
+		/// <summary>
+		/// Selects the proper frames to draw, attacks if possible, and controls movement
+		/// </summary>
 		public void Update()
 		{
 			#region Animation frames
@@ -152,9 +180,9 @@ namespace ChilledTreat.GameClasses
 				_position.Y = Game1.GameScreenHeight - 300;
 			#endregion
 		}
+#endregion
 
-
-
+		#region Draw
 		public void Draw()
 		{
 			Game1.Instance.SpriteBatch.Draw(_texture, _position,
@@ -168,5 +196,6 @@ namespace ChilledTreat.GameClasses
 			_timesDrawnMuzzleFlare++;
 			#endregion
 		}
+#endregion
 	}
 }

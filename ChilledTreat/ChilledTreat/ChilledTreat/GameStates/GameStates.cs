@@ -7,6 +7,7 @@ namespace ChilledTreat.GameStates
 	{
 
 		public const int Splash = 0, Menu = 1, Credits = 2, PauseMenu = 3, GameOver = 4, Instructions = 5, LeaderBoard = 6, InGame = 7;
+		#region sexy
 		/*
 					 .u+m.z"!!::~~~~!~"+!
 				  .*~~~*"~~~~~~~~~~~~~~~~~?L.
@@ -143,6 +144,7 @@ namespace ChilledTreat.GameStates
 									   3~~~~~
  
 		 */
+		#endregion
 
 		public GameState() { }
 
