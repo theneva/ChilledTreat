@@ -107,6 +107,9 @@ namespace ChilledTreat
 
 			_activeGameState.Update();
 
+			//If the gamestate is not ingame, do not vibrate the controller
+			if(_activeGameState != _gameStates[GameState.InGame])
+				_inputHandler.StopVibrate();
 
 			base.Update(gameTime);
 		}
