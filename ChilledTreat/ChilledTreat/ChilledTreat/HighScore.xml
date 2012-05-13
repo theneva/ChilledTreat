@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfHighscore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Highscore>
+    <Name>Simen</Name>
+    <Score>18</Score>
+    <CurrentTime>2012-05-08T22:47:33.0296596+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>Per</Name>
+    <Score>10</Score>
+    <CurrentTime>2012-05-08T22:47:15.8836789+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>Simen</Name>
+    <Score>8</Score>
+    <CurrentTime>2012-05-08T22:49:26.9171736+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>Ole</Name>
+    <Score>5</Score>
+    <CurrentTime>2012-05-08T22:47:15.8846789+02:00</CurrentTime>
+  </Highscore>
+</ArrayOfHighscore>

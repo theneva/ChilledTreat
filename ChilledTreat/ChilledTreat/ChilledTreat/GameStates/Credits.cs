@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 
@@ -18,18 +17,17 @@ namespace ChilledTreat.GameStates
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		private double _startCreditsTimer, _currentTime;
-		readonly Texture2D xnaLogo, nithLogo;
-		bool drawLogos = false;
-		Song creditMusic;
-		bool songstart = false;
+		readonly Texture2D _xnaLogo, _nithLogo;
+		bool _drawLogos = false, _songstart = false;
+		readonly Song _creditMusic;
 
 		public Credits()
 		{
 			// Credits content
-			creditMusic = Game1.Instance.Content.Load<Song>("Music/DubMood");
+			_creditMusic = Game1.Instance.Content.Load<Song>("Music/DubMood");
 			MediaPlayer.IsRepeating = true;
-			xnaLogo = Game1.Instance.Content.Load<Texture2D>("Images/xnaLogo");
-			nithLogo = Game1.Instance.Content.Load<Texture2D>("Images/nithLogo");
+			_xnaLogo = Game1.Instance.Content.Load<Texture2D>("Images/xnaLogo");
+			_nithLogo = Game1.Instance.Content.Load<Texture2D>("Images/nithLogo");
 			_creditsFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/CreditsFont");
 			_creditsFontSources = Game1.Instance.Content.Load<SpriteFont>("Fonts/urlFont");
 			_fontColor = Color.Salmon;
@@ -97,15 +95,15 @@ namespace ChilledTreat.GameStates
 			}
 			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalSeconds - _startCreditsTimer;
 
-			if (!songstart)
+			if (!_songstart)
 			{
-				MediaPlayer.Play(creditMusic);
-				songstart = true;
+				MediaPlayer.Play(_creditMusic);
+				_songstart = true;
 			}
 
-			if (_startCreditsTimer > 6)
+			if (_currentTime - _startCreditsTimer > 6)
 			{
-				drawLogos = true;
+				_drawLogos = true;
 			}
 		}
 
@@ -123,11 +121,10 @@ namespace ChilledTreat.GameStates
 				_shift++;
 				Game1.Instance.SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 			}
-			if (drawLogos)
-			{
-				Game1.Instance.SpriteBatch.Draw(xnaLogo, new Vector2(900, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
-				Game1.Instance.SpriteBatch.Draw(nithLogo, new Vector2(900, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
-			}
+			if (!_drawLogos) return;
+
+			Game1.Instance.SpriteBatch.Draw(_xnaLogo, new Vector2(Game1.GameScreenWidth / 4, Game1.GameScreenHeight / 2), Color.White);
+			Game1.Instance.SpriteBatch.Draw(_nithLogo, new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2), Color.White);
 		}
 	}
 }
