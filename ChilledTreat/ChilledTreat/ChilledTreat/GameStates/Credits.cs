@@ -99,7 +99,7 @@ namespace ChilledTreat.GameStates
 				_songstart = true;
 			}
 
-			if (_currentTime - _startCreditsTimer > 36)
+			if (_currentTime - _startCreditsTimer > 33)
 			{
 				_drawLogos = true;
 			}
