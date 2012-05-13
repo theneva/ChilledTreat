@@ -1,3 +1,249 @@
+commit 339f2f6e292a59257a4766c30a411a6852bfa9ef
+Merge: fef83b8 61835d9
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 23:15:42 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit fef83b8d8123abef17114c52cfb2c09b62b7fbc7
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 23:15:08 2012 +0200
+
+    muzzle flare is based on gametime
+
+commit 61835d9a6b77787bf0cc4048ca04eb69b1a1a12e
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 23:08:05 2012 +0200
+
+    Scalet leaderboard
+
+commit e85d72bb34f2db01fc55445804be12c522d3774e
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 23:05:43 2012 +0200
+
+    Loading enemy textures in EnemyHandler
+
+commit a83760576ee0c57b1e7f3126f7959e617429c836
+Merge: f81fd89 d2a2019
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 23:01:10 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit f81fd89166f1c01b91b357dd7b7496bee794900d
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 23:00:25 2012 +0200
+
+    couple comments
+
+commit d2a20195f1c51ddde762e69ea0cac28b9b87ac59
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 22:59:33 2012 +0200
+
+    Scalet så det fortsatt funker på lavere oppløsnigner
+
+commit 54cc42265aac8e0077026c458f4046e9b23cc755
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 22:41:16 2012 +0200
+
+    Fjerna bildene fra prosjektet også
+
+commit 96c79cf841cd8261ab8a739ef2838f882a3d53e6
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 22:33:05 2012 +0200
+
+    fjerna obsolete filer
+
+commit 5cd8b0f98234bd2681c256bf2b6d3db85479a6ee
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 22:28:26 2012 +0200
+
+    Endra navn på lydfiler
+
+commit eb45c0fe6d53fa85b2af31e705fa4308327e04cb
+Merge: d0a6c72 37b0f54
+Author: skoste11 <steinarskogly@hotmail.com>
+Date:   Sun May 13 22:16:04 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit d0a6c722553f92823d304236b9d8bed12ae1fce2
+Author: skoste11 <steinarskogly@hotmail.com>
+Date:   Sun May 13 22:15:56 2012 +0200
+
+    more comments
+
+commit 37b0f54a31c8d35dfe1d0d1dce86518b06961417
+Merge: 104735c 80cc4a5
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 22:06:54 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit 104735cac097f2f4e55dc5109eab610eaa7e9489
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 22:06:44 2012 +0200
+
+    Ferdig med kommentering
+
+commit 80cc4a5962271513543db5114f6df5516bb0324e
+Author: skoste11 <steinarskogly@hotmail.com>
+Date:   Sun May 13 22:01:34 2012 +0200
+
+    fjerna litt hardkoding
+
+commit d5c2f45d3b8e3463044612967a751eb19fc38df1
+Merge: 776c0b9 332f8eb
+Author: skoste11 <steinarskogly@hotmail.com>
+Date:   Sun May 13 21:58:03 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit 776c0b9b8f9c62928764eea7e232514353d11b12
+Author: skoste11 <steinarskogly@hotmail.com>
+Date:   Sun May 13 21:57:54 2012 +0200
+
+    adda litt mer kommentering
+
+commit 332f8eb5b4a3902e77da709dda4395f1f2ca7fab
+Merge: 1c48e71 9920ee8
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 21:51:08 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit 1c48e711452cd85fbb24d73867c62fb13b9b49d2
+Merge: 29fb9d0 baeb6d2
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 21:50:56 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit 29fb9d07fb3d1fbe087f9bd5de6129d5727fdc2d
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 21:50:43 2012 +0200
+
+    Weaponhandler ferdigkommentert. Mangler weapon
+
+commit 9920ee840e2b497003910eabb510a53df2c89c96
+Author: skoste11 <steinarskogly@hotmail.com>
+Date:   Sun May 13 21:50:38 2012 +0200
+
+    fiksa logo timing
+
+commit baeb6d275803f05cf171e66e8e8b162864436b62
+Merge: 03c199c ca7a808
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 21:41:58 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit 03c199cc9b79100bc5c074391d4ec409674434f7
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 21:40:11 2012 +0200
+
+    Oppdaterte dokumentasjon, satt GodMode tilbake til False, endret EnemyDamage til 15, og baserer InitialEnemiesPerSecond på GodMode (2 uten, 20 med)
+
+commit ca7a8086751538a02635e94ce7437e854814a78e
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 21:36:21 2012 +0200
+
+    Endret en if
+
+commit ff99f097ef6faae4c1fc5f7e74099546368f17ed
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 21:34:33 2012 +0200
+
+    Kommentering
+
+commit ddddadfe566eefb8586f6b24d668fad20ff4c803
+Merge: 4cd752c ff07cf9
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 21:16:47 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit ff07cf9f146225ab0269094daefbdfe9c843dff0
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 21:16:26 2012 +0200
+
+    Same as last
+
+commit 4cd752c62bedf8c553101005bb114282742d515f
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 21:15:21 2012 +0200
+
+    Simplifies the damaged method in Player
+
+commit 1424a6f69680f25765859ad2cfdcf28de15794b6
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 21:13:20 2012 +0200
+
+    Fucka spaces
+
+commit 348c81cb33ab00887761de70c95d742033419d53
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 21:11:03 2012 +0200
+
+    Loka med splash. Iffa win vs xbox
+
+commit 0453c8d1e8038b07e2b34a343fc3bdaaf8c1f361
+Merge: 9144ceb abf103b
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 21:10:40 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit abf103bf40f5c2e6dd720067e3c385062a3b128d
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 21:07:53 2012 +0200
+
+    mini-fix
+
+commit 8f96c68f36e620d1e823de5fbd6cd2adf6fba2ad
+Merge: a3492d6 640dfc5
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 20:50:47 2012 +0200
+
+    Merge branch 'master' of github.com:theneva/ChilledTreat
+
+commit a3492d6d3d0b5c077f3fc8ee6e0c6117e1f2a9a0
+Author: Martin Lehmann <theneva@hotmail.com>
+Date:   Sun May 13 20:50:13 2012 +0200
+
+    Comments, updated sprites in Enemy, added regions
+
+commit 9144ceb1b9e788a58f9c3cb6bdef06985973f8f0
+Merge: afd8c08 640dfc5
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 20:44:39 2012 +0200
+
+    Merge remote-tracking branch 'origin/master'
+
+commit afd8c0814bc3a24f6eadb0678728b3c60832cd02
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 20:44:13 2012 +0200
+
+    kill it with fire
+
+commit 640dfc557086c54c76ddf60d2f6ad26cf6ae0f24
+Author: Vegard Strand Lende <lende.vegard@gmail.com>
+Date:   Sun May 13 20:30:25 2012 +0200
+
+    lagt til welcome greie
+
+commit 0a0490ed006d98afd7f6ba804f148af2563511f5
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 19:53:44 2012 +0200
+
+    sletta lehmanns temps
+
+commit c8c3f9e58b77077e9838df414f899399317c9665
+Author: Simen Bekkhus <beksim10@nith.no>
+Date:   Sun May 13 19:52:57 2012 +0200
+
+    prøver å ignorere temps
+
 commit 3bf1ad57f8b7c8049570455e666937238211b553
 Author: Martin Lehmann <theneva@hotmail.com>
 Date:   Sun May 13 19:51:42 2012 +0200
