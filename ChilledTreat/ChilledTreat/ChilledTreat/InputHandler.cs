@@ -571,15 +571,23 @@ namespace ChilledTreat
 #endif
 		#endregion
 
-		
-		
-		public Vector2 PointerLocation()
+
+        // The Game Specific methods region contains a collection of
+        // methods that is needed specifically for this game.
+        #region Game Specific methods
+
+        // Used to handle input to move crosshair
+        public Vector2 PointerLocation()
 		{
 #if !XBOX
+            // In the PC version the mouse is used for
+            // crosshair movement
 			return GamePad.GetState(PlayerIndex).IsConnected
 					? GamePadPointerLocation()
 					: new Vector2(MouseState.X, MouseState.Y);
 #else
+            // In the XBOX version the gamepad thumbstick
+            // is used to move the crosshair
 			return GamePadPointerLocation();
 #endif
 		}
@@ -615,5 +623,6 @@ namespace ChilledTreat
 			return GamePadState.IsConnected;
 		}
 #endif
-	}
+        #endregion
+    }
 }
