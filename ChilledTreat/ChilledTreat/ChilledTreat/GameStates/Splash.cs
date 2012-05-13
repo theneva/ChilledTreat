@@ -1,12 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ChilledTreat.GameStates
 {
 	class Splash : GameState
 	{
+		readonly Texture2D splash;
 		public Splash()
 		{
 			// LOAD CONTENT
+			splash = Game1.Instance.Content.Load<Texture2D>("Images/chilledTreat");
 		}		
 		public override void Update()
 		{
@@ -18,8 +21,7 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
-			Game1.Instance.GraphicsDevice.Clear(Color.Salmon);
+			Game1.Instance.SpriteBatch.Draw(splash, Vector2.Zero, Color.White);
 		}
-
 	}
 }
