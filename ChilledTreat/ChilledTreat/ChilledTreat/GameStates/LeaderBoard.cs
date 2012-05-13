@@ -49,6 +49,7 @@ namespace ChilledTreat.GameStates
 
 			foreach (Highscore hs in _highScoreList)
 			{
+				//_shift creates a linebreak between items in the list, scrolling moves items accordingly to allow users to scroll
 				_shift++;
 				Game1.Instance.SpriteBatch.DrawString(_scoreFont, Convert.ToString(_shift) + ")", new Vector2(Game1.GameScreenWidth / 3f - 35, 100 + (_shift * 50) + (_scrolling * 50)), Color.White);
 				Game1.Instance.SpriteBatch.DrawString(_scoreFont, hs.Name, new Vector2(Game1.GameScreenWidth / 3f, 100 + (_shift * 50) + (_scrolling * 50)), Color.White);
