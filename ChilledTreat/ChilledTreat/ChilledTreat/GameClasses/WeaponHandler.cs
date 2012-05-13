@@ -64,18 +64,18 @@ namespace ChilledTreat.GameClasses
 		{
 			CurrentTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-
-			//PointerPosition = _input.PointerLocation();
+			//Get the position of the mouse or or the relative position of the gamepad
 			ReticulePosition = _input.PointerLocation();
 
 			//Do not allow weapon-swapping while reloading
 			if (_input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading)
 				ChangeWeapon();
 			
-			//
+			//If the player is waiting (i.e. not allowed to shoot), check if the player is allowed to fire
 			if (CurrentTime - StartShootTime > _currentWeapon.DelayBetweenShots && PlayerState == Player.State.Waiting && PlayerState != Player.State.Reloading)
 				PlayerState = Player.State.Alive;
-
+			
+			//Keep the aiming reticule on-screen at all times
 			if (ReticulePosition.X < 0)
 				ReticulePosition = new Vector2(0, ReticulePosition.Y);
 			else if (ReticulePosition.X > Game1.GameScreenWidth)
@@ -107,6 +107,7 @@ namespace ChilledTreat.GameClasses
 				PlayerState = Player.State.Shooting;
 			}
 
+			//Manual reload
 			if (_input.IsReloadPressed() && PlayerState == Player.State.Alive &&
 				_currentWeapon.CurrentAmmo < _currentWeapon.MaxAmmo)
 			{
@@ -138,6 +139,7 @@ namespace ChilledTreat.GameClasses
 				//If God-mode is activated, allow the use of the god weapon. If not, start at index 1
 				_currentWeaponIndex = Tools.GameConstants.GodMode ? 0 : 1;
 			else _currentWeaponIndex++;
+
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
 
