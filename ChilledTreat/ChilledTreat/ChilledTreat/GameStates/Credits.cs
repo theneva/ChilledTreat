@@ -101,7 +101,7 @@ namespace ChilledTreat.GameStates
 				_songstart = true;
 			}
 
-			if (_currentTime - _startCreditsTimer > 6)
+			if (_currentTime - _startCreditsTimer > 36)
 			{
 				_drawLogos = true;
 			}
@@ -124,7 +124,7 @@ namespace ChilledTreat.GameStates
 			if (!_drawLogos) return;
 
 			Game1.Instance.SpriteBatch.Draw(_xnaLogo, new Vector2(Game1.GameScreenWidth / 4, Game1.GameScreenHeight / 2), Color.White);
-			Game1.Instance.SpriteBatch.Draw(_nithLogo, new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2), Color.White);
+			Game1.Instance.SpriteBatch.Draw(_nithLogo, new Vector2((Game1.GameScreenWidth / 4) + 60, Game1.GameScreenHeight / 8), Color.White);
 		}
 	}
 }
