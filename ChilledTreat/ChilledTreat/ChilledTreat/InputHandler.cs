@@ -12,31 +12,9 @@ namespace ChilledTreat
 			get { return _instance ?? (_instance = new InputHandler()); }
 		}
 
-		private InputHandler()
-		{
-		}
+		private InputHandler() { }
 
-		// Preprocessor directives used to seperate WINDOWS, WINDOWS_PHONE and XBOX
-		// code. Making it possible to write code which compiles on each platform
-
-		#region FILEDS
-
-#if WINDOWS
-		// Fileds used for the WINDOWS platform
-		private KeyboardState KeyboardState { get; set; }
-		private KeyboardState PreviousKeyboardState { get; set; }
-
-		private const Keys UpKey = Keys.Up;
-		private const Keys LeftKey = Keys.Left;
-		private const Keys RightKey = Keys.Right;
-		private const Keys DownKey = Keys.Down;
-
-		private const Keys WKey = Keys.W;
-		private const Keys AKey = Keys.A;
-		private const Keys SKey = Keys.S;
-		private const Keys DKey = Keys.D;
-
-#region WOMANS-FOR-U
+		#region WOMANS-FOR-U
 		/*
 								 ********** *** &**P....
 							  $$$..........  . .* &.&.&&&&
@@ -184,7 +162,26 @@ namespace ChilledTreat
 											 $$...   .&&&      $$*&&&  &&$$
 											$$...   .&&&       $$&&&   &&$
 		*/
-#endregion
+		#endregion
+
+		// Preprocessor directives used to separate WINDOWS, WINDOWS_PHONE and XBOX
+		// code. Making it possible to write code which compiles on each platform
+		#region FIELDS
+
+#if WINDOWS
+		// Fileds used for the WINDOWS platform
+		private KeyboardState KeyboardState { get; set; }
+		private KeyboardState PreviousKeyboardState { get; set; }
+
+		private const Keys UpKey = Keys.Up;
+		private const Keys LeftKey = Keys.Left;
+		private const Keys RightKey = Keys.Right;
+		private const Keys DownKey = Keys.Down;
+
+		private const Keys WKey = Keys.W;
+		private const Keys AKey = Keys.A;
+		private const Keys SKey = Keys.S;
+		private const Keys DKey = Keys.D;
 		
 		private const Keys ActionKey = Keys.Enter;
 		private const Keys AbortKey = Keys.Escape;
@@ -572,79 +569,73 @@ namespace ChilledTreat
 		#endregion
 
 
-        // The Game Specific methods region contains a collection of
-        // methods that is needed specifically for this game.
-        #region Game Specific methods
+		// The Game Specific methods region contains a collection of
+		// methods that is needed specifically for this game.
+		#region Game Specific methods
 
-        // Used to handle input to move crosshair
-        public Vector2 PointerLocation()
-        {
+		// Used to handle input to move crosshair
+		public Vector2 PointerLocation()
+		{
 #if !XBOX
-            // In the PC version the mouse is used for
-            // crosshair movement
-            return GamePad.GetState(PlayerIndex).IsConnected
-                    ? GamePadPointerLocation()
-                    : new Vector2(MouseState.X, MouseState.Y);
+			// In the PC version the mouse is used for
+			// crosshair movement
+			return GamePad.GetState(PlayerIndex).IsConnected
+					? GamePadPointerLocation()
+					: new Vector2(MouseState.X, MouseState.Y);
 #else
-            // In the XBOX version the gamepad thumbstick
-            // is used to move the crosshair
+			// In the XBOX version the gamepad thumbstick
+			// is used to move the crosshair
 			return GamePadPointerLocation();
 #endif
-        }
+		}
 
 #if !WINDOWS_PHONE
-        // Return a usable vector2 if GamePad is used to move crosshair
-        private Vector2 GamePadPointerLocation()
-        {
-            if (GamePadState.ThumbSticks.Left.X > 0.2) _gamePadPointerLocation.X += 10;
-            else if (GamePadState.ThumbSticks.Left.Y > 0.2) _gamePadPointerLocation.Y -= 10;
-            if (GamePadState.ThumbSticks.Left.X < -0.2) _gamePadPointerLocation.X -= 10;
-            else if (GamePadState.ThumbSticks.Left.Y < -0.2) _gamePadPointerLocation.Y += 10;
+		// Return a usable vector2 if GamePad is used to move crosshair
+		private Vector2 GamePadPointerLocation()
+		{
+			if (GamePadState.ThumbSticks.Left.X > 0.2) _gamePadPointerLocation.X += 10;
+			else if (GamePadState.ThumbSticks.Left.Y > 0.2) _gamePadPointerLocation.Y -= 10;
+			if (GamePadState.ThumbSticks.Left.X < -0.2) _gamePadPointerLocation.X -= 10;
+			else if (GamePadState.ThumbSticks.Left.Y < -0.2) _gamePadPointerLocation.Y += 10;
 
-            return _gamePadPointerLocation;
-        }
+			return _gamePadPointerLocation;
+		}
 #endif
 
-        public bool IsPausePressed()
-        {
+		public bool IsPausePressed()
+		{
 #if WINDOWS
-            if (GamePad.GetState(PlayerIndex.One).IsConnected)
-            {
+			if (GamePad.GetState(PlayerIndex.One).IsConnected)
+			{
 #endif
-                return IsButtonPressed(Buttons.Start);
+				return IsButtonPressed(Buttons.Start);
 #if WINDOWS
-            }
-            return IsKeyPressed(Keys.Escape);
+			}
+			return IsKeyPressed(Keys.Escape);
 #endif
-        }
+		}
 
 #if !WINDOWS_PHONE
-        public bool IsControllerConnected()
-        {
-            return GamePadState.IsConnected;
-        }
-#endif
+		public bool IsControllerConnected()
+		{
+			return GamePadState.IsConnected;
+		}
 
-#if !WINDOWS_PHONE
 		public void StartHardVibrate()
 		{
 			GamePad.SetVibration(PlayerIndex, 1f, 1f);
 		}
-#endif
 
-#if !WINDOWS_PHONE
 		public void StartSoftVibrate()
 		{
 			GamePad.SetVibration(PlayerIndex, 0.5f, 0.5f);
 		}
-#endif
 
-#if !WINDOWS_PHONE
 		public void StopVibrate()
 		{
 			GamePad.SetVibration(PlayerIndex, 0, 0);
 		}
 #endif
-        #endregion
-    }
+		#endregion
+	}
 }
