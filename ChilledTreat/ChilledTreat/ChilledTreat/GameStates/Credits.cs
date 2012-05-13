@@ -68,7 +68,9 @@ namespace ChilledTreat.GameStates
 				"pacdv.com/sounds/voices-1.html",
 				"media.photobucket.com/image/recent/USCMC/nationstates/Cartridges_pistol.png",
 				"freewebs.com/callpoll100/photos/Sprites/DoomWeaponsPC.png",
-				"i41.tinypic.com/5vx078.png"
+				"i41.tinypic.com/5vx078.png",
+				"i.istockimg.com/file_thumbview_approve/1096341/2/stock-photo-1096341-bullet-chain.jpg",
+				"wiki.teamfortress.com/w/images/0/06/Minigun_1st_person.png"
 			};
 		}
 
