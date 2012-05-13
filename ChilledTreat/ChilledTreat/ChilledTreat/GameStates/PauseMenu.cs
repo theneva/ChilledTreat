@@ -48,16 +48,16 @@ namespace ChilledTreat.GameStates
 		public override void Update()
 		{
 			#region Navigation Logic
-            // Same logic as used in the Menu class
+			// Same logic as used in the Menu class
 			if (_input.IsDownPressed())
 			{
-                _buttonSound.Play();
+				_buttonSound.Play();
 				_menuPos++;
 				if (_menuPos > _selectedItem.Length - 1) _menuPos = 0;
 			}
 			if (_input.IsUpPressed())
 			{
-                _buttonSound.Play();
+				_buttonSound.Play();
 				_menuPos--;
 				if (_menuPos < 0) _menuPos = _selectedItem.Length - 1;
 			}
@@ -66,7 +66,7 @@ namespace ChilledTreat.GameStates
 
 			if (_input.IsPausePressed() || (_input.IsAbortPressed()))
 			{
-                _selectSound.Play();
+				_selectSound.Play();
 				Game1.ChangeState(InGame);
 				Game1.Instance.IsMouseVisible = false;
 			}
@@ -75,14 +75,14 @@ namespace ChilledTreat.GameStates
 
 			if (_menuItems[_menuPos].Contains("Main Menu"))
 			{
-                _selectSound.Play();
+				_selectSound.Play();
 				Player.ResetPlayer();
 				EnemyHandler.Instance.Clear();
 				Game1.ChangeState(Menu);
 			} 
 			else if (_menuItems[_menuPos].Contains("Resume Game"))
 			{
-                _selectSound.Play();
+				_selectSound.Play();
 				Game1.ChangeState(InGame);
 				Game1.Instance.IsMouseVisible = false;
 			}

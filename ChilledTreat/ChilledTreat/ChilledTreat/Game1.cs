@@ -160,6 +160,7 @@ namespace ChilledTreat
 
 			Player.ResetPlayer();
 			EnemyHandler.ResetEnemyHandler();
+			NewGameOver();
 			
 		}
 
@@ -167,6 +168,10 @@ namespace ChilledTreat
 		public static void NewCredits()
 		{
 			Instance._gameStates[GameState.Credits] = new Credits();
+		}
+		public static void NewGameOver()
+		{
+			Instance._gameStates[GameState.GameOver] = new GameOver();
 		}
 	}
 }

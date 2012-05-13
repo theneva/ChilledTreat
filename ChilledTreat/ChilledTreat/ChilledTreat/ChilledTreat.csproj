@@ -131,6 +131,9 @@
   <ItemGroup>
     <Content Include="GameIcon.ico" />
     <Content Include="GameThumbnail.png" />
+    <EmbeddedResource Include="HighScore.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChilledTreatContent\ChilledTreatContent.contentproj">
