@@ -46,7 +46,6 @@ namespace ChilledTreat
 #if WINDOWS
 			TextWriter writer = new StreamWriter("HighScore.xml");
 #elif XBOX
-			//This shit doesn't work
 			IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication();
 
 			using (IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream("HighScore.xml", FileMode.OpenOrCreate, iso))
@@ -58,7 +57,6 @@ namespace ChilledTreat
 					serializer.Serialize(writer, highscores);
 					writer.Close();
 #if XBOX
-
 				}
 			}
 #endif
@@ -83,7 +81,7 @@ namespace ChilledTreat
 				stream.Close();
 			}
 			
-			return (scores);
+			return scores;
 
 #elif XBOX
 
@@ -97,7 +95,7 @@ namespace ChilledTreat
 				}
 			}
 
-			return (scores);
+			return scores;
 
 #endif
 		}
