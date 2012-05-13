@@ -80,11 +80,9 @@ namespace ChilledTreat
 				// Close the file
 				stream.Close();
 			}
-			
-			return scores;
 
 #elif XBOX
-
+			
 			using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
 			{
 				using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("HighScore.xml", FileMode.Open, iso))
@@ -94,10 +92,8 @@ namespace ChilledTreat
 					scores = (List<Highscore>)serializer.Deserialize(stream);
 				}
 			}
-
-			return scores;
-
 #endif
+			return scores;
 		}
 		#endregion
 	}
