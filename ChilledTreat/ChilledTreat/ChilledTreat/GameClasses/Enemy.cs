@@ -17,6 +17,7 @@ namespace ChilledTreat.GameClasses
 
 		private Vector2 _speed;
 		private int _damageInflicted;
+		private int _heightOfRoad, _widthOfRoad, _fromEdgeToRoad;
 
 		private readonly Random _random;
 
@@ -31,7 +32,6 @@ namespace ChilledTreat.GameClasses
 		private int _currentFrameOrigin;
 
 		private bool _drawMuzzleFlare;
-		private int _timesDrawnMuzzleFlare;
 		#endregion
 
 		#region Constructors
@@ -68,18 +68,21 @@ namespace ChilledTreat.GameClasses
 			_sheetSize = new Point(6, 0);
 
 			// Redundant but not sufficiently inefficient for a workaround
-			Scale = 0.008f * (_position.Y);
+			Scale = 0.008f * (_position.Y) * Game1.GameScale;
 
 			_random = new Random();
 
 			// 510 is the height of the road, 192 is the width of the top of the road,
 			// 540 is the distance from the left border to the top of the road
-			_position = new Vector2(510 + _random.Next(192) - _frameSize.X * Scale,
-				Game1.GameScreenHeight - 540 - _frameSize.Y * Scale);
+			_heightOfRoad = (int) (540*Game1.GameScale);
+			_widthOfRoad = (int) (192*Game1.GameScale);
+			_fromEdgeToRoad = (int) (510 * Game1.GameScale);
+
+			_position = new Vector2(_fromEdgeToRoad + _random.Next(_widthOfRoad) - _frameSize.X * Scale,
+				Game1.GameScreenHeight - _heightOfRoad - _frameSize.Y * Scale);
 
 			_muzzleFlare = EnemyHandler.Instance.MuzzleFlareTexture;
 			_drawMuzzleFlare = false;
-			_timesDrawnMuzzleFlare = 0;
 		}
 		#endregion
 
@@ -173,10 +176,10 @@ namespace ChilledTreat.GameClasses
 			#region Movement
 			_position.Y += _speed.Y;
 
-			Scale = 0.008f * (_position.Y);
+			Scale = 0.008f * (_position.Y) * Game1.GameScale;
 
-			if (_position.Y > Game1.GameScreenHeight - 300)
-				_position.Y = Game1.GameScreenHeight - 300;
+			if (_position.Y > Game1.GameScreenHeight - 300 * Game1.GameScale)
+				_position.Y = Game1.GameScreenHeight - 300 * Game1.GameScale;
 			#endregion
 		}
 #endregion
@@ -185,12 +188,12 @@ namespace ChilledTreat.GameClasses
 		public void Draw()
 		{
 			Game1.Instance.SpriteBatch.Draw(_texture, _position,
-					new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y), Color.White, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
+					new Rectangle(_currentFrame.X * _frameSize.X, _currentFrame.Y * _frameSize.Y, _frameSize.X, _frameSize.Y), Color.White, 0, Vector2.Zero, Scale * Game1.GameScale, SpriteEffects.None, 0);
 
 			#region MuzzleFlare
 			if (!_drawMuzzleFlare) return;
 
-			Game1.Instance.SpriteBatch.Draw(_muzzleFlare, new Vector2(_position.X - (_muzzleFlare.Width / 2f), _position.Y - (_muzzleFlare.Height / 2f) + (_texture.Height / 5f)), Color.White);
+			Game1.Instance.SpriteBatch.Draw(_muzzleFlare, new Vector2(_position.X - (_muzzleFlare.Width / 2f), (_position.Y - (_muzzleFlare.Height / 2f) + (_currentFrame.X * _frameSize.X / 2f)) * Game1.GameScale), Color.White);
 			#endregion
 		}
 #endregion
