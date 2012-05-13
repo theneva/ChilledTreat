@@ -13,11 +13,11 @@ namespace ChilledTreat.GameStates
 		private readonly Texture2D _background;
 
 		// Constructor
-		public InGame(SpriteBatch spriteBatch, ContentManager content)
+		public InGame()
 		{
 			// CONTENT LOAD
 			Game1.Instance.IsMouseVisible = false;
-			_background = content.Load<Texture2D>("Images/bg");
+			_background = Game1.Instance.Content.Load<Texture2D>("Images/bg");
 		}
 
 		/// <summary>
@@ -31,6 +31,11 @@ namespace ChilledTreat.GameStates
 
 			if (InputHandler.Instance.IsPausePressed() || Game1.Instance.IsActive == false)
 				Game1.ChangeState(PauseMenu);
+
+#if XBOX
+			if(!InputHandler.Instance.IsControllerConnected())
+				Game1.ChangeState(PauseMenu);
+#endif
 		}
 
 		public override void Draw()

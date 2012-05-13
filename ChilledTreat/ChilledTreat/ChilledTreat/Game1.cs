@@ -147,11 +147,11 @@ namespace ChilledTreat
 		{
 			if (Instance._gameStates.Count < GameState.InGame + 1)
 			{
-				Instance._gameStates.Add(new InGame(Instance.SpriteBatch, Instance.Content));
+				Instance._gameStates.Add(new InGame());
 			}
 			else
 			{
-				Instance._gameStates[GameState.InGame] = new InGame(Instance.SpriteBatch, Instance.Content);
+				Instance._gameStates[GameState.InGame] = new InGame();
 			}
 
 			Player.ResetPlayer();

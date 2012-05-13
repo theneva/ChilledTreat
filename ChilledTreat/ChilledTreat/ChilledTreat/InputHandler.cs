@@ -608,5 +608,12 @@ namespace ChilledTreat
 			return IsKeyPressed(Keys.Escape);
 #endif
 		}
+
+#if !WINDOWS_PHONE
+		public bool IsControllerConnected()
+		{
+			return GamePadState.IsConnected;
+		}
+#endif
 	}
 }
