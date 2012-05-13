@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using ChilledTreat.GameClasses;
 using ChilledTreat.GameStates;
 
@@ -96,10 +95,6 @@ namespace ChilledTreat
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update(GameTime gameTime)
 		{
-			// Allows the game to exit
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-				Exit();
-
 			_frameInfo.GameTime = gameTime;
 
 			_inputHandler.Update();

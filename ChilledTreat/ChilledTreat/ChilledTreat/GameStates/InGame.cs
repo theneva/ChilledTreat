@@ -1,7 +1,6 @@
 ﻿using System;
 using ChilledTreat.GameClasses;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ChilledTreat.GameStates
