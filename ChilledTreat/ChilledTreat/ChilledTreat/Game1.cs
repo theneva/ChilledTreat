@@ -64,9 +64,8 @@ namespace ChilledTreat
 			// Create a new SpriteBatch, which can be used to draw textures.
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-			// Legge til gamestates som klasser i listen
-			// ex: _gameStates.add(new InGame(Sprite...., con);
 
+            // GameStates added
 			_gameStates.Add(new Splash());
 			_gameStates.Add(new Menu());
 			_gameStates.Add(new Credits());
@@ -75,7 +74,7 @@ namespace ChilledTreat
 			_gameStates.Add(new Instructions());
 			_gameStates.Add(new LeaderBoard());
 		   
-
+            // Splashscreen state set as activegamestate at startup
 			_activeGameState = _gameStates[GameState.Splash];
 		}
 
@@ -95,16 +94,19 @@ namespace ChilledTreat
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update(GameTime gameTime)
 		{
+            // GameTime updated in frameinfo
 			_frameInfo.GameTime = gameTime;
 
+            // InputHandler updated to handle input 
 			_inputHandler.Update();
 
+            // Used to change between gamestates
 			if (_nextState != null)
 			{
 				_activeGameState = _nextState;
 				_nextState = null;
 			}
-
+            // Update method called in the activegamestate
 			_activeGameState.Update();
 
 			base.Update(gameTime);
@@ -120,6 +122,7 @@ namespace ChilledTreat
 			
 			SpriteBatch.Begin();
 
+            // Draw method in the activegamestate called
 			_activeGameState.Draw();
 
 			SpriteBatch.End();
@@ -127,6 +130,7 @@ namespace ChilledTreat
 			base.Draw(gameTime);
 		}
 
+        // Method used to change to another gamestate
 		public static void ChangeState(int index)
 		{
 			//If the gamestate you're changing to is NOT ingame, stop vibrating (This is to avoid testing it every other place)
@@ -139,8 +143,10 @@ namespace ChilledTreat
 			}
 		}
 
-		// Kun InGame gamestatet som skal ha en metode som dette
-		// ---- Den lager nytt InGame object når du starter på ny
+		// Add a new instance of the InGame class.
+        // When a new game is started the last instance
+        // of the InGame class is replaced by a new one, and
+        // the player and enemyhandler is reset.
 		public static void NewGame()
 		{
 			if (Instance._gameStates.Count < GameState.InGame + 1)
@@ -156,6 +162,8 @@ namespace ChilledTreat
 			EnemyHandler.ResetEnemyHandler();
 			
 		}
+
+        
 		public static void NewCredits()
 		{
 			Instance._gameStates[GameState.Credits] = new Credits();
