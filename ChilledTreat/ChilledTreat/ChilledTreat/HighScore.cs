@@ -68,12 +68,23 @@ namespace ChilledTreat
 		private static List<Highscore> DeserializeFromXml()
 		{
 			XmlSerializer deserializer = new XmlSerializer(typeof (List<Highscore>));
-			TextReader textReader = new StreamReader("HighScore.xml");
-			List<Highscore> scores = (List<Highscore>) deserializer.Deserialize(textReader);
-			textReader.Close();
-			textReader.Dispose();
+#if WINDOWS
+			TextReader reader = new StreamReader("HighScore.xml");
+#elif XBOX
+
+			using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
+			{
+				using (IsolatedStorageFileStream reader = new IsolatedStorageFileStream("HighScore.xml", FileMode.Open, iso))
+				{
+#endif
+			List<Highscore> scores = (List<Highscore>) deserializer.Deserialize(reader);
+			reader.Close();
 
 			return scores;
+#if XBOX
+				}
+			}
+#endif
 		}
 		#endregion
 	}
