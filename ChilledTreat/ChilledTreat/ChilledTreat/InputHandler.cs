@@ -623,6 +623,24 @@ namespace ChilledTreat
 			return GamePadState.IsConnected;
 		}
 #endif
+<<<<<<< HEAD
         #endregion
     }
+=======
+
+#if !WINDOWS_PHONE
+		public void StartVibrate()
+		{
+			GamePad.SetVibration(PlayerIndex, 1f, 1f);
+		}
+#endif
+
+#if !WINDOWS_PHONE
+		public void StopVibrate()
+		{
+			GamePad.SetVibration(PlayerIndex, 0, 0);
+		}
+#endif
+	}
+>>>>>>> b365adf0daf8a2443548d49e6d234937c18449a1
 }
