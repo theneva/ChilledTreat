@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChilledTreat", "ChilledTrea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChilledTreatContent", "ChilledTreat\ChilledTreatContent\ChilledTreatContent.contentproj", "{7C649C0B-F6EE-4F45-88FC-63113373309C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox 360 Copy (2) of ChilledTreat", "ChilledTreat\ChilledTreat\Xbox 360 Copy (2) of ChilledTreat.csproj", "{ECFEA712-C95C-4F3F-A250-42A5E880A3DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xbox 360 Copy of ChilledTreat", "ChilledTreat\ChilledTreat\Xbox 360 Copy of ChilledTreat.csproj", "{ECFEA712-C95C-4F3F-A250-42A5E880A3DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
