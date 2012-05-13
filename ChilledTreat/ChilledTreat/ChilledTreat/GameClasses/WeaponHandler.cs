@@ -17,7 +17,6 @@ namespace ChilledTreat.GameClasses
 		private Weapon _currentWeapon;
 		private int _currentWeaponIndex;
 		internal double CurrentTime, StartReloadTime, StartShootTime;
-		private readonly InputHandler _input = InputHandler.Instance;
 		internal Vector2 ReticulePosition, PointerPosition;
 		internal Rectangle HitBox;
 
@@ -27,8 +26,8 @@ namespace ChilledTreat.GameClasses
 		}
 
 		internal Player.State PlayerState = Player.Instance.PlayerState;
-
 		internal readonly FrameInfo FrameInfo = FrameInfo.Instance;
+		private readonly InputHandler _input = InputHandler.Instance;
 
 		private static WeaponHandler _instance;
 
@@ -38,9 +37,11 @@ namespace ChilledTreat.GameClasses
 		}
 		#endregion
 
-		#region Constructors
+		#region Constructor
 		private WeaponHandler()
 		{
+			//This demonstrates the power of OOP. To add a weapon, with it's on attributes, simply add it to the
+			//list (making sure the name matches a folder in the Weapon folder, to load textures and sounds)
 			_weapons = new []
 			           	{
 							new Weapon("Minigun", 10000, 1000, 50, true, true),
@@ -63,14 +64,16 @@ namespace ChilledTreat.GameClasses
 		{
 			CurrentTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-			PointerPosition = _input.PointerLocation();
 
-			ReticulePosition = new Vector2(PointerPosition.X, PointerPosition.Y);
+			//PointerPosition = _input.PointerLocation();
+			ReticulePosition = _input.PointerLocation();
 
+			//Do not allow weapon-swapping while reloading
 			if (_input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading)
 				ChangeWeapon();
 			
-			if (CurrentTime - StartShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Alive && PlayerState != Player.State.Reloading)
+			//
+			if (CurrentTime - StartShootTime > _currentWeapon.DelayBetweenShots && PlayerState == Player.State.Waiting && PlayerState != Player.State.Reloading)
 				PlayerState = Player.State.Alive;
 
 			if (ReticulePosition.X < 0)
@@ -92,8 +95,8 @@ namespace ChilledTreat.GameClasses
 				//Set up a hitbox. Unless splash damage is activated, this isn't used directly
 				//The bigger your rate of fire is, the bigger your hitbox will be.
 				//If splash is activated, this makes it less probable to hit where you aim
-				HitBox = new Rectangle((int)PointerPosition.X - _currentWeapon.RateOfFire * 5,
-					(int)PointerPosition.Y - _currentWeapon.RateOfFire * 5, _currentWeapon.RateOfFire * 10, _currentWeapon.RateOfFire * 10);
+				HitBox = new Rectangle((int)ReticulePosition.X - _currentWeapon.RateOfFire * 5,
+					(int)ReticulePosition.Y - _currentWeapon.RateOfFire * 5, _currentWeapon.RateOfFire * 10, _currentWeapon.RateOfFire * 10);
 
 				//If splash-damage is used, this sets up a usable hit-box. Inside of the overall hit-box, create a randomly
 				//placed hit-box 10x10 pixels within the former hitbox to use for the actual collision test
@@ -240,8 +243,8 @@ namespace ChilledTreat.GameClasses
 				_vibrating = false;
 			}
 
-			_vectorWeaponToReticule = new Vector2((_weaponPosition.X - WeaponHandler.Instance.PointerPosition.X),
-											(_weaponPosition.Y - WeaponHandler.Instance.PointerPosition.Y));
+			_vectorWeaponToReticule = new Vector2((_weaponPosition.X - WeaponHandler.Instance.ReticulePosition.X),
+											(_weaponPosition.Y - WeaponHandler.Instance.ReticulePosition.Y));
 
 			//Minus X, to rotate the right way
 			_gunRotation = (float) Math.Atan2(-_vectorWeaponToReticule.X, _vectorWeaponToReticule.Y);
