@@ -174,6 +174,9 @@ namespace ChilledTreat.GameClasses
 		/// <param name="damage">The amount of damage recieved</param>
 		public void Damaged(int damage)
 		{
+			//If you're in godmode, you're invincible
+			if (GameConstants.GodMode) return;
+
 			if (InCover) damage /= 5;
 
 #if XBOX
@@ -189,9 +192,7 @@ namespace ChilledTreat.GameClasses
 			//Get the current time, so we can remove the red haze after a certai time interval
 			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 
-			//If you're in godmode, you're invincible
-			if(!GameConstants.GodMode)
-				_health -= damage;
+			_health -= damage;
 
 			if (_health <= 0)
 				PlayerState = State.Dead;
