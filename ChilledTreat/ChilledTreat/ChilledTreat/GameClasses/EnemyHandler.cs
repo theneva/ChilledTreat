@@ -82,6 +82,8 @@ namespace ChilledTreat.GameClasses
 		/// <param name="inflictedDamage">Damage the weapon inflicted</param>
 		public void FiredAt(Rectangle attackedArea, int inflictedDamage)
 		{
+			if (GameConstants.GodMode) return;
+
 			// Hackish as fuck, but it works. A for-each loop won't do here because the
 			// amount of enemies will change if one is killed.
 			List<Enemy> enemiesReversed = _enemies;
@@ -97,7 +99,9 @@ namespace ChilledTreat.GameClasses
 				}
 		}
 
-
+		/// <summary>
+		/// Creates a new enemy handler to reset all values on "new game"
+		/// </summary>
 		public static void ResetEnemyHandler()
 		{
 			_instance = new EnemyHandler();
