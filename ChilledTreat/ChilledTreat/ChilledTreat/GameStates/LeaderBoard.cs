@@ -23,7 +23,6 @@ namespace ChilledTreat.GameStates
 		{
 
 			_highScoreList = Highscore.CreateHighScore();
-			Console.WriteLine(_highScoreList.Count);
 
 			_menuFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/menuFont");
 			_scoreFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/ScoreFont");

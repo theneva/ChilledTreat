@@ -42,24 +42,33 @@ namespace ChilledTreat
 		//This method serializes the list, and prints it to a file, so that it can be accessed in another session
 		public static void SerializeToXml(List<Highscore> highscores)
 		{
-			XmlSerializer serializer = new XmlSerializer(typeof (List<Highscore>));
-#if WINDOWS
-			TextWriter writer = new StreamWriter("HighScore.xml");
-#elif XBOX
-			IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication();
-
-			using (IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream("HighScore.xml", FileMode.OpenOrCreate, iso))
+			try
 			{
-				//Write the data
-				using (StreamWriter writer = new StreamWriter(isoFileStream))
+				XmlSerializer serializer = new XmlSerializer(typeof (List<Highscore>));
+#if WINDOWS
+				TextWriter writer = new StreamWriter("HighScore.xml");
+#elif XBOX
+				IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication();
+
+
+				using (
+					IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream("HighScore.xml", FileMode.OpenOrCreate, iso)
+					)
 				{
+					//Write the data
+					using (StreamWriter writer = new StreamWriter(isoFileStream))
+					{
 #endif
-					serializer.Serialize(writer, highscores);
-					writer.Close();
+						serializer.Serialize(writer, highscores);
+						writer.Close();
 #if XBOX
+					}
 				}
-			}
 #endif
+			}
+			catch (FileNotFoundException ex)
+			{
+			}
 		}
 
 		//This method deserializes the XML file, and returns it in an array
