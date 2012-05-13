@@ -617,9 +617,16 @@ namespace ChilledTreat
 #endif
 
 #if !WINDOWS_PHONE
-		public void StartVibrate()
+		public void StartHardVibrate()
 		{
 			GamePad.SetVibration(PlayerIndex, 1f, 1f);
+		}
+#endif
+
+#if !WINDOWS_PHONE
+		public void StartSoftVibrate()
+		{
+			GamePad.SetVibration(PlayerIndex, 0.5f, 0.5f);
 		}
 #endif
 

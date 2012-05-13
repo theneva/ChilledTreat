@@ -178,7 +178,7 @@ namespace ChilledTreat.GameClasses
 
 #if XBOX
 			//Vibrate the controller
-			_input.StartVibrate();
+			_input.StartHardVibrate();
 #endif
 
 			//Play a random sound when injured
@@ -212,7 +212,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_instance = new Player();
 
-			WeaponHandler.Instance.ResetWeapons();
+			WeaponHandler.ResetWeapons();
 		}
 
 		#endregion
