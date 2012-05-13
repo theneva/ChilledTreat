@@ -158,9 +158,10 @@ namespace ChilledTreat.GameClasses
 		#region Fields
 
 		private readonly SpriteBatch _spriteBatch;
+
 		internal int CurrentAmmo;
 		internal readonly int MaxAmmo, RateOfFire;
-		private int _timesDrawnMuzzleFlare, _damage;
+		private int _damage;
 		private readonly int _defaultDamage;
 		internal readonly double DelayBetweenShots;
 		internal bool PlayReloadSound;
@@ -233,11 +234,8 @@ namespace ChilledTreat.GameClasses
 		#region Update & Draw
 		internal void Update()
 		{
-			if (_timesDrawnMuzzleFlare >= 5)
-			{
+			if (WeaponHandler.Instance.CurrentTime - WeaponHandler.Instance.StartShootTime > 100 && _drawMuzzleFlare)
 				_drawMuzzleFlare = false;
-				_timesDrawnMuzzleFlare = 0;
-			}
 
 			if (WeaponHandler.Instance.CurrentTime - WeaponHandler.Instance.StartShootTime > 100 && _vibrating)
 			{
@@ -245,10 +243,11 @@ namespace ChilledTreat.GameClasses
 				_vibrating = false;
 			}
 
+			//Set up a vector between the weapon and the reticule
 			_vectorWeaponToReticule = new Vector2((_weaponPosition.X - WeaponHandler.Instance.ReticulePosition.X),
 											(_weaponPosition.Y - WeaponHandler.Instance.ReticulePosition.Y));
 
-			//Minus X, to rotate the right way
+			//Calculate the radian, to apply roattaion to the weapon. Minus X, to rotate the right way
 			_gunRotation = (float) Math.Atan2(-_vectorWeaponToReticule.X, _vectorWeaponToReticule.Y);
 		}
 
@@ -258,16 +257,10 @@ namespace ChilledTreat.GameClasses
 			{
 				_spriteBatch.Draw(_reticuleTexture, WeaponHandler.Instance.ReticulePosition - _halfReticuleTexture, _reticuleTexture.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 
-				if (_drawMuzzleFlare)
-				{
-					_spriteBatch.Draw(_weaponTexture, _weaponPosition, _firedWeaponDrawSource, Color.White, _gunRotation,
-									  new Vector2(_weaponTexture.Width/4f, _weaponTexture.Height), Game1.GameScale, SpriteEffects.None, 0);
-
-					_timesDrawnMuzzleFlare++;
-				}
-				else
-					_spriteBatch.Draw(_weaponTexture, _weaponPosition, _weaponDrawSource, Color.White, _gunRotation,
-									  new Vector2(_weaponTexture.Width / 4f, _weaponTexture.Height), Game1.GameScale, SpriteEffects.None, 0);
+				//If we're drawing the muzzle-flare, use that rectangle. If not, use the normal one
+				_spriteBatch.Draw(_weaponTexture, _weaponPosition, _drawMuzzleFlare ? _firedWeaponDrawSource : _weaponDrawSource,
+				                  Color.White, _gunRotation, new Vector2(_weaponTexture.Width/4f, _weaponTexture.Height),
+								  Game1.GameScale, SpriteEffects.None, 0);
 			}
 
 			for (int i = 0; i < _cartridges.Length; i++)
@@ -291,6 +284,7 @@ namespace ChilledTreat.GameClasses
 
 			if (WeaponHandler.Instance.CurrentTime - WeaponHandler.Instance.StartReloadTime < _reloadSound.Duration.TotalMilliseconds) 
 				return;
+
 			CurrentAmmo = MaxAmmo;
 
 			for (int i = 0; i < _cartridges.Length; i++) 
@@ -308,6 +302,8 @@ namespace ChilledTreat.GameClasses
 			_drawMuzzleFlare = true;
 
 			_vibrating = true;
+
+			//It gets a bit too much with full vibrate on automatic weapon
 			if(IsWeaponAutomatic)
 				InputHandler.Instance.StartSoftVibrate();
 			else
@@ -319,7 +315,7 @@ namespace ChilledTreat.GameClasses
 			//Shoot at the enemy
 			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance.HitBox, _damage);
 
-			//Set the array of textures to appear used when firing a shot
+			//Set the array of textures to appear used when firing a shot, and subtract 1 from current ammo
 			_cartridges[--CurrentAmmo] = _usedCartridgeTexture;
 
 			//If the weapon's out of ammo, and the player's not currently reloading
