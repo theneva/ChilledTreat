@@ -14,7 +14,6 @@ namespace ChilledTreat.GameStates
 		// Constructor
 		public InGame()
 		{
-			// CONTENT LOAD
 			Game1.Instance.IsMouseVisible = false;
 			_background = Game1.Instance.Content.Load<Texture2D>("Images/bg");
 		}
@@ -30,16 +29,17 @@ namespace ChilledTreat.GameStates
 
 			if (InputHandler.Instance.IsPausePressed() || Game1.Instance.IsActive == false)
 				Game1.ChangeState(PauseMenu);
-
 #if XBOX
 			if(!InputHandler.Instance.IsControllerConnected())
 				Game1.ChangeState(PauseMenu);
 #endif
 		}
 
+		/// <summary>
+		/// Draws background, enemies and the player
+		/// </summary>
 		public override void Draw()
 		{
-			// DRAW THAT SHIT
 			Game1.Instance.SpriteBatch.Draw(_background, Vector2.Zero, Color.White);
 			EnemyHandler.Instance.Draw();
 			Player.Instance.Draw();

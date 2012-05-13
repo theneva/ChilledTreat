@@ -8,6 +8,7 @@ namespace ChilledTreat.GameStates
 {
 	class LeaderBoard : GameState
 	{
+		// Fields
 		readonly SpriteFont _menuFont, _scoreFont;
 		private int _shift;
 		readonly InputHandler _input = InputHandler.Instance;
@@ -17,6 +18,7 @@ namespace ChilledTreat.GameStates
 		readonly Texture2D _lbTexture = new Texture2D(Game1.Instance.Graphics.GraphicsDevice, 1, 1);
 		readonly Color[] _colorData = { Color.White };
 
+		// Constructor
 		public LeaderBoard()
 		{
 

@@ -7,12 +7,12 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly InputHandler _input = InputHandler.Instance;
-		//	readonly SoundEffect _menuSound;
-
 		readonly Texture2D _buttonMappingGamePad;
 #if WINDOWS
 		readonly Texture2D _buttonMappingKeyboardMouse;
 #endif
+		
+		// Constructor
 		public Instructions()
 		{
 			// Credits content
@@ -189,7 +189,6 @@ namespace ChilledTreat.GameStates
 
 		public override void Update()
 		{
-			// Logic
 			if (_input.IsAbortPressed())
 				Game1.ChangeState(Menu);
 		}
