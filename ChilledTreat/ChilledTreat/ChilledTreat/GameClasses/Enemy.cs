@@ -167,7 +167,7 @@ namespace ChilledTreat.GameClasses
 
 			if (!Alive) return;
 
-			if (EnemyHandler.Random.Next(1000) == 0 && _position.Y > Game1.GameScreenHeight - 400)
+			if (EnemyHandler.Random.Next(1000) == 0 && _position.Y > Game1.GameScreenHeight - 400 * Game1.GameScale)
 			{
 				Attack();
 				_drawMuzzleFlare = true;
