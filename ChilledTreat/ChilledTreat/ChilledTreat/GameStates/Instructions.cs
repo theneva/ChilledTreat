@@ -7,22 +7,25 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly InputHandler _input = InputHandler.Instance;
-		readonly Texture2D _buttonMappingGamePad;
 #if WINDOWS
 		readonly Texture2D _buttonMappingKeyboardMouse;
+#elif XBOX
+		readonly Texture2D _buttonMappingGamePad;
 #endif
-		
+
 		// Constructor
 		public Instructions()
 		{
 			// Instructions content content
-			_buttonMappingGamePad = Game1.Instance.Content.Load<Texture2D>("Images/buttonmappingXBOX");
 #if WINDOWS
 			_buttonMappingKeyboardMouse = Game1.Instance.Content.Load<Texture2D>("Images/buttonmappingWIN");
+
+#elif XBOX
+			_buttonMappingGamePad = Game1.Instance.Content.Load<Texture2D>("Images/buttonmappingXBOX");
 #endif
 		}
 
-		#region
+		#region SEXY BITCH	
 		/*
 										   8888  8888888
 								   888888888888888888888888
@@ -198,9 +201,9 @@ namespace ChilledTreat.GameStates
 			//draws the buttonmappings for each individual platform
 			Game1.Instance.GraphicsDevice.Clear(Color.White);
 #if WINDOWS
-			Game1.Instance.SpriteBatch.Draw(_buttonMappingKeyboardMouse, new Vector2(0, 0), Color.White);
+			Game1.Instance.SpriteBatch.Draw(_buttonMappingKeyboardMouse, new Vector2(0, 0), _buttonMappingKeyboardMouse.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 #elif XBOX
-			Game1.Instance.SpriteBatch.Draw(_buttonMappingGamePad, new Vector2(0, 0), Color.White);
+			Game1.Instance.SpriteBatch.Draw(_buttonMappingGamePad, new Vector2(0, 0), _buttonMappingGamePad.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 #endif
 		}
 	}
