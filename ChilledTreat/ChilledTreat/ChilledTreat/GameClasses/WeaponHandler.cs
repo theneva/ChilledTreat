@@ -68,10 +68,12 @@ namespace ChilledTreat.GameClasses
 			//PointerPosition = _input.PointerLocation();
 			ReticulePosition = _input.PointerLocation();
 
+			//Do not allow weapon-swapping while reloading
 			if (_input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading)
 				ChangeWeapon();
 			
-			if (CurrentTime - StartShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Alive && PlayerState != Player.State.Reloading)
+			//
+			if (CurrentTime - StartShootTime > _currentWeapon.DelayBetweenShots && PlayerState == Player.State.Waiting && PlayerState != Player.State.Reloading)
 				PlayerState = Player.State.Alive;
 
 			if (ReticulePosition.X < 0)
