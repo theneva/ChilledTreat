@@ -18,7 +18,8 @@ namespace ChilledTreat.GameStates
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		private double _startCreditsTimer, _currentTime;
-
+		readonly Texture2D xnaLogo, nithLogo;
+		bool drawLogos = false;
 		Song creditMusic;
 		bool songstart = false;
 
@@ -27,7 +28,8 @@ namespace ChilledTreat.GameStates
 			// Credits content
 			creditMusic = Game1.Instance.Content.Load<Song>("Music/DubMood");
 			MediaPlayer.IsRepeating = true;
-
+			xnaLogo = Game1.Instance.Content.Load<Texture2D>("Images/xnaLogo");
+			nithLogo = Game1.Instance.Content.Load<Texture2D>("Images/nithLogo");
 			_creditsFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/CreditsFont");
 			_creditsFontSources = Game1.Instance.Content.Load<SpriteFont>("Fonts/urlFont");
 			_fontColor = Color.Salmon;
@@ -84,7 +86,6 @@ namespace ChilledTreat.GameStates
 			if (_startAnew)
 			{
 				_startCreditsTimer = _frameInfo.GameTime.TotalGameTime.TotalSeconds;
-
 				_startAnew = false;
 			}
 
@@ -100,24 +101,32 @@ namespace ChilledTreat.GameStates
 			{
 				MediaPlayer.Play(creditMusic);
 				songstart = true;
-			}  
+			}
+
+			if (_startCreditsTimer > 6)
+			{
+				drawLogos = true;
+			}
 		}
 
 		public override void Draw()
 		{
 			// DRAW!!!! LåååL
+			
 			foreach (string creditEntry in _creditsContent)
 			{
 				_shift++;
 				Game1.Instance.SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 			}
-			if (_frameInfo.GameTime.TotalGameTime.TotalSeconds >= 5)
+			foreach (string creditSourcesEntry in _creditsContentSources)
 			{
-				foreach (string creditSourcesEntry in _creditsContentSources)
-				{
-					_shift++;
-					Game1.Instance.SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
-				}
+				_shift++;
+				Game1.Instance.SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
+			}
+			if (drawLogos)
+			{
+				Game1.Instance.SpriteBatch.Draw(xnaLogo, new Vector2(900, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
+				Game1.Instance.SpriteBatch.Draw(nithLogo, new Vector2(900, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 			}
 		}
 	}
