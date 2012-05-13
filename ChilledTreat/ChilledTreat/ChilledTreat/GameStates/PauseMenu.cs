@@ -47,34 +47,46 @@ namespace ChilledTreat.GameStates
 		// Methods
 		public override void Update()
 		{
+			#region Navigation Logic
+			// Same logic as used in the Menu class
 			if (_input.IsDownPressed())
 			{
+				_buttonSound.Play();
 				_menuPos++;
 				if (_menuPos > _selectedItem.Length - 1) _menuPos = 0;
 			}
 			if (_input.IsUpPressed())
 			{
+				_buttonSound.Play();
 				_menuPos--;
 				if (_menuPos < 0) _menuPos = _selectedItem.Length - 1;
 			}
 			for (int i = 0; i < _selectedItem.Length; i++) _selectedItem[i] = 100f;
 			_selectedItem[_menuPos] = 150f;
 
-			if (_input.IsActionPressed())
+			if (_input.IsPausePressed() || (_input.IsAbortPressed()))
 			{
-				if (_menuItems[_menuPos].Contains("Main Menu"))
-				{
-					Player.ResetPlayer();
-
-					EnemyHandler.Instance.Clear();
-					Game1.ChangeState(Menu);
-				} 
-				else if (_menuItems[_menuPos].Contains("Resume Game"))
-				{
-					Game1.ChangeState(GameState.InGame);
-					Game1.Instance.IsMouseVisible = false;
-				}
+				_selectSound.Play();
+				Game1.ChangeState(InGame);
+				Game1.Instance.IsMouseVisible = false;
 			}
+
+			if (!_input.IsActionPressed()) return;
+
+			if (_menuItems[_menuPos].Contains("Main Menu"))
+			{
+				_selectSound.Play();
+				Player.ResetPlayer();
+				EnemyHandler.Instance.Clear();
+				Game1.ChangeState(Menu);
+			} 
+			else if (_menuItems[_menuPos].Contains("Resume Game"))
+			{
+				_selectSound.Play();
+				Game1.ChangeState(InGame);
+				Game1.Instance.IsMouseVisible = false;
+			}
+			#endregion
 		}
 
 		public override void Draw()

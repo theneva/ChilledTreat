@@ -16,8 +16,7 @@ namespace ChilledTreat.GameClasses
 		private readonly Weapon[] _weapons;
 		private Weapon _currentWeapon;
 		private int _currentWeaponIndex;
-		internal double CurrentTime, StartReloadTime;
-		private double _startShootTime;
+		internal double CurrentTime, StartReloadTime, StartShootTime;
 		private readonly InputHandler _input = InputHandler.Instance;
 		internal Vector2 ReticulePosition, PointerPosition;
 		internal Rectangle HitBox;
@@ -44,11 +43,17 @@ namespace ChilledTreat.GameClasses
 		{
 			_weapons = new []
 			           	{
+							new Weapon("Minigun", 10000, 1000, 50, true, true),
 							new Weapon("Pistol", 10, 100, 5, false, false),
 							new Weapon("Rifle", 30, 50, 10, true, false)
 						};
-
+#if XBOX
 			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
+#endif
+			//If godmode is active, use the minigun. If not, use the normal weapon
+			if (!Tools.GameConstants.GodMode)
+				_currentWeaponIndex = 1;
+
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
 		#endregion
@@ -65,7 +70,7 @@ namespace ChilledTreat.GameClasses
 			if (_input.IsSwitchWeaponPressed() && PlayerState != Player.State.Reloading)
 				ChangeWeapon();
 			
-			if (CurrentTime - _startShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Reloading)
+			if (CurrentTime - StartShootTime > _currentWeapon.DelayBetweenShots && PlayerState != Player.State.Alive && PlayerState != Player.State.Reloading)
 				PlayerState = Player.State.Alive;
 
 			if (ReticulePosition.X < 0)
@@ -82,19 +87,21 @@ namespace ChilledTreat.GameClasses
 				(_input.IsShootPressed() && !_currentWeapon.IsWeaponAutomatic ||
 				 _input.IsShootDown() && _currentWeapon.IsWeaponAutomatic) && !Player.Instance.InCover)
 			{
-				_startShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
+				StartShootTime = FrameInfo.GameTime.TotalGameTime.TotalMilliseconds;
 
-				/*HitBox = _currentWeapon.IsWeaponAutomatic
-							? new Rectangle((int)PointerPosition.X - 40, (int)PointerPosition.Y - 40, 80, 80)
-							: new Rectangle((int)PointerPosition.X - 10, (int)PointerPosition.Y - 10, 20, 20);*/
-
-				HitBox = new Rectangle((int)PointerPosition.X - _currentWeapon.RateOfFire * 5, (int)PointerPosition.Y - _currentWeapon.RateOfFire * 5, _currentWeapon.RateOfFire * 10, _currentWeapon.RateOfFire * 10);
+				//Set up a hitbox. Unless splash damage is activated, this isn't used directly
+				//The bigger your rate of fire is, the bigger your hitbox will be.
+				//If splash is activated, this makes it less probable to hit where you aim
+				HitBox = new Rectangle((int)PointerPosition.X - _currentWeapon.RateOfFire * 5,
+					(int)PointerPosition.Y - _currentWeapon.RateOfFire * 5, _currentWeapon.RateOfFire * 10, _currentWeapon.RateOfFire * 10);
 
 				Console.WriteLine("Original hitbox: " + HitBox);
 
-				//Set up a usable hit-box. Inside of the overall hit-box, create a randomly placed hit-box 10x10 pixels within the former hitbox to use for the actual collision test
+				//If splash-damage is used, this sets up a usable hit-box. Inside of the overall hit-box, create a randomly
+				//placed hit-box 10x10 pixels within the former hitbox to use for the actual collision test
 				if (!_currentWeapon.Splash)
-					HitBox = new Rectangle(EnemyHandler.Random.Next(HitBox.X, HitBox.X + HitBox.Width), EnemyHandler.Random.Next(HitBox.Y, HitBox.Y + HitBox.Height), 10, 10);
+					HitBox = new Rectangle(EnemyHandler.Random.Next(HitBox.X, HitBox.X + HitBox.Width),
+						EnemyHandler.Random.Next(HitBox.Y, HitBox.Y + HitBox.Height), 10, 10);
 
 				Console.WriteLine("New hitbox: " + HitBox);
 
@@ -127,13 +134,15 @@ namespace ChilledTreat.GameClasses
 		#region Methods for changing the current weapon and restarting the instance
 		private void ChangeWeapon()
 		{
+			//If going to the next weapon takes you out of the array, start over
 			if (_currentWeaponIndex + 1 == _weapons.Count())
-				_currentWeaponIndex = 0;
+				//If God-mode is activated, allow the use of the god weapon. If not, start at index 1
+				_currentWeaponIndex = Tools.GameConstants.GodMode ? 0 : 1;
 			else _currentWeaponIndex++;
 			_currentWeapon = _weapons[_currentWeaponIndex];
 		}
 
-		public void ResetWeapons()
+		public static void ResetWeapons()
 		{
 			_instance = new WeaponHandler();
 		}
@@ -155,7 +164,7 @@ namespace ChilledTreat.GameClasses
 		internal readonly double DelayBetweenShots;
 		internal bool PlayReloadSound;
 		internal readonly bool IsWeaponAutomatic, Splash;
-		private bool _drawMuzzleFlare;
+		private bool _drawMuzzleFlare, _vibrating;
 		private readonly Texture2D _reticuleTexture, _cartridgeTexture, _usedCartridgeTexture, _weaponTexture;
 		private readonly Vector2 _halfReticuleTexture;
 		private Vector2 _vectorWeaponToReticule, _weaponPosition;
@@ -229,6 +238,12 @@ namespace ChilledTreat.GameClasses
 				_timesDrawnMuzzleFlare = 0;
 			}
 
+			if (WeaponHandler.Instance.CurrentTime - WeaponHandler.Instance.StartShootTime > 100 && _vibrating)
+			{
+				InputHandler.Instance.StopVibrate();
+				_vibrating = false;
+			}
+
 			_vectorWeaponToReticule = new Vector2((_weaponPosition.X - WeaponHandler.Instance.PointerPosition.X),
 											(_weaponPosition.Y - WeaponHandler.Instance.PointerPosition.Y));
 
@@ -273,7 +288,7 @@ namespace ChilledTreat.GameClasses
 				PlayReloadSound = false;
 			}
 
-			if (WeaponHandler.Instance.CurrentTime - WeaponHandler.Instance.StartReloadTime <= _reloadSound.Duration.TotalMilliseconds) 
+			if (WeaponHandler.Instance.CurrentTime - WeaponHandler.Instance.StartReloadTime < _reloadSound.Duration.TotalMilliseconds) 
 				return;
 			CurrentAmmo = MaxAmmo;
 
@@ -291,8 +306,14 @@ namespace ChilledTreat.GameClasses
 			_shotSound.Play();
 			_drawMuzzleFlare = true;
 
-			//The damage dealt is a random number between half the default damage and the default damage
-			_damage = EnemyHandler.Random.Next((_defaultDamage/2), _defaultDamage);
+			_vibrating = true;
+			if(IsWeaponAutomatic)
+				InputHandler.Instance.StartSoftVibrate();
+			else
+				InputHandler.Instance.StartHardVibrate();
+
+			//The damage dealt is a random number between 2/3 of the default damage and the default damage
+			_damage = EnemyHandler.Random.Next((_defaultDamage * 2 / 3), _defaultDamage);
 
 			//Shoot at the enemy
 			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance.HitBox, _damage);
@@ -311,7 +332,9 @@ namespace ChilledTreat.GameClasses
 			else 
 				WeaponHandler.Instance.PlayerState = Player.State.Waiting;
 
-			if (WeaponHandler.Instance.PlayerState != Player.State.Reloading && WeaponHandler.Instance.PlayerState != Player.State.Waiting && WeaponHandler.Instance.PlayerState != Player.State.Dead) 
+			if (WeaponHandler.Instance.PlayerState != Player.State.Reloading &&
+			    WeaponHandler.Instance.PlayerState != Player.State.Waiting &&
+			    WeaponHandler.Instance.PlayerState != Player.State.Dead)
 					WeaponHandler.Instance.PlayerState = Player.State.Alive;
 		}
 		#endregion

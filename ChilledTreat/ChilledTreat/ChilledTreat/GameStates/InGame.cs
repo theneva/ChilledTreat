@@ -1,7 +1,6 @@
 ﻿using System;
 using ChilledTreat.GameClasses;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ChilledTreat.GameStates
@@ -13,11 +12,10 @@ namespace ChilledTreat.GameStates
 		private readonly Texture2D _background;
 
 		// Constructor
-		public InGame(SpriteBatch spriteBatch, ContentManager content)
+		public InGame()
 		{
-			// CONTENT LOAD
 			Game1.Instance.IsMouseVisible = false;
-			_background = content.Load<Texture2D>("Images/bg");
+			_background = Game1.Instance.Content.Load<Texture2D>("Images/bg");
 		}
 
 		/// <summary>
@@ -29,13 +27,19 @@ namespace ChilledTreat.GameStates
 			Player.Instance.Update();
 			EnemyHandler.Instance.Update();
 
-			if (InputHandler.Instance.IsAbortPressed() || Game1.Instance.IsActive == false)
+			if (InputHandler.Instance.IsPausePressed() || Game1.Instance.IsActive == false)
 				Game1.ChangeState(PauseMenu);
+#if XBOX
+			if(!InputHandler.Instance.IsControllerConnected())
+				Game1.ChangeState(PauseMenu);
+#endif
 		}
 
+		/// <summary>
+		/// Draws background, enemies and the player
+		/// </summary>
 		public override void Draw()
 		{
-			// DRAW THAT SHIT
 			Game1.Instance.SpriteBatch.Draw(_background, Vector2.Zero, Color.White);
 			EnemyHandler.Instance.Draw();
 			Player.Instance.Draw();

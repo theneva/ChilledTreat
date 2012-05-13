@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfHighscore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Highscore>
+    <Name>AAAAAA</Name>
+    <Score>81</Score>
+    <CurrentTime>2012-05-13T17:08:17.7907348+02:00</CurrentTime>
+  </Highscore>
+  <Highscore>
+    <Name>Simen</Name>
+    <Score>18</Score>
+    <CurrentTime>2012-05-08T22:47:33.0296596+02:00</CurrentTime>
+  </Highscore>
+</ArrayOfHighscore>

@@ -144,8 +144,6 @@ namespace ChilledTreat.GameStates
  
 		 */
 
-
-
 		public GameState() { }
 
 		public virtual void Update() { }

@@ -23,7 +23,7 @@ namespace ChilledTreat.GameClasses
 		private int _health, _healthIn10, _heartsDrawShift;
 		private double _currentTime, _timeAtDamaged;
 		private readonly int _widthOfHeart;
-		private bool _drawRedHaze;
+		private bool _damaged;
 		private readonly Texture2D _healthTexture, _coverTexture, _damagedTexture;
 		private readonly Rectangle _fullHealthSource, _halfHealthSource, _emptyHealthSource;
 		readonly SpriteFont _scoreFont;
@@ -93,9 +93,12 @@ namespace ChilledTreat.GameClasses
 				Game1.ChangeState(GameStates.GameState.GameOver);
 			}
 
-			//If the red haze (damaged) has been drawn for 200 ms, stop it
-			if (_drawRedHaze && _currentTime - _timeAtDamaged > 200)
-				_drawRedHaze = false;
+			//If the red haze (damaged) has been drawn, and the controller vibrated, for 200 ms stop it
+			if (_damaged && _currentTime - _timeAtDamaged > 200)
+			{
+				_damaged = false;
+				_input.StopVibrate();
+			}
 
 			//Divide the health into 10 parts, to easily calculate how many hearts to draw on the screen
 			_healthIn10 = _health / 10;
@@ -124,7 +127,8 @@ namespace ChilledTreat.GameClasses
 
 			WeaponHandler.Instance.Draw();
 
-			if (_drawRedHaze) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
+			//If the player was damaged, draw a red haze across the screen
+			if (_damaged) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 		}
 
 		/// <summary>
@@ -163,7 +167,7 @@ namespace ChilledTreat.GameClasses
 		}
 		#endregion
 
-		#region Methods for detemrining what happens to the player
+		#region Methods for determining what happens to the player
 		/// <summary>
 		/// How much the player is damaged
 		/// </summary>
@@ -172,15 +176,22 @@ namespace ChilledTreat.GameClasses
 		{
 			if (InCover) damage /= 5;
 
+#if XBOX
+			//Vibrate the controller
+			_input.StartHardVibrate();
+#endif
+
 			//Play a random sound when injured
 			_injuredSounds[EnemyHandler.Random.Next(_injuredSounds.Length)].Play();
 
-			_drawRedHaze = true;
+			_damaged = true;
 
 			//Get the current time, so we can remove the red haze after a certai time interval
 			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 
-			_health -= damage;
+			//If you're in godmode, you're invincible
+			if(!GameConstants.GodMode)
+				_health -= damage;
 
 			if (_health <= 0)
 				PlayerState = State.Dead;
@@ -201,7 +212,7 @@ namespace ChilledTreat.GameClasses
 		{
 			_instance = new Player();
 
-			WeaponHandler.Instance.ResetWeapons();
+			WeaponHandler.ResetWeapons();
 		}
 
 		#endregion

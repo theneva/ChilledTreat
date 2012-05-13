@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using ChilledTreat.GameClasses;
 using ChilledTreat.GameStates;
 
@@ -65,9 +64,7 @@ namespace ChilledTreat
 			// Create a new SpriteBatch, which can be used to draw textures.
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-			// Legge til gamestates som klasser i listen
-			// ex: _gameStates.add(new InGame(Sprite...., con);
-
+			// GameStates added
 			_gameStates.Add(new Splash());
 			_gameStates.Add(new Menu());
 			_gameStates.Add(new Credits());
@@ -75,9 +72,11 @@ namespace ChilledTreat
 			_gameStates.Add(new GameOver());
 			_gameStates.Add(new Instructions());
 			_gameStates.Add(new LeaderBoard());
-		   
+			_gameStates.Add(new InGame());
 
+			// Splashscreen state set as activegamestate at startup
 			_activeGameState = _gameStates[GameState.Splash];
+
 		}
 
 		/// <summary>
@@ -96,23 +95,20 @@ namespace ChilledTreat
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update(GameTime gameTime)
 		{
-			// Allows the game to exit
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-				Exit();
-
+			// GameTime updated in frameinfo
 			_frameInfo.GameTime = gameTime;
 
+			// InputHandler updated to handle input 
 			_inputHandler.Update();
-
+			// Used to change between gamestates
 			if (_nextState != null)
 			{
-				_activeGameState = _nextState;
-				_nextState = null;
+		       _activeGameState = _nextState;
+			    _nextState = null;
 			}
-
+			// Update method called in the activegamestate
 			_activeGameState.Update();
-
-
+			
 			base.Update(gameTime);
 		}
 
@@ -126,41 +122,55 @@ namespace ChilledTreat
 			
 			SpriteBatch.Begin();
 
+			// Draw method in the activegamestate called
 			_activeGameState.Draw();
-
+			
 			SpriteBatch.End();
 
 			base.Draw(gameTime);
 		}
 
+		// Method used to change to another gamestate
 		public static void ChangeState(int index)
 		{
+			//If the gamestate you're changing to is NOT ingame, stop vibrating (This is to avoid testing it every other place)
+			if(index != GameState.InGame)
+				InputHandler.Instance.StopVibrate();
+
 			if (index < Instance._gameStates.Count)
 			{
 				Instance._nextState = Instance._gameStates[index];
 			}
 		}
 
-		// Kun InGame gamestatet som skal ha en metode som dette
-		// ---- Den lager nytt InGame object når du starter på ny
+		// Add a new instance of the InGame class.
+		// When a new game is started the last instance
+		// of the InGame class is replaced by a new one, and
+		// the player and enemyhandler is reset.
 		public static void NewGame()
 		{
-			if (Instance._gameStates.Count < GameState.InGame + 1)
-			{
-				Instance._gameStates.Add(new InGame(Instance.SpriteBatch, Instance.Content));
-			}
-			else
-			{
-				Instance._gameStates[GameState.InGame] = new InGame(Instance.SpriteBatch, Instance.Content);
-			}
-
+			Instance._gameStates[GameState.InGame] = new InGame();
 			Player.ResetPlayer();
 			EnemyHandler.ResetEnemyHandler();
-			
+			NewGameOver();
 		}
+
+		// Used to reset Credits
 		public static void NewCredits()
 		{
 			Instance._gameStates[GameState.Credits] = new Credits();
+		}
+
+		// Used to reset GameOver
+		public static void NewGameOver()
+		{
+			Instance._gameStates[GameState.GameOver] = new GameOver();
+		}
+
+		// Used to reset LeaderBoard
+		public static void NewLeaderBoard()
+		{
+			Instance._gameStates[GameState.LeaderBoard] = new LeaderBoard();
 		}
 	}
 }

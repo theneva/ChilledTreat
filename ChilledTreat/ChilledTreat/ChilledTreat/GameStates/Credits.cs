@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 
@@ -14,23 +13,22 @@ namespace ChilledTreat.GameStates
 		readonly string[] _creditsContentSources;
 		private int _shift;
 		private bool _startAnew = true;
-		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		private double _startCreditsTimer, _currentTime;
-
-		Song creditMusic;
-		bool songstart = false;
+		readonly Texture2D _xnaLogo, _nithLogo;
+		bool _drawLogos, _songstart;
+		readonly Song _creditMusic;
 
 		public Credits()
 		{
 			// Credits content
-			creditMusic = Game1.Instance.Content.Load<Song>("Music/DubMood");
+			_creditMusic = Game1.Instance.Content.Load<Song>("Music/DubMood");
 			MediaPlayer.IsRepeating = true;
-
+			_xnaLogo = Game1.Instance.Content.Load<Texture2D>("Images/xnaLogo");
+			_nithLogo = Game1.Instance.Content.Load<Texture2D>("Images/nithLogo");
 			_creditsFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/CreditsFont");
 			_creditsFontSources = Game1.Instance.Content.Load<SpriteFont>("Fonts/urlFont");
-			_fontColor = Color.Salmon;
 			_creditsContent = new[] {
 
 				//People who have worked on this project
@@ -68,7 +66,9 @@ namespace ChilledTreat.GameStates
 				"pacdv.com/sounds/voices-1.html",
 				"media.photobucket.com/image/recent/USCMC/nationstates/Cartridges_pistol.png",
 				"freewebs.com/callpoll100/photos/Sprites/DoomWeaponsPC.png",
-				"i41.tinypic.com/5vx078.png"
+				"i41.tinypic.com/5vx078.png",
+				"i.istockimg.com/file_thumbview_approve/1096341/2/stock-photo-1096341-bullet-chain.jpg",
+				"wiki.teamfortress.com/w/images/0/06/Minigun_1st_person.png"
 			};
 		}
 
@@ -82,7 +82,6 @@ namespace ChilledTreat.GameStates
 			if (_startAnew)
 			{
 				_startCreditsTimer = _frameInfo.GameTime.TotalGameTime.TotalSeconds;
-
 				_startAnew = false;
 			}
 
@@ -94,29 +93,36 @@ namespace ChilledTreat.GameStates
 			}
 			_currentTime = _frameInfo.GameTime.TotalGameTime.TotalSeconds - _startCreditsTimer;
 
-			if (!songstart)
+			if (!_songstart)
 			{
-				MediaPlayer.Play(creditMusic);
-				songstart = true;
-			}  
+				MediaPlayer.Play(_creditMusic);
+				_songstart = true;
+			}
+
+			if (_currentTime - _startCreditsTimer > 36)
+			{
+				_drawLogos = true;
+			}
 		}
 
 		public override void Draw()
 		{
 			// DRAW!!!! LåååL
+			
 			foreach (string creditEntry in _creditsContent)
 			{
 				_shift++;
 				Game1.Instance.SpriteBatch.DrawString(_creditsFont, creditEntry, new Vector2((Game1.GameScreenWidth / 6) - (creditEntry.Length / 2), 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 			}
-			if (_frameInfo.GameTime.TotalGameTime.TotalSeconds >= 5)
+			foreach (string creditSourcesEntry in _creditsContentSources)
 			{
-				foreach (string creditSourcesEntry in _creditsContentSources)
-				{
-					_shift++;
-					Game1.Instance.SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
-				}
+				_shift++;
+				Game1.Instance.SpriteBatch.DrawString(_creditsFontSources, creditSourcesEntry, new Vector2(Game1.GameScreenWidth / 6, 680 + (_shift * 50) - (60 * (float)_currentTime)), Color.White);
 			}
+			if (!_drawLogos) return;
+
+			Game1.Instance.SpriteBatch.Draw(_nithLogo, new Vector2((Game1.GameScreenWidth - _nithLogo.Width) / 2f, (Game1.GameScreenHeight - _nithLogo.Height) / 2.5f), Color.White);
+			Game1.Instance.SpriteBatch.Draw(_xnaLogo, new Vector2((Game1.GameScreenWidth - _xnaLogo.Width) / 2f, (Game1.GameScreenHeight - _xnaLogo.Height) / 1.25f), Color.White);
 		}
 	}
 }
