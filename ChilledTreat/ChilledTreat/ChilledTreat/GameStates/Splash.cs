@@ -30,7 +30,8 @@ namespace ChilledTreat.GameStates
 			else
 			{
 				Game1.Instance.SpriteBatch.DrawString(_welcomeFont, "Welcome to Chilled Treat!",
-				                                      new Vector2(Game1.GameScreenWidth/10, Game1.GameScreenHeight/5), Color.White);
+					new Vector2(Game1.GameScreenWidth/10, Game1.GameScreenHeight/5), Color.White, 0,
+					Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 
 				Game1.Instance.SpriteBatch.DrawString(_welcomeFont, "Press " +
 
