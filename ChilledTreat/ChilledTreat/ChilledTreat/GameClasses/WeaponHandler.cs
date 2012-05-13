@@ -43,14 +43,14 @@ namespace ChilledTreat.GameClasses
 		{
 			_weapons = new []
 			           	{
-							new Weapon("Rifle", 10000, 1000, 50, true, true),
+							new Weapon("Minigun", 10000, 1000, 50, true, true),
 							new Weapon("Pistol", 10, 100, 5, false, false),
 							new Weapon("Rifle", 30, 50, 10, true, false)
 						};
 
 			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
 
-			//If godmode is active, use the god weapon. If not, use the normal weapon
+			//If godmode is active, use the minigun. If not, use the normal weapon
 			_currentWeapon = Tools.GameConstants.GodMode ? _weapons[0] : _weapons[1];
 		}
 		#endregion
@@ -309,8 +309,8 @@ namespace ChilledTreat.GameClasses
 			else
 				InputHandler.Instance.StartHardVibrate();
 
-			//The damage dealt is a random number between half the default damage and the default damage
-			_damage = EnemyHandler.Random.Next((_defaultDamage/2), _defaultDamage);
+			//The damage dealt is a random number between 2/3 of the default damage and the default damage
+			_damage = EnemyHandler.Random.Next((_defaultDamage * 2 / 3), _defaultDamage);
 
 			//Shoot at the enemy
 			EnemyHandler.Instance.FiredAt(WeaponHandler.Instance.HitBox, _damage);
