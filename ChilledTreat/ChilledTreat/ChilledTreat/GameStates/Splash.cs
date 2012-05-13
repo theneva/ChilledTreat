@@ -5,32 +5,44 @@ namespace ChilledTreat.GameStates
 {
 	class Splash : GameState
 	{
-		readonly Texture2D splash;
+		readonly Texture2D _splash;
 		private bool _welcomeScreen;
-		SpriteFont welcomeFont;
+		readonly SpriteFont _welcomeFont;
 		public Splash()
 		{
 			// LOAD CONTENT
-			splash = Game1.Instance.Content.Load<Texture2D>("Images/chilledTreat");
-			welcomeFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/welcomeFont");
+			_splash = Game1.Instance.Content.Load<Texture2D>("Images/chilledTreat");
+			_welcomeFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/welcomeFont");
 		}		
 		public override void Update()
 		{
 			InputHandler input = InputHandler.Instance;
 
-			if (input.IsActionPressed())
-			{
-				if (!_welcomeScreen) _welcomeScreen = true;
-				else Game1.ChangeState(Menu);
-			}	
+			if (!input.IsActionPressed()) return;
+			if (!_welcomeScreen) _welcomeScreen = true;
+			else Game1.ChangeState(Menu);
 		}
 
 		public override void Draw()
 		{
 			if (!_welcomeScreen)
-				Game1.Instance.SpriteBatch.Draw(splash, Vector2.Zero, Color.White);
+				Game1.Instance.SpriteBatch.Draw(_splash, Vector2.Zero, Color.White);
 			else
-				Game1.Instance.SpriteBatch.DrawString(welcomeFont, "Welcome to Chilled Treat!\nPress A/Enter to continue.", new Vector2(150, 200), Color.White);	
+			{
+				Game1.Instance.SpriteBatch.DrawString(_welcomeFont, "Welcome to Chilled Treat!",
+					new Vector2(Game1.GameScreenWidth/10, Game1.GameScreenHeight/5), Color.White, 0,
+					Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
+
+				Game1.Instance.SpriteBatch.DrawString(_welcomeFont, "Press " +
+
+#if WINDOWS
+					"the Return key " +
+#elif XBOX
+					"A " +
+#endif
+					"to continue.", new Vector2(Game1.GameScreenWidth / 10, Game1.GameScreenHeight * 0.8f), Color.White, 0,
+					Vector2.Zero, Game1.GameScale/2f, SpriteEffects.None, 0);
+			}
 		}
 	}
 }
