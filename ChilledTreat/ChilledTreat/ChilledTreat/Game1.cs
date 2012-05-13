@@ -107,10 +107,6 @@ namespace ChilledTreat
 
 			_activeGameState.Update();
 
-			//If the gamestate is not ingame, do not vibrate the controller
-			if(_activeGameState != _gameStates[GameState.InGame])
-				_inputHandler.StopVibrate();
-
 			base.Update(gameTime);
 		}
 
@@ -133,6 +129,10 @@ namespace ChilledTreat
 
 		public static void ChangeState(int index)
 		{
+			//If the gamestate you're changing to is NOT ingame, stop vibrating (This is to avoid testing it every other place)
+			if(index != GameState.InGame)
+				InputHandler.Instance.StopVibrate();
+
 			if (index < Instance._gameStates.Count)
 			{
 				Instance._nextState = Instance._gameStates[index];
