@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 
@@ -9,10 +8,8 @@ namespace ChilledTreat.GameStates
 	{
 		// Fields
 		readonly SpriteFont _menuFont;
-		readonly Color _fontColor;
 		readonly string[] _menuItems;
-		readonly float[] _selectedItem;
-		readonly int[] _yPos;
+		readonly float[] _selectedItem, _yPos;
 		private int _menuPos;
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly SoundEffect _menuSound, _selectSound;
@@ -22,7 +19,6 @@ namespace ChilledTreat.GameStates
 		{
 			// Menu content
 			_menuFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/menuFont");
-			_fontColor = Color.Salmon;
 
 			// Array with menu titles
 			string[] strings = {"New Game", "Instructions", "Leaderboard", "Credits", "EXIT"};
@@ -37,23 +33,23 @@ namespace ChilledTreat.GameStates
 
 			// For loops sets X position on the menu items
 			for (int i = 0; i < _selectedItem.Length; i++)
-				_selectedItem[i] = 100f;
+				_selectedItem[i] = 100f * Game1.GameScale;
 
 			// The selected item (menuPos keeps track on which item is selcted)
 			// sets X positon on the selectedItem
-			_selectedItem[_menuPos] = 150f;
+			_selectedItem[_menuPos] = 150f * Game1.GameScale;
 
 			// Sets the Y position from which the menu will be placed
-			int yStartPos = 100;
+			float yStartPos = 100 * Game1.GameScale;
 
 			// An array holds all the Y position of all the menu items.
 			// The array is filled by a for loop which fills it according
 			// to the numbers of menuItems
-			_yPos = new int[_menuItems.Length];
+			_yPos = new float[_menuItems.Length];
 			for (int i = 0; i < _yPos.Length; i++)
 			{
 				_yPos[i] = yStartPos;
-				yStartPos += 100;
+				yStartPos += 100 * Game1.GameScale;
 			}
 		}
 
@@ -77,8 +73,8 @@ namespace ChilledTreat.GameStates
 
 			// The selectedItem's position is set with the menuPos
 			for (int i = 0; i < _selectedItem.Length; i++)
-				_selectedItem[i] = 100f;
-			_selectedItem[_menuPos] = 150f;
+				_selectedItem[i] = 100f * Game1.GameScale;
+			_selectedItem[_menuPos] = 150f * Game1.GameScale;
 
 			// The method returns when the used does not choose a menuItem
 			if (!_input.IsActionPressed()) return;
@@ -108,7 +104,7 @@ namespace ChilledTreat.GameStates
 		public override void Draw()
 		{
 			for (int i = 0; i < _menuItems.Length; i++)
-				Game1.Instance.SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), _fontColor);
+				Game1.Instance.SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
 		}
 	}
 }

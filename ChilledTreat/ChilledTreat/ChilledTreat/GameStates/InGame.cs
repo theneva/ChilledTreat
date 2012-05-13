@@ -40,7 +40,8 @@ namespace ChilledTreat.GameStates
 		/// </summary>
 		public override void Draw()
 		{
-			Game1.Instance.SpriteBatch.Draw(_background, Vector2.Zero, Color.White);
+			Game1.Instance.SpriteBatch.Draw(_background, Vector2.Zero, _background.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
+
 			EnemyHandler.Instance.Draw();
 			Player.Instance.Draw();
 		}
