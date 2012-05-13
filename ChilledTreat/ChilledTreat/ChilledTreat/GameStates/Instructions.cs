@@ -15,7 +15,7 @@ namespace ChilledTreat.GameStates
 		// Constructor
 		public Instructions()
 		{
-			// Credits content
+			// Instructions content content
 			_buttonMappingGamePad = Game1.Instance.Content.Load<Texture2D>("Images/buttonmappingXBOX");
 #if WINDOWS
 			_buttonMappingKeyboardMouse = Game1.Instance.Content.Load<Texture2D>("Images/buttonmappingWIN");
@@ -195,6 +195,7 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
+			//draws the buttonmappings for each individual platform
 			Game1.Instance.GraphicsDevice.Clear(Color.White);
 #if WINDOWS
 			Game1.Instance.SpriteBatch.Draw(_buttonMappingKeyboardMouse, new Vector2(0, 0), Color.White);
