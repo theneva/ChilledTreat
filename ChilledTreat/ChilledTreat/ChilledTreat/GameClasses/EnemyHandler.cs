@@ -34,7 +34,11 @@ namespace ChilledTreat.GameClasses
 		private EnemyHandler()
 		{
 			_enemies = new List<Enemy>();
-			SoundEffects = new List<SoundEffect> { Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000050_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000053_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000054_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000056_11025"), Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/00000057_11025") };
+			SoundEffects = new List<SoundEffect> { Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/EnemyGrunt1"),
+				Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/EnemyGrunt2"),
+				Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/EnemyGrunt3"),
+				Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/EnemyGrunt4"),
+				Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/EnemyGrunt5") };
 		}
 		#endregion
 
