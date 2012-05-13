@@ -13,12 +13,11 @@ namespace ChilledTreat.GameStates
 		readonly string[] _creditsContentSources;
 		private int _shift;
 		private bool _startAnew = true;
-		Color _fontColor;
 		readonly InputHandler _input = InputHandler.Instance;
 		readonly FrameInfo _frameInfo = FrameInfo.Instance;
 		private double _startCreditsTimer, _currentTime;
 		readonly Texture2D _xnaLogo, _nithLogo;
-		bool _drawLogos = false, _songstart = false;
+		bool _drawLogos, _songstart;
 		readonly Song _creditMusic;
 
 		public Credits()
@@ -30,7 +29,6 @@ namespace ChilledTreat.GameStates
 			_nithLogo = Game1.Instance.Content.Load<Texture2D>("Images/nithLogo");
 			_creditsFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/CreditsFont");
 			_creditsFontSources = Game1.Instance.Content.Load<SpriteFont>("Fonts/urlFont");
-			_fontColor = Color.Salmon;
 			_creditsContent = new[] {
 
 				//People who have worked on this project
@@ -123,8 +121,8 @@ namespace ChilledTreat.GameStates
 			}
 			if (!_drawLogos) return;
 
-			Game1.Instance.SpriteBatch.Draw(_xnaLogo, new Vector2(Game1.GameScreenWidth / 4, Game1.GameScreenHeight / 2), Color.White);
-			Game1.Instance.SpriteBatch.Draw(_nithLogo, new Vector2((Game1.GameScreenWidth / 4) + 60, Game1.GameScreenHeight / 8), Color.White);
+			Game1.Instance.SpriteBatch.Draw(_nithLogo, new Vector2((Game1.GameScreenWidth - _nithLogo.Width) / 2f, (Game1.GameScreenHeight - _nithLogo.Height) / 2.5f), Color.White);
+			Game1.Instance.SpriteBatch.Draw(_xnaLogo, new Vector2((Game1.GameScreenWidth - _xnaLogo.Width) / 2f, (Game1.GameScreenHeight - _xnaLogo.Height) / 1.25f), Color.White);
 		}
 	}
 }
