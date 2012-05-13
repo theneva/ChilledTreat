@@ -68,7 +68,7 @@ namespace ChilledTreat.GameClasses
 			_sheetSize = new Point(6, 0);
 
 			// Redundant but not sufficiently inefficient for a workaround
-			Scale = 0.008f * (_position.Y) * Game1.GameScale;
+			Scale = 0.008f * (_position.Y);
 
 			_random = new Random();
 
@@ -176,7 +176,7 @@ namespace ChilledTreat.GameClasses
 			#region Movement
 			_position.Y += _speed.Y;
 
-			Scale = 0.008f * (_position.Y) * Game1.GameScale;
+			Scale = 0.008f * (_position.Y);
 
 			if (_position.Y > Game1.GameScreenHeight - 300 * Game1.GameScale)
 				_position.Y = Game1.GameScreenHeight - 300 * Game1.GameScale;
