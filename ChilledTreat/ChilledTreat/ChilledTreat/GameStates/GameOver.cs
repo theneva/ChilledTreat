@@ -10,7 +10,7 @@ namespace ChilledTreat.GameStates
 {
 	class GameOver : GameState
 	{
-		// FIELDS
+		// Fields
 		readonly SpriteFont _menuFont, _scoreFont, _nameFont;
 		public static bool NewScoreToAdd { private get; set; }
 		private int _shift;
@@ -27,9 +27,6 @@ namespace ChilledTreat.GameStates
 		bool _typing = true;
 		bool _writeFile = true;
 
-
-		
-
 		public GameOver()
 		{
 			// LOAD CONTENT
@@ -37,7 +34,6 @@ namespace ChilledTreat.GameStates
 			_fontColor = Color.Salmon;
 			_buttonSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/buttonSound");
 			_selectSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/selectSound");
-
 
 			_scoreFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/ScoreFont");
 			_nameFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/nameFont");
@@ -50,7 +46,9 @@ namespace ChilledTreat.GameStates
 
 		public override void Update()
 		{
-
+			// Typing logic region contains the logic which enables
+			// the player to type his name
+			#region Typing logic
 			if (_typing)
 			{
 				if (_input.IsDownPressed())
@@ -82,14 +80,16 @@ namespace ChilledTreat.GameStates
 					_typing = false;
 				}
 			}
+			#endregion
+
 			else if (_writeFile)
 			{
 				for (int i = 0; i < _charList.Length; i++)
 					_name += _charList[i];
-				Console.WriteLine(_name);
 				_writeFile = false;
 				NewScoreToAdd = true;
 			}
+
 			if (NewScoreToAdd)
 			{
 				_highScoreList.Add(new Highscore(_name, Player.Instance.Score));
@@ -97,6 +97,7 @@ namespace ChilledTreat.GameStates
 				Highscore.SerializeToXml(_highScoreList);
 				NewScoreToAdd = false;
 			}
+
 			_shift = 0;
 
 			if (_input.IsAbortPressed())
@@ -104,7 +105,7 @@ namespace ChilledTreat.GameStates
 				_buttonSound.Play();
 				Game1.ChangeState(Menu);
 			}
-				
+			
 		}
 
 		public override void Draw()
