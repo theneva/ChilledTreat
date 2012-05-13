@@ -47,9 +47,9 @@ namespace ChilledTreat
 			TextWriter writer = new StreamWriter("HighScore.xml");
 #elif XBOX
 			//This shit doesn't work
-			IsolatedStorageFile meh = IsolatedStorageFile.GetUserStoreForApplication();
+			IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication();
 
-			using (IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream("HighScore.xml", FileMode.OpenOrCreate, meh))
+			using (IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream("HighScore.xml", FileMode.OpenOrCreate, iso))
 			{
 				//Write the data
 				using (StreamWriter writer = new StreamWriter(isoFileStream))
@@ -67,23 +67,38 @@ namespace ChilledTreat
 		//This method deserializes the XML file, and returns it in an array
 		private static List<Highscore> DeserializeFromXml()
 		{
-			XmlSerializer deserializer = new XmlSerializer(typeof (List<Highscore>));
+			List<Highscore> scores;
 #if WINDOWS
-			TextReader reader = new StreamReader("HighScore.xml");
+
+			FileStream stream = File.Open("HighScore.xml", FileMode.OpenOrCreate, FileAccess.Read);
+			try
+			{
+				// Read the data from the file
+				XmlSerializer serializer = new XmlSerializer(typeof(List<Highscore>));
+				scores = (List<Highscore>)serializer.Deserialize(stream);
+			}
+			finally
+			{
+				// Close the file
+				stream.Close();
+			}
+			
+			return (scores);
+
 #elif XBOX
 
 			using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
 			{
-				using (IsolatedStorageFileStream reader = new IsolatedStorageFileStream("HighScore.xml", FileMode.Open, iso))
+				using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("HighScore.xml", FileMode.Open, iso))
 				{
-#endif
-			List<Highscore> scores = (List<Highscore>) deserializer.Deserialize(reader);
-			reader.Close();
-
-			return scores;
-#if XBOX
+					// Read the data from the file
+					XmlSerializer serializer = new XmlSerializer(typeof(List<Highscore>));
+					scores = (List<Highscore>)serializer.Deserialize(stream);
 				}
 			}
+
+			return (scores);
+
 #endif
 		}
 		#endregion

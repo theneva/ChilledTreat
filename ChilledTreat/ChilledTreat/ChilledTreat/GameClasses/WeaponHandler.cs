@@ -47,8 +47,9 @@ namespace ChilledTreat.GameClasses
 							new Weapon("Pistol", 10, 100, 5, false, false),
 							new Weapon("Rifle", 30, 50, 10, true, false)
 						};
-
+#if XBOX
 			ReticulePosition = new Vector2(Game1.GameScreenWidth / 2, Game1.GameScreenHeight / 2);
+#endif
 
 			//If godmode is active, use the minigun. If not, use the normal weapon
 			_currentWeapon = Tools.GameConstants.GodMode ? _weapons[0] : _weapons[1];
