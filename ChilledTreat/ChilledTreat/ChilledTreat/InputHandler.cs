@@ -319,7 +319,6 @@ namespace ChilledTreat
 
 		#endregion
 
-
 		// The Common Methods region contains methods that describe 
 		// common actions, but which have different input from each platform
 		#region Common Methods
@@ -571,7 +570,6 @@ namespace ChilledTreat
 #endif
 		#endregion
 
-
         // The Game Specific methods region contains a collection of
         // methods that is needed specifically for this game.
         #region Game Specific methods
@@ -593,6 +591,7 @@ namespace ChilledTreat
         }
 
 #if !WINDOWS_PHONE
+        // Return a usable vector2 if GamePad is used to move crosshair
         private Vector2 GamePadPointerLocation()
         {
             if (GamePadState.ThumbSticks.Left.X > 0.2) _gamePadPointerLocation.X += 10;
