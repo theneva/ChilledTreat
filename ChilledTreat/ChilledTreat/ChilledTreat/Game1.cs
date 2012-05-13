@@ -73,6 +73,7 @@ namespace ChilledTreat
 			_gameStates.Add(new GameOver());
 			_gameStates.Add(new Instructions());
 			_gameStates.Add(new LeaderBoard());
+			_gameStates.Add(new InGame());
 		   
 			// Splashscreen state set as activegamestate at startup
 			_activeGameState = _gameStates[GameState.Splash];
@@ -149,19 +150,10 @@ namespace ChilledTreat
 		// the player and enemyhandler is reset.
 		public static void NewGame()
 		{
-			if (Instance._gameStates.Count < GameState.InGame + 1)
-			{
-				Instance._gameStates.Add(new InGame());
-			}
-			else
-			{
-				Instance._gameStates[GameState.InGame] = new InGame();
-			}
-
+			Instance._gameStates[GameState.InGame] = new InGame();
 			Player.ResetPlayer();
 			EnemyHandler.ResetEnemyHandler();
 			NewGameOver();
-			
 		}
 
 		// Used to reset Credits
@@ -169,9 +161,17 @@ namespace ChilledTreat
 		{
 			Instance._gameStates[GameState.Credits] = new Credits();
 		}
+
+		// Used to reset GameOver
 		public static void NewGameOver()
 		{
 			Instance._gameStates[GameState.GameOver] = new GameOver();
+		}
+
+		// Used to reset LeaderBoard
+		public static void NewLeaderBoard()
+		{
+			Instance._gameStates[GameState.LeaderBoard] = new LeaderBoard();
 		}
 	}
 }

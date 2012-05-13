@@ -90,7 +90,9 @@
   <ItemGroup>
     <Content Include="GameIcon.ico" />
     <Content Include="GameThumbnail.png" />
-    <Content Include="HighScore.xml" />
+    <Content Include="HighScore.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="GameThumbnail.png">

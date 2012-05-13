@@ -100,7 +100,10 @@ namespace ChilledTreat.GameStates
 				Game1.ChangeState(Credits);
 			}
 			else if (_menuItems[_menuPos].Contains("Leaderboard"))
+			{
+				Game1.NewLeaderBoard();
 				Game1.ChangeState(LeaderBoard);
+			}
 		}
 		public override void Draw()
 		{

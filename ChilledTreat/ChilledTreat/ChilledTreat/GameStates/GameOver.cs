@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using ChilledTreat.GameClasses;
 using System;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 
 namespace ChilledTreat.GameStates
 {
@@ -110,7 +111,8 @@ namespace ChilledTreat.GameStates
 
 		public override void Draw()
 		{
-			Game1.Instance.SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f - 70, 100), Color.Salmon);
+			Game1.Instance.SpriteBatch.DrawString(_menuFont, "GAME OVER", new Vector2(Game1.GameScreenWidth / 3f - 80, 100), Color.Salmon);
+			Game1.Instance.SpriteBatch.DrawString(_menuFont, "Your score: " + Player.Instance.Score, new Vector2(340, 170), Color.Salmon);
 
 			if (_typing)
 			{
