@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ChilledTreat.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ChilledTreat.GameClasses
 {
@@ -10,6 +11,8 @@ namespace ChilledTreat.GameClasses
 	{
 		#region Fields
 		readonly List<Enemy> _enemies;
+
+		public Texture2D EnemyTexture, MuzzleFlareTexture;
 
 		public List<SoundEffect> SoundEffects { get; private set; }
 
@@ -34,6 +37,8 @@ namespace ChilledTreat.GameClasses
 		private EnemyHandler()
 		{
 			_enemies = new List<Enemy>();
+			EnemyTexture = Game1.Instance.Content.Load<Texture2D>("Images/enemy");
+			MuzzleFlareTexture = Game1.Instance.Content.Load<Texture2D>("Images/usableMuzzleFlare");
 			SoundEffects = new List<SoundEffect> { Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/EnemyGrunt1"),
 				Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/EnemyGrunt2"),
 				Game1.Instance.Content.Load<SoundEffect>("Sounds/Enemy/EnemyGrunt3"),

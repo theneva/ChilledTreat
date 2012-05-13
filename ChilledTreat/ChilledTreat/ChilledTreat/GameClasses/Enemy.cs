@@ -64,7 +64,7 @@ namespace ChilledTreat.GameClasses
 
 			_speed = new Vector2(0, 0.5f);
 
-			_texture = Game1.Instance.Content.Load<Texture2D>("Images/enemy");
+			_texture = EnemyHandler.Instance.EnemyTexture;
 			_currentFrame = new Point(0, 0);
 			_frameSize = new Point(41, 58);
 			_sheetSize = new Point(6, 0);
@@ -77,7 +77,7 @@ namespace ChilledTreat.GameClasses
 			_position = new Vector2(510 + _random.Next(192) - _frameSize.X * Scale,
 				Game1.GameScreenHeight - 540 - _frameSize.Y * Scale);
 
-			_muzzleFlare = Game1.Instance.Content.Load<Texture2D>("Images/usableMuzzleFlare");
+			_muzzleFlare = EnemyHandler.Instance.MuzzleFlareTexture;
 			_drawMuzzleFlare = false;
 			_timesDrawnMuzzleFlare = 0;
 		}
