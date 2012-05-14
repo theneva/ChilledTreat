@@ -42,39 +42,34 @@ namespace ChilledTreat
 		//This method serializes the list, and prints it to a file, so that it can be accessed in another session
 		public static void SerializeToXml(List<Highscore> highscores)
 		{
-			try
-			{
-				XmlSerializer serializer = new XmlSerializer(typeof (List<Highscore>));
+
+			XmlSerializer serializer = new XmlSerializer(typeof(List<Highscore>));
 #if WINDOWS
 				TextWriter writer = new StreamWriter("HighScore.xml");
 #elif XBOX
-				IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication();
+			IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication();
 
 
-				using (
-					IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream("HighScore.xml", FileMode.OpenOrCreate, iso)
-					)
-				{
-					//Write the data
-					using (StreamWriter writer = new StreamWriter(isoFileStream))
-					{
-#endif
-						serializer.Serialize(writer, highscores);
-						writer.Close();
-#if XBOX
-					}
-				}
-#endif
-			}
-			catch (FileNotFoundException ex)
+			using (
+				IsolatedStorageFileStream isoFileStream = new IsolatedStorageFileStream("HighScore.xml", FileMode.OpenOrCreate, iso)
+				)
 			{
+				//Write the data
+				using (StreamWriter writer = new StreamWriter(isoFileStream))
+				{
+#endif
+					serializer.Serialize(writer, highscores);
+					writer.Close();
+#if XBOX
+				}
 			}
+#endif
 		}
 
 		//This method deserializes the XML file, and returns it in an array
 		private static List<Highscore> DeserializeFromXml()
 		{
-			List<Highscore> scores;
+			List<Highscore> scores = null;
 #if WINDOWS
 
 			FileStream stream = File.Open("HighScore.xml", FileMode.OpenOrCreate, FileAccess.Read);
@@ -89,16 +84,38 @@ namespace ChilledTreat
 				// Close the file
 				stream.Close();
 			}
-
 #elif XBOX
-			
-			using (IsolatedStorageFile iso = IsolatedStorageFile.GetUserStoreForApplication())
+			try
 			{
-				using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("HighScore.xml", FileMode.Open, iso))
+				using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
 				{
-					// Read the data from the file
-					XmlSerializer serializer = new XmlSerializer(typeof(List<Highscore>));
-					scores = (List<Highscore>)serializer.Deserialize(stream);
+
+					using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream("HighScore.xml", FileMode.Open, store))
+					{
+						// Read the data from the file
+						XmlSerializer serializer = new XmlSerializer(typeof(List<Highscore>));
+						scores = (List<Highscore>)serializer.Deserialize(stream);
+					}
+				}
+			}
+			catch (InvalidOperationException ex)
+			{
+				using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+				{
+					store.Remove();
+				}
+			}
+			catch (FileNotFoundException ex)
+			{
+				using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication())
+				{
+					if (!store.FileExists("Highscore.xml"))
+					{
+						SerializeToXml(new List<Highscore>
+						               	{
+						               		new Highscore("Placeholder", 1)
+						               	});
+					}
 				}
 			}
 #endif
