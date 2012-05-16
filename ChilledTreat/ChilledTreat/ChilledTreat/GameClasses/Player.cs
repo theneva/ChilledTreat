@@ -1,221 +1,411 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
-using ChilledTreat.Tools;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Player.cs" company="X'nA Team">
+//   Copyright (c) X'nA Team. All rights reserved
+// </copyright>
+// <summary>
+//   This class represents the player, and is used as a singleton.
+// </summary>
+// <author>Simen Bekkhus</author>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace ChilledTreat.GameClasses
 {
-	/// <summary>
-	/// This class represents the player, and is used as a singleton. To access it, write GameClasses.Player.Instance
-	/// </summary>
-	public class Player
-	{
-		#region Fields
+    using System;
 
-		private const int MaxHealth = GameConstants.PlayerHealth;
+    using ChilledTreat.Tools;
 
-		private readonly SpriteBatch _spriteBatch;
-		private readonly InputHandler _input = InputHandler.Instance;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Audio;
+    using Microsoft.Xna.Framework.Graphics;
 
-		private readonly SoundEffect[] _injuredSounds;
-		private readonly SoundEffect _diedSound;
-		private int _health, _healthIn10, _heartsDrawShift;
-		private double _currentTime, _timeAtDamaged;
-		private readonly int _widthOfHeart;
-		private bool _damaged;
-		private readonly Texture2D _healthTexture, _coverTexture, _damagedTexture;
-		private readonly Rectangle _fullHealthSource, _halfHealthSource, _emptyHealthSource;
-		readonly SpriteFont _scoreFont;
+    /// <summary>
+    /// This class represents the player, and is used as a singleton.
+    /// </summary>
+    /// <remarks>
+    /// To access it, write GameClasses.Player.Instance
+    /// </remarks>
+    public class Player
+    {
+        #region Fields
+        /// <summary>
+        /// The max health of the player
+        /// </summary>
+        private const int MaxHealth = GameConstants.PlayerHealth;
 
-		public bool InCover { get; private set; }
+        /// <summary>
+        /// The singleton-object of the player
+        /// </summary>
+        private static Player instance;
 
-		public int Score { get; private set; }
+        /// <summary>
+        /// The width of a single heart
+        /// </summary>
+        private readonly int widthOfHeart;
 
-		//Create a singleton-object of the player
-		private static Player _instance;
-		public static Player Instance
-		{
-			get { return _instance ?? (_instance = new Player()); }
-		}
+        /// <summary>
+        /// The texture of the hearts (health-indicator)
+        /// </summary>
+        private readonly Texture2D heartTexture;
 
-		//These enum-states determine what's updated, and whether or nit certain actions are possible
-		public enum State
-		{
-			Alive,
-			Shooting,
-			Reloading,
-			Waiting,
-			Dead
-		}
+        /// <summary>
+        /// The texture of the crates used as cover
+        /// </summary>
+        private readonly Texture2D coverTexture;
 
-		public State PlayerState;
+        /// <summary>
+        /// The texture drawn when damaged (red haze)
+        /// </summary>
+        private readonly Texture2D damagedTexture;
 
-		#endregion
+        /// <summary>
+        /// The source-rectangle used when drawing a full heart
+        /// </summary>
+        private readonly Rectangle fullHealthSource;
 
-		#region Constructor
-		private Player()
-		{
-			_spriteBatch = Game1.Instance.SpriteBatch;
-			_health = MaxHealth;
+        /// <summary>
+        /// The source-rectangle used when drawing a half heart
+        /// </summary>
+        private readonly Rectangle halfHealthSource;
 
-			//Load all textures, font and sounds
-			_healthTexture = Game1.Instance.Content.Load<Texture2D>("Images/normalUsableHeart");
-			_coverTexture = Game1.Instance.Content.Load<Texture2D>("Images/usableCoverBox");
-			_damagedTexture = Game1.Instance.Content.Load<Texture2D>("Images/damagedTint");
-			_scoreFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/ScoreFont");
-			_diedSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/poor-baby");
+        /// <summary>
+        /// The source-rectangle used when drawing an empty heart
+        /// </summary>
+        private readonly Rectangle emptyHealthSource;
 
-			_injuredSounds = new[] { Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/goddamnit"),
-				Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/how-dare-you"),
-				Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/im-in-trouble"),
-				Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/uh") };
+        /// <summary>
+        /// The font used for writing the player's score to the screen
+        /// </summary>
+        private readonly SpriteFont scoreFont;
 
-			//Create the rectangle used for drawing hearts (health indicator) on the screen
-			_widthOfHeart = _healthTexture.Width / 3;
-			_fullHealthSource = new Rectangle(0, 0, _widthOfHeart, _healthTexture.Height);
-			_halfHealthSource = new Rectangle(_widthOfHeart, 0, _widthOfHeart, _healthTexture.Height);
-			_emptyHealthSource = new Rectangle(_widthOfHeart * 2, 0, _widthOfHeart, _healthTexture.Height);
+        /// <summary>
+        /// An array of the sounds used when injured
+        /// </summary>
+        private readonly SoundEffect[] injuredSounds;
 
-			PlayerState = State.Alive;
-		}
-		#endregion
+        /// <summary>
+        /// The sound effect played when the player dies
+        /// </summary>
+        private readonly SoundEffect diedSound;
 
-		#region Update & Draw
-		public void Update()
-		{
-			_currentTime = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
+        /// <summary>
+        /// The player's current health
+        /// </summary>
+        private int currentHealth;
 
-			if (PlayerState == State.Dead)
-			{
-				EnemyHandler.Instance.Clear();
-				_diedSound.Play();
-				Game1.ChangeState(GameStates.GameState.GameOver);
-			}
+        /// <summary>
+        /// The player's current health, divided into 10. It's used for drawing the hearts (health-indicator)
+        /// </summary>
+        private int healthIn10;
 
-			//If the red haze (damaged) has been drawn, and the controller vibrated, for 200 ms stop it
-			if (_damaged && _currentTime - _timeAtDamaged > 200)
-			{
-				_damaged = false;
-				_input.StopVibrate();
-			}
+        /// <summary>
+        /// The shift applied while drawing hearts. To avoid drawing them on top of each other
+        /// </summary>
+        private int heartsDrawShift;
 
-			//Divide the health into 10 parts, to easily calculate how many hearts to draw on the screen
-			_healthIn10 = _health / 10;
-			//The shift to the side, so that the hearts are not drawn on top of each other
-			_heartsDrawShift = 0;
+        /// <summary>
+        /// The current time
+        /// </summary>
+        private double currentTime;
 
-			InCover = _input.IsCoverDown();
+        /// <summary>
+        /// The time when the player was damaged
+        /// </summary>
+        private double timeAtDamaged;
 
-			WeaponHandler.Instance.Update();
-		}
+        /// <summary>
+        /// A bool indicating whether the player was damaged (to draw a damage-indicator)
+        /// </summary>
+        private bool damaged;
+        #endregion
 
-		public void Draw()
-		{
-			//If the player's in cover, draw the cover-box
-			if (InCover)
-			{
-				_spriteBatch.Draw(_coverTexture,
-					new Vector2((Game1.GameScreenWidth - _coverTexture.Width * Game1.GameScale) / 2f, Game1.GameScreenHeight - _coverTexture.Height * Game1.GameScale),
-					_coverTexture.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
-			}
+        #region Constructor
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Player"/> class from being created.
+        /// </summary>
+        private Player()
+        {
+            this.currentHealth = MaxHealth;
 
-			DrawHealth();
+            // Load all textures, font and sounds
+            this.heartTexture = Game1.Instance.Content.Load<Texture2D>("Images/normalUsableHeart");
+            this.coverTexture = Game1.Instance.Content.Load<Texture2D>("Images/usableCoverBox");
+            this.damagedTexture = Game1.Instance.Content.Load<Texture2D>("Images/damagedTint");
+            this.scoreFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/ScoreFont");
+            this.diedSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/poor-baby");
 
-			//Score indicator
-			_spriteBatch.DrawString(_scoreFont, Convert.ToString(Score), new Vector2(Game1.GameScreenWidth - 100 * Game1.GameScale, 20 * Game1.GameScale), Color.Black, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
+            this.injuredSounds = new[]
+                {
+                    Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/goddamnit"),
+                    Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/how-dare-you"),
+                    Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/im-in-trouble"),
+                    Game1.Instance.Content.Load<SoundEffect>("Sounds/Player/uh")
+                };
 
-			WeaponHandler.Instance.Draw();
+            // Create the rectangle used for drawing hearts (health indicator) on the screen
+            this.widthOfHeart = this.heartTexture.Width / 3;
+            this.fullHealthSource = new Rectangle(0, 0, this.widthOfHeart, this.heartTexture.Height);
+            this.halfHealthSource = new Rectangle(this.widthOfHeart, 0, this.widthOfHeart, this.heartTexture.Height);
+            this.emptyHealthSource = new Rectangle(this.widthOfHeart * 2, 0, this.widthOfHeart, this.heartTexture.Height);
 
-			//If the player was damaged, draw a red haze across the screen
-			if (_damaged) _spriteBatch.Draw(_damagedTexture, Vector2.Zero, _damagedTexture.Bounds, Color.White, 0f, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
-		}
+            this.PlayerState = State.Alive;
+        }
 
-		/// <summary>
-		/// Draw the correct amount of hearts (health-indicator) on the screen.
-		/// It's cleaner having the logic behind it in it's own method
-		/// </summary>
-		private void DrawHealth()
-		{
-			//The vector calculation for the X is really ugly.
-			//It takes the width of the screen, subtracts the width of 5 hearts (plus 5 on each, to put some space between them), multiplies it by the scale of the game, before adding to it so that each heart drawn is shifted the necessary pixels to the right
+        #endregion
 
-			for (int i = 0; i < _healthIn10 / 2; i++)
-			{
-				_spriteBatch.Draw(_healthTexture,
-					new Vector2(Game1.GameScreenWidth - ((_widthOfHeart + 4) * 5 * Game1.GameScale) + ((_widthOfHeart + 5) * _heartsDrawShift * Game1.GameScale), Game1.GameScreenHeight - _healthTexture.Height * Game1.GameScale),
-					_fullHealthSource, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
-				_heartsDrawShift++;
-			}
+        #region Properties
+        /// <summary>
+        /// These enum-states determine what's updated, and whether or not certain actions are possible
+        /// </summary>
+        public enum State
+        {
+            /// <summary>
+            /// The player's alive, waiting for orders
+            /// </summary>
+            Alive,
 
-			//Always draw 5 hearts. If the int division ends up removing the fraction (meaning we lose 0.5 hearts), draw a half-heart
-			if (_healthIn10 % 2 != 0)
-			{
-				_spriteBatch.Draw(_healthTexture,
-					new Vector2(Game1.GameScreenWidth - ((_widthOfHeart + 4) * 5 * Game1.GameScale) + ((_widthOfHeart + 5) * _heartsDrawShift * Game1.GameScale), Game1.GameScreenHeight - _healthTexture.Height * Game1.GameScale),
-					_halfHealthSource, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
-				_heartsDrawShift++;
-			}
+            /// <summary>
+            /// The player's currently shooting
+            /// </summary>
+            Shooting,
 
-			for (int i = _healthIn10 / 2; i < 5; i++)
-			{
-				_spriteBatch.Draw(_healthTexture,
-					new Vector2(Game1.GameScreenWidth - ((_widthOfHeart + 4) * 5 * Game1.GameScale) + ((_widthOfHeart + 5) * _heartsDrawShift * Game1.GameScale), Game1.GameScreenHeight - _healthTexture.Height * Game1.GameScale),
-					_emptyHealthSource, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
-				_heartsDrawShift++;
-			}
-		}
-		#endregion
+            /// <summary>
+            /// The player's currently reloading
+            /// </summary>
+            Reloading,
 
-		#region Methods for determining what happens to the player
-		/// <summary>
-		/// How much the player is damaged
-		/// </summary>
-		/// <param name="damage">The amount of damage recieved</param>
-		public void Damaged(int damage)
-		{
-			//If you're in godmode, you're invincible
-			if (GameConstants.GodMode) return;
+            /// <summary>
+            /// The player's currently waiting (for reload or the "cool-down" of the weapon)
+            /// </summary>
+            Waiting,
 
-			if (InCover) damage /= 5;
+            /// <summary>
+            /// The player's dead
+            /// </summary>
+            Dead
+        }
+
+        /// <summary>
+        /// Gets the singleton object of the player, for use in other classes
+        /// </summary>
+        public static Player Instance
+        {
+            get { return instance ?? (instance = new Player()); }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the player's in cover or not
+        /// </summary>
+        public bool InCover { get; private set; }
+
+        /// <summary>
+        /// Gets the current score of the player
+        /// </summary>
+        public int Score { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the current state (enum) of the player
+        /// <seealso cref="State"/>
+        /// </summary>
+        public State PlayerState { get; set; }
+        #endregion
+
+        #region Methods for determining what happens to the player
+        /// <summary>
+        /// Creates a new instance of the player object, to set all variables back to their default values
+        /// </summary>
+        public static void ResetPlayer()
+        {
+            instance = new Player();
+
+            WeaponHandler.ResetWeapons();
+        }
+
+        /// <summary>
+        /// Adds 1 to the player score
+        /// </summary>
+        public void SuccesfullKill()
+        {
+            this.Score++;
+        }
+
+        /// <summary>
+        /// How much the player is damaged
+        /// </summary>
+        /// <param name="damage">The amount of damage recieved</param>
+        public void Damaged(int damage)
+        {
+            // If you're in godmode, you're invincible
+            if (GameConstants.GodMode)
+            {
+                return;
+            }
+
+            if (this.InCover)
+            {
+                damage /= 5;
+            }
 
 #if XBOX
-			//Vibrate the controller
-			_input.StartHardVibrate();
+            // Vibrate the controller
+            InputHandler.Instance.StartHardVibrate();
 #endif
 
-			//Play a random sound when injured
-			_injuredSounds[EnemyHandler.Random.Next(_injuredSounds.Length)].Play();
+            // Play a random sound when injured
+            this.injuredSounds[GameStates.InGame.Random.Next(this.injuredSounds.Length)].Play();
 
-			_damaged = true;
+            this.damaged = true;
 
-			//Get the current time, so we can remove the red haze after a certai time interval
-			_timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
+            // Get the current time, so we can remove the red haze after a certai time interval
+            this.timeAtDamaged = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 
-			_health -= damage;
+            this.currentHealth -= damage;
 
-			if (_health <= 0)
-				PlayerState = State.Dead;
-		}
+            if (this.currentHealth <= 0)
+            {
+                this.PlayerState = State.Dead;
+            }
+        }
+        #endregion
 
-		/// <summary>
-		/// Adds 1 to the player score
-		/// </summary>
-		public void SuccesfullKill()
-		{
-			Score++;
-		}
+        #region Update & Draw
+        /// <summary>
+        /// The update-method of Player
+        /// </summary>
+        public void Update()
+        {
+            this.currentTime = FrameInfo.Instance.GameTime.TotalGameTime.TotalMilliseconds;
 
-		/// <summary>
-		/// Creates a new instance of the player object, to set all variables back to their default valuess
-		/// </summary>
-		public static void ResetPlayer()
-		{
-			_instance = new Player();
+            if (this.PlayerState == State.Dead)
+            {
+                EnemyHandler.Instance.Clear();
+                this.diedSound.Play();
+                Game1.ChangeState(GameStates.GameState.GameOver);
+            }
 
-			WeaponHandler.ResetWeapons();
-		}
+            // If the red haze (damaged) has been drawn, and the controller vibrated, for 200 ms stop it
+            if (this.damaged && this.currentTime - this.timeAtDamaged > 200)
+            {
+                this.damaged = false;
+                InputHandler.Instance.StopVibrate();
+            }
 
-		#endregion
-	}
+            // Divide the health into 10 parts, to easily calculate how many hearts to draw on the screen
+            this.healthIn10 = this.currentHealth / 10;
+
+            // The shift to the side, so that the hearts are not drawn on top of each other
+            this.heartsDrawShift = 0;
+
+            this.InCover = InputHandler.Instance.IsCoverDown();
+
+            WeaponHandler.Instance.Update();
+        }
+
+        /// <summary>
+        /// The draw-method of Player
+        /// </summary>
+        public void Draw()
+        {
+            // If the player's in cover, draw the cover-box
+            if (this.InCover)
+            {
+                Game1.Instance.SpriteBatch.Draw(
+                    this.coverTexture,
+                    new Vector2((Game1.GameScreenWidth - (this.coverTexture.Width * Game1.GameScale)) / 2f, Game1.GameScreenHeight - (this.coverTexture.Height * Game1.GameScale)),
+                    this.coverTexture.Bounds,
+                    Color.White,
+                    0,
+                    Vector2.Zero,
+                    Game1.GameScale,
+                    SpriteEffects.None,
+                    0);
+            }
+
+            this.DrawHealth();
+
+            // Score indicator
+            Game1.Instance.SpriteBatch.DrawString(this.scoreFont, Convert.ToString(this.Score), new Vector2(Game1.GameScreenWidth - (100 * Game1.GameScale), 20 * Game1.GameScale), Color.Black, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
+
+            WeaponHandler.Instance.Draw();
+
+            // If the player was damaged, draw a red haze across the screen
+            if (this.damaged)
+            {
+                Game1.Instance.SpriteBatch.Draw(
+                    this.damagedTexture,
+                    Vector2.Zero,
+                    this.damagedTexture.Bounds,
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    Game1.GameScale,
+                    SpriteEffects.None,
+                    0);
+            }
+        }
+
+        /// <summary>
+        /// Draw the correct amount of hearts (health-indicator) on the screen.
+        /// It's cleaner having the logic behind it in it's own method
+        /// </summary>
+        private void DrawHealth()
+        {
+            // The vector calculation for the X is really ugly.
+            // It takes the width of the screen, subtracts the width of 5 hearts (plus 5 on each, to put some space between them), multiplies it by the scale of the game, before adding to it so that each heart drawn is shifted the necessary pixels to the right
+            for (int i = 0; i < this.healthIn10 / 2; i++)
+            {
+                Game1.Instance.SpriteBatch.Draw(
+                    this.heartTexture,
+                    new Vector2(
+                        Game1.GameScreenWidth - ((this.widthOfHeart + 4) * 5 * Game1.GameScale)
+                        + ((this.widthOfHeart + 5) * this.heartsDrawShift * Game1.GameScale),
+                        Game1.GameScreenHeight - (this.heartTexture.Height * Game1.GameScale)),
+                    this.fullHealthSource,
+                    Color.White,
+                    0,
+                    Vector2.Zero,
+                    Game1.GameScale,
+                    SpriteEffects.None,
+                    0);
+                this.heartsDrawShift++;
+            }
+
+            // Always draw 5 hearts. If the int division ends up removing the fraction (meaning we lose 0.5 hearts), draw a half-heart
+            if (this.healthIn10 % 2 != 0)
+            {
+                Game1.Instance.SpriteBatch.Draw(
+                    this.heartTexture,
+                    new Vector2(
+                        Game1.GameScreenWidth - ((this.widthOfHeart + 4) * 5 * Game1.GameScale)
+                        + ((this.widthOfHeart + 5) * this.heartsDrawShift * Game1.GameScale),
+                        Game1.GameScreenHeight - (this.heartTexture.Height * Game1.GameScale)),
+                    this.halfHealthSource,
+                    Color.White,
+                    0,
+                    Vector2.Zero,
+                    Game1.GameScale,
+                    SpriteEffects.None,
+                    0);
+                this.heartsDrawShift++;
+            }
+
+            for (int i = this.healthIn10 / 2; i < 5; i++)
+            {
+                Game1.Instance.SpriteBatch.Draw(
+                    this.heartTexture,
+                    new Vector2(
+                        Game1.GameScreenWidth - ((this.widthOfHeart + 4) * 5 * Game1.GameScale)
+                        + ((this.widthOfHeart + 5) * this.heartsDrawShift * Game1.GameScale),
+                        Game1.GameScreenHeight - (this.heartTexture.Height * Game1.GameScale)),
+                    this.emptyHealthSource,
+                    Color.White,
+                    0,
+                    Vector2.Zero,
+                    Game1.GameScale,
+                    SpriteEffects.None,
+                    0);
+                this.heartsDrawShift++;
+            }
+        }
+        #endregion
+    }
 }

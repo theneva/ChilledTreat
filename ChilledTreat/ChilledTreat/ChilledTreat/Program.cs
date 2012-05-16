@@ -1,19 +1,32 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="X'nA Team">
+//   Copyright (c) X'nA Team. All rights reserved
+// </copyright>
+// <summary>
+//   The entry-point of the application
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace ChilledTreat
 {
+    /// <summary>
+    /// The entry-point of the application
+    /// </summary>
 #if WINDOWS || XBOX
-	static class Program
-	{
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		static void Main(string[] args)
-		{
-			Game1 game;
-			using (game = new Game1())
-			{
-				game.Run();
-			}
-		}
-	}
+    public static class Program
+    {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        /// <param name="args">Have to be there</param>
+        public static void Main(string[] args)
+        {
+            Game1 game;
+            using (game = new Game1())
+            {
+                game.Run();
+            }
+        }
+    }
 #endif
 }

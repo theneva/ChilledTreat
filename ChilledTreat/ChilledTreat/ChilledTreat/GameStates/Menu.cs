@@ -1,110 +1,194 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Audio;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Menu.cs" company="X'nA Team">
+//   Copyright (c) X'nA Team. All rights reserved
+// </copyright>
+// <summary>
+//   The main menu-screen
+// </summary>
+// <author>Vegard Strand</author>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace ChilledTreat.GameStates
 {
-	class Menu : GameState
-	{
-		// Fields
-		readonly SpriteFont _menuFont;
-		readonly string[] _menuItems;
-		readonly float[] _selectedItem, _yPos;
-		private int _menuPos;
-		readonly InputHandler _input = InputHandler.Instance;
-		readonly SoundEffect _menuSound, _selectSound;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Audio;
+    using Microsoft.Xna.Framework.Graphics;
 
-		// Constructor
-		public Menu()
-		{
-			// Menu content
-			_menuFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/menuFont");
+    /// <summary>
+    /// The main menu-screen
+    /// </summary>
+    public class Menu : GameState
+    {
+        #region Fields
+        /// <summary>
+        /// The font used for drawing text
+        /// </summary>
+        private readonly SpriteFont menuFont;
 
-			// Array with menu titles
-			string[] strings = {"New Game", "Instructions", "Leaderboard", "Credits", "EXIT"};
-			_menuItems = strings;
-			
-			_menuPos = 0; // Keeps track on where in the menu the user is
-			_selectedItem = new float[_menuItems.Length]; // Used to set a specific position for the menu item which is selected
+        /// <summary>
+        /// List of all the items in the menu
+        /// </summary>
+        private readonly string[] menuItems;
 
-			// Navigation sounds
-			_menuSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/buttonSound");
-			_selectSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/selectSound");
+        /// <summary>
+        /// TODO: Why is this an array???
+        /// </summary>
+        private readonly float[] selectedItem;
 
-			// For loops sets X position on the menu items
-			for (int i = 0; i < _selectedItem.Length; i++)
-				_selectedItem[i] = 100f * Game1.GameScale;
+        /// <summary>
+        /// TODO: Why is this an array???
+        /// </summary>
+        private readonly float[] yPos;
 
-			// The selected item (menuPos keeps track on which item is selcted)
-			// sets X positon on the selectedItem
-			_selectedItem[_menuPos] = 150f * Game1.GameScale;
+        /// <summary>
+        /// The sound played when navigating the menu
+        /// </summary>
+        private readonly SoundEffect menuSound;
 
-			// Sets the Y position from which the menu will be placed
-			float yStartPos = 100 * Game1.GameScale;
+        /// <summary>
+        /// Sound played when selecting an item
+        /// </summary>
+        private readonly SoundEffect selectSound;
 
-			// An array holds all the Y position of all the menu items.
-			// The array is filled by a for loop which fills it according
-			// to the numbers of menuItems
-			_yPos = new float[_menuItems.Length];
-			for (int i = 0; i < _yPos.Length; i++)
-			{
-				_yPos[i] = yStartPos;
-				yStartPos += 100 * Game1.GameScale;
-			}
-		}
+        /// <summary>
+        /// The currently chosen, hovered, menu-item
+        /// </summary>
+        private int menuPos;
+        #endregion
 
-		public override void Update()
-		{
-			// Navigation
-			if (_input.IsDownPressed())
-			{
-				_menuSound.Play();
-				_menuPos++;
-				if (_menuPos > _selectedItem.Length - 1)
-					_menuPos = 0;
-			}
-			if (_input.IsUpPressed())
-			{
-				_menuSound.Play();
-				_menuPos--;
-				if (_menuPos < 0)
-					_menuPos = _selectedItem.Length - 1;
-			}
+        #region Constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Menu"/> class.
+        /// </summary>
+        public Menu()
+        {
+            // Menu content
+            this.menuFont = Game1.Instance.Content.Load<SpriteFont>("Fonts/menuFont");
 
-			// The selectedItem's position is set with the menuPos
-			for (int i = 0; i < _selectedItem.Length; i++)
-				_selectedItem[i] = 100f * Game1.GameScale;
-			_selectedItem[_menuPos] = 150f * Game1.GameScale;
+            // Array with menu titles
+            string[] strings = { "New Game", "Instructions", "Leaderboard", "Credits", "EXIT" };
+            this.menuItems = strings;
 
-			// The method returns when the used does not choose a menuItem
-			if (!_input.IsActionPressed()) return;
+            this.menuPos = 0; // Keeps track on where in the menu the user is
+            this.selectedItem = new float[this.menuItems.Length]; // Used to set a specific position for the menu item which is selected
 
-			// GameState is changed according to what the user selects.
-			_selectSound.Play();
-			if (_menuItems[_menuPos].Contains("EXIT"))
-				Game1.Instance.Exit();
-			else if (_menuItems[_menuPos].Contains("New Game"))
-			{
-				Game1.NewGame();
-				Game1.ChangeState(InGame);
-			}
-			else if (_menuItems[_menuPos].Contains("Instructions"))
-				Game1.ChangeState(Instructions);
-			else if (_menuItems[_menuPos].Contains("Credits"))
-			{
-				Game1.NewCredits();
-				Game1.ChangeState(Credits);
-			}
-			else if (_menuItems[_menuPos].Contains("Leaderboard"))
-			{
-				Game1.NewLeaderBoard();
-				Game1.ChangeState(LeaderBoard);
-			}
-		}
-		public override void Draw()
-		{
-			for (int i = 0; i < _menuItems.Length; i++)
-				Game1.Instance.SpriteBatch.DrawString(_menuFont, _menuItems[i], new Vector2(_selectedItem[i], _yPos[i]), Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
-		}
-	}
+            // Navigation sounds
+            this.menuSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/buttonSound");
+            this.selectSound = Game1.Instance.Content.Load<SoundEffect>("Sounds/selectSound");
+
+            // For loops sets X position on the menu items
+            for (int i = 0; i < this.selectedItem.Length; i++)
+            {
+                this.selectedItem[i] = 100f * Game1.GameScale;
+            }
+
+            // The selected item (menuPos keeps track on which item is selected)
+            // sets X position on the selectedItem
+            this.selectedItem[this.menuPos] = 150f * Game1.GameScale;
+
+            // Sets the Y position from which the menu will be placed
+            float yStartPos = 100 * Game1.GameScale;
+
+            // An array holds all the Y position of all the menu items.
+            // The array is filled by a for loop which fills it according
+            // to the numbers of menuItems
+            this.yPos = new float[this.menuItems.Length];
+            for (int i = 0; i < this.yPos.Length; i++)
+            {
+                this.yPos[i] = yStartPos;
+                yStartPos += 100 * Game1.GameScale;
+            }
+        }
+        #endregion
+
+        #region Update&Draw
+        /// <summary>
+        /// Update of Menu
+        /// </summary>
+        internal override void Update()
+        {
+            // Navigation
+            if (InputHandler.Instance.IsDownPressed())
+            {
+                this.menuSound.Play();
+                this.menuPos++;
+                if (this.menuPos > this.selectedItem.Length - 1)
+                {
+                    this.menuPos = 0;
+                }
+            }
+
+            if (InputHandler.Instance.IsUpPressed())
+            {
+                this.menuSound.Play();
+                this.menuPos--;
+                if (this.menuPos < 0)
+                {
+                    this.menuPos = this.selectedItem.Length - 1;
+                }
+            }
+
+            // The selectedItem's position is set with the menuPos
+            for (int i = 0; i < this.selectedItem.Length; i++)
+            {
+                this.selectedItem[i] = 100f * Game1.GameScale;
+            }
+
+            this.selectedItem[this.menuPos] = 150f * Game1.GameScale;
+
+            // The method returns when the used does not choose a menuItem
+            if (!InputHandler.Instance.IsActionPressed())
+            {
+                return;
+            }
+
+            // GameState is changed according to what the user selects.
+            this.selectSound.Play();
+            if (this.menuItems[this.menuPos].Contains("EXIT"))
+            {
+                Game1.Instance.Exit();
+            }
+            else if (this.menuItems[this.menuPos].Contains("New Game"))
+            {
+                Game1.NewGame();
+                Game1.ChangeState(InGame);
+            }
+            else if (this.menuItems[this.menuPos].Contains("Instructions"))
+            {
+                Game1.ChangeState(Instructions);
+            }
+            else if (this.menuItems[this.menuPos].Contains("Credits"))
+            {
+                Game1.NewCredits();
+                Game1.ChangeState(Credits);
+            }
+            else if (this.menuItems[this.menuPos].Contains("Leaderboard"))
+            {
+                Game1.NewLeaderBoard();
+                Game1.ChangeState(LeaderBoard);
+            }
+        }
+
+        /// <summary>
+        /// Draw of Menu
+        /// </summary>
+        internal override void Draw()
+        {
+            for (int i = 0; i < this.menuItems.Length; i++)
+            {
+                Game1.Instance.SpriteBatch.DrawString(
+                    this.menuFont,
+                    this.menuItems[i],
+                    new Vector2(this.selectedItem[i], this.yPos[i]),
+                    Color.White,
+                    0,
+                    Vector2.Zero,
+                    Game1.GameScale,
+                    SpriteEffects.None,
+                    0);
+            }
+        }
+
+        #endregion
+    }
 }

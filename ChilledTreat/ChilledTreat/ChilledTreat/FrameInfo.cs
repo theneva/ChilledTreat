@@ -1,28 +1,66 @@
-﻿using Microsoft.Xna.Framework;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FrameInfo.cs" company="X'nA Team">
+//   Copyright (c) X'nA Team. All rights reserved
+// </copyright>
+// <summary>
+//   The frameinfo contains information about the GameTime
+// </summary>
+// <author>Vegard Strand</author>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace ChilledTreat
 {
-	class FrameInfo
-	{
-		readonly public static FrameInfo Instance = new FrameInfo();
+    using Microsoft.Xna.Framework;
 
-		private FrameInfo() { }
+    /// <summary>
+    /// The frameinfo contains information about the GameTime
+    /// </summary>
+    public class FrameInfo
+    {
+        #region Fields
+        /// <summary>
+        /// The instance of the frameinfo
+        /// </summary>
+        public static readonly FrameInfo Instance = new FrameInfo();
 
-		GameTime _gameTime = new GameTime();
-		public GameTime GameTime
-		{
-			get
-			{
-				return _gameTime;
-			}
+        /// <summary>
+        /// The current gametime
+        /// </summary>
+        private GameTime gameTime;
+        #endregion
 
-			set
-			{
-				_gameTime = value;
-				DeltaTime = GameTime.ElapsedGameTime.TotalSeconds;
-			}
-		}
+        #region Constructor
+        /// <summary>
+        /// Prevents a default instance of the <see cref="FrameInfo"/> class from being created.
+        /// </summary>
+        private FrameInfo()
+        {
+            this.gameTime = new GameTime();
+        }
+        #endregion
 
-		public double DeltaTime { get; protected set; }
-	}
+        #region Properties
+        /// <summary>
+        /// Gets DeltaTime.
+        /// </summary>
+        public static double DeltaTime { get; private set; }
+
+        /// <summary>
+        /// Gets or sets GameTime.
+        /// </summary>
+        public GameTime GameTime
+        {
+            get
+            {
+                return this.gameTime;
+            }
+
+            set
+            {
+                this.gameTime = value;
+                DeltaTime = this.GameTime.ElapsedGameTime.TotalSeconds;
+            }
+        }
+        #endregion
+    }
 }

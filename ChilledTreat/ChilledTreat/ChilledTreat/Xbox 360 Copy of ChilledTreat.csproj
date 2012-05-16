@@ -33,6 +33,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Xbox 360' ">
     <OutputPath>bin\Xbox 360\Release</OutputPath>
@@ -66,6 +68,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameClasses\EnemyHandler.cs" />
+    <Compile Include="GameClasses\Weapon.cs" />
+    <Compile Include="GameStates\GameState.cs" />
     <Compile Include="GameStates\LeaderBoard.cs" />
     <Compile Include="GameClasses\WeaponHandler.cs" />
     <Compile Include="GameStates\Credits.cs" />
@@ -75,7 +79,6 @@
     <Compile Include="GameStates\GameOver.cs" />
     <Compile Include="GameStates\Instructions.cs" />
     <Compile Include="GameStates\PauseMenu.cs" />
-    <Compile Include="GameStates\GameStates.cs" />
     <Compile Include="GameStates\InGame.cs" />
     <Compile Include="HighScore.cs" />
     <Compile Include="InputHandler.cs" />
@@ -89,6 +92,7 @@
   <ItemGroup>
     <Content Include="GameIcon.ico" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="StyleCop.MSBuild.ContentHook.txt" />
     <EmbeddedResource Include="HighScore.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
