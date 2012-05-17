@@ -13,8 +13,8 @@
         </Rule>
       </Rules>
       <AnalyzerSettings>
-        <StringProperty Name="CompanyName">X'nA Team</StringProperty>
-        <StringProperty Name="Copyright">Copyright (c) X'nA Team. All rights reserved</StringProperty>
+        <StringProperty Name="CompanyName">X&amp;A Team</StringProperty>
+        <StringProperty Name="Copyright">Copyright (c) X&amp;A Team. All rights reserved</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">

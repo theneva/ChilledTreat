@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InputHandler.cs" company="X'nA Team">
-//   Copyright (c) X'nA Team. All rights reserved
+// <copyright file="InputHandler.cs" company="X&A Team">
+//   Copyright (c) X&A Team. All rights reserved
 // </copyright>
 // <summary>
 //   The input-handler

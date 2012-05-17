@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GameState.cs" company="X'nA Team">
-//   Copyright (c) X'nA Team. All rights reserved
+// <copyright file="GameState.cs" company="X&A Team">
+//   Copyright (c) X&A Team. All rights reserved
 // </copyright>
 // <summary>
 //   The daddy-class of gamestates

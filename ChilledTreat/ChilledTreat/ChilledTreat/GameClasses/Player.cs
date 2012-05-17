@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Player.cs" company="X'nA Team">
-//   Copyright (c) X'nA Team. All rights reserved
+// <copyright file="Player.cs" company="X&A Team">
+//   Copyright (c) X&A Team. All rights reserved
 // </copyright>
 // <summary>
 //   This class represents the player, and is used as a singleton.

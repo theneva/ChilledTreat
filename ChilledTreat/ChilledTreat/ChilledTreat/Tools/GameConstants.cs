@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GameConstants.cs" company="X'nA Team">
-//   Copyright (c) X'nA Team. All rights reserved
+// <copyright file="GameConstants.cs" company="X&A Team">
+//   Copyright (c) X&A Team. All rights reserved
 // </copyright>
 // <summary>
 //   A list of game-constants. Used for testing, and having fun

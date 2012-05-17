@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Weapon.cs" company="X'nA Team">
-//   Copyright (c) X'nA Team. All rights reserved
+// <copyright file="Weapon.cs" company="X&A Team">
+//   Copyright (c) X&A Team. All rights reserved
 // </copyright>
 // <summary>
 //   A weapons-class
@@ -269,7 +269,16 @@ namespace ChilledTreat.GameClasses
         {
             if (!Player.Instance.InCover)
             {
-               Game1.Instance.SpriteBatch.Draw(this.reticuleTexture, WeaponHandler.Instance.ReticulePosition - this.halfReticuleTexture, this.reticuleTexture.Bounds, Color.White, 0, Vector2.Zero, Game1.GameScale, SpriteEffects.None, 0);
+               Game1.Instance.SpriteBatch.Draw(
+                   this.reticuleTexture,
+                   WeaponHandler.Instance.ReticulePosition - this.halfReticuleTexture,
+                   this.reticuleTexture.Bounds,
+                   Color.White,
+                   0,
+                   Vector2.Zero,
+                   Game1.GameScale,
+                   SpriteEffects.None,
+                   0);
 
                 // If we're drawing the muzzle-flare, use that rectangle. If not, use the normal one
                 Game1.Instance.SpriteBatch.Draw(
