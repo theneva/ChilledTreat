@@ -135,7 +135,7 @@ namespace ChilledTreat.GameClasses
         /// The default damage 
         /// </param>
         /// <param name="rateOfFire">
-        /// The amount of bullets fireable per second
+        /// The amount of bullets fire-able per second
         /// </param>
         /// <param name="automatic">
         /// Indicates whether or not the weapon is automatic

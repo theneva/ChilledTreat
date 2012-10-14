@@ -92,7 +92,6 @@
   <ItemGroup>
     <Content Include="GameIcon.ico" />
     <Content Include="GameThumbnail.png" />
-    <Content Include="StyleCop.MSBuild.ContentHook.txt" />
     <EmbeddedResource Include="HighScore.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>

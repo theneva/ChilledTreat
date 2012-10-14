@@ -158,7 +158,7 @@ namespace ChilledTreat
         {
             instance.gameStates[GameState.Credits] = new Credits();
         }
-        
+
         /// <summary>
         /// Used to reset LeaderBoard
         /// </summary>

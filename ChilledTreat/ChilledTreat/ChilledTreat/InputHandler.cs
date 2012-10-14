@@ -35,7 +35,7 @@ namespace ChilledTreat
         /// Left key
         /// </summary>
         private const Keys LeftKey = Keys.Left;
-        
+
         /// <summary>
         /// Right key
         /// </summary>
@@ -67,7 +67,7 @@ namespace ChilledTreat
         /// D key
         /// </summary>
         private const Keys DKey = Keys.D;
-        
+
         /// <summary>
         /// Action key
         /// </summary>
@@ -157,6 +157,8 @@ namespace ChilledTreat
         private Vector2 gamePadPointerLocation;
         #endregion
 
+        public string Per { get; set; }
+
         #region Constructor
         /// <summary>
         /// Prevents a default instance of the <see cref="InputHandler"/> class from being created.
@@ -181,10 +183,7 @@ namespace ChilledTreat
         /// </summary>
         private static PlayerIndex PlayerIndex
         {
-            get
-            {
-                return PlayerIndex.One;
-            }
+            get { return PlayerIndex.One; }
         }
 
         /// <summary>
@@ -625,7 +624,7 @@ namespace ChilledTreat
             if (GamePad.GetState(PlayerIndex.One).IsConnected)
             {
 #endif
-            return this.IsButtonPressed(Buttons.Start);
+                return this.IsButtonPressed(Buttons.Start);
 #if WINDOWS
             }
 
@@ -1070,6 +1069,6 @@ namespace ChilledTreat
             return false;
 #endif
         }
-#endregion
+        #endregion
     }
 }
