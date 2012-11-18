@@ -59,7 +59,7 @@ namespace ChilledTreat.GameClasses
         /// </summary>
         private WeaponHandler()
         {
-            // This demonstrates the power of OOP. To add a weapon, with it's on attributes, simply add it to the
+            // This demonstrates the power of OOP. To add a weapon, with it's own attributes, simply add it to the
             // list (making sure the name matches a folder in the Weapon folder, to load textures and sounds)
             this.weapons = new[]
                 {
@@ -86,10 +86,7 @@ namespace ChilledTreat.GameClasses
         /// </summary>
         public static WeaponHandler Instance
         {
-            get
-            {
-                return instance ?? (instance = new WeaponHandler());
-            }
+            get { return instance ?? (instance = new WeaponHandler()); }
         }
 
         /// <summary>
@@ -97,10 +94,7 @@ namespace ChilledTreat.GameClasses
         /// </summary>
         public bool Splash
         {
-            get
-            {
-                return this.currentWeapon.Splash;
-            }
+            get { return this.currentWeapon.Splash; }
         }
 
         /// <summary>
